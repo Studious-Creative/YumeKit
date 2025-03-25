@@ -1,0 +1,8 @@
+{
+    "devDependencies": {
+        "@open-wc/testing": "^4.0.0",
+        "eslint": "^9.22.0",
+        "eslint-plugin-prettier": "^5.2.3",
+        "prettier": "^3.5.3"
+    }
+}
