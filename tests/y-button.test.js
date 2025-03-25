@@ -39,7 +39,7 @@ describe("KeplerButton", () => {
 
         // Check the inline custom property value instead.
         const bgVar = shadowButton.style.getPropertyValue("--background-color");
-        expect(bgVar).to.contain("--success-background--");
+        expect(bgVar).to.contain("--success-background-app");
     });
 
     it("dispatches a click event when clicked", async () => {

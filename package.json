@@ -2,11 +2,15 @@
     "name": "@studious/yumekit",
     "version": "0.1.0",
     "description": "Modern Web Component UI Kit",
+    "type": "module",
+    "main": "script.js",
+    "module": "script.js",
     "scripts": {
         "test": "npx web-test-runner --config web-test-runner.config.js"
     },
     "devDependencies": {
-        "@open-wc/testing": "^4.0.0",
+        "@open-wc/testing": "^3.0.0-next.5",
+        "@web/test-runner": "^0.20.0",
         "eslint": "^9.22.0",
         "eslint-plugin-prettier": "^5.2.3",
         "prettier": "^3.5.3"
