@@ -1,4 +1,10 @@
 {
+    "name": "@studious/yumekit",
+    "version": "0.1.0",
+    "description": "Modern Web Component UI Kit",
+    "scripts": {
+        "test": "npx web-test-runner --config web-test-runner.config.js"
+    },
     "devDependencies": {
         "@open-wc/testing": "^4.0.0",
         "eslint": "^9.22.0",
