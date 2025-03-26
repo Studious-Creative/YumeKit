@@ -173,6 +173,7 @@ class YumeButton extends HTMLElement {
           min-height: var(--button-min-height, 35px);
           min-width: var(--button-min-width, 35px);
           padding: var(--button-padding, 16px);
+          gap: var(--button-padding, 16px);
           justify-content: center;
           align-items: center;
           position: relative;
@@ -208,8 +209,8 @@ class YumeButton extends HTMLElement {
           min-width: 16px;
           justify-content: center;
         }
-        .label, .icon {
-          padding-bottom: var(--spacing-x-small, 4px);
+        .label {
+          padding-bottom: var(--spacing-2x-small, 2px);
         }
       `;
         this.shadowRoot.appendChild(style);
@@ -225,7 +226,7 @@ class YumeButton extends HTMLElement {
                 "--primary-content--",
                 "--primary-hover",
                 "--primary-active",
-                "--primary-background-app",
+                "--primary-background-component",
                 "--primary-background-hover",
                 "--primary-background-active",
             ],
@@ -233,7 +234,7 @@ class YumeButton extends HTMLElement {
                 "--secondary-content--",
                 "--secondary-hover",
                 "--secondary-active",
-                "--secondary-background-app",
+                "--secondary-background-component",
                 "--secondary-background-hover",
                 "--secondary-background-active",
             ],
@@ -241,7 +242,7 @@ class YumeButton extends HTMLElement {
                 "--base-content--",
                 "--base-content-emphasize",
                 "--base-content-light",
-                "--base-background-app",
+                "--base-background-component",
                 "--base-background-hover",
                 "--base-background-focus",
             ],
@@ -249,7 +250,7 @@ class YumeButton extends HTMLElement {
                 "--success-content--",
                 "--success-hover",
                 "--success-active",
-                "--success-background-app",
+                "--success-background-component",
                 "--success-background-hover",
                 "--success-background-active",
             ],
@@ -257,7 +258,7 @@ class YumeButton extends HTMLElement {
                 "--error-content--",
                 "--error-hover",
                 "--error-active",
-                "--error-background-app",
+                "--error-background-component",
                 "--error-background-hover",
                 "--error-background-active",
             ],
@@ -265,9 +266,17 @@ class YumeButton extends HTMLElement {
                 "--warning-content--",
                 "--warning-hover",
                 "--warning-active",
-                "--warning-background-app",
+                "--warning-background-component",
                 "--warning-background-hover",
                 "--warning-background-active",
+            ],
+            help: [
+                "--help-content--",
+                "--help-hover",
+                "--help-active",
+                "--help-background-component",
+                "--help-background-hover",
+                "--help-background-active",
             ],
         };
 

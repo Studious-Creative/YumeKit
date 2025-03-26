@@ -8,7 +8,7 @@ class YumeCard extends HTMLElement {
     }
 
     static get observedAttributes() {
-        return ["color"];
+        return ["color", "raised"];
     }
 
     attributeChangedCallback(name, oldValue, newValue) {
@@ -16,12 +16,16 @@ class YumeCard extends HTMLElement {
             if (name === "color") {
                 this.updateColorStyles();
             }
+            if (name === "raised") {
+                this.updateElevationStyles();
+            }
             this.render();
         }
     }
 
     connectedCallback() {
         this.updateColorStyles();
+        this.updateElevationStyles();
     }
 
     updateColorStyles() {
@@ -77,6 +81,21 @@ class YumeCard extends HTMLElement {
         );
     }
 
+    updateElevationStyles() {
+        const isRaised = this.hasAttribute("raised");
+
+        if (isRaised) {
+            this.style.setProperty("--card-border-width", "0");
+            this.style.setProperty("--card-box-shadow", "var(--base-shadow)");
+        } else {
+            this.style.setProperty(
+                "--card-border-width",
+                "var(--component-card-border-width)"
+            );
+            this.style.setProperty("--card-box-shadow", "none");
+        }
+    }
+
     render() {
         const sheet = new CSSStyleSheet();
         sheet.replaceSync(`
@@ -84,10 +103,11 @@ class YumeCard extends HTMLElement {
                 display: block;
                 box-sizing: border-box;
                 background: var(--card-background, var(--base-background-component));
-                border: var(--component-card-border-width) solid var(--card-border-color, var(--base-background-border));
+                border: var(--card-border-width, var(--component-card-border-width)) solid var(--card-border-color, var(--base-background-border));
                 border-radius: var(--component-card-border-radius-outer);
                 font-family: var(--font-family-body);
                 color: var(--card-content-color, var(--base-content--));
+                box-shadow: var(--card-box-shadow, none);
             }
 
             .header {
@@ -112,13 +132,13 @@ class YumeCard extends HTMLElement {
         this.shadowRoot.adoptedStyleSheets = [sheet];
 
         this.shadowRoot.innerHTML = `
-            <div class="header">
+            <div class="header" part="header">
                 <slot name="header"></slot>
             </div>
-            <div class="body">
+            <div class="body" part="body">
                 <slot></slot>
             </div>
-            <div class="footer">
+            <div class="footer" part="footer">
                 <slot name="footer"></slot>
             </div>
         `;

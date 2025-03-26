@@ -9,7 +9,7 @@
     --base-content-light: var(--neutral-dark-1);
     --base-content-lighter: var(--neutral-dark-3);
     --base-content-lightest: var(--neutral-dark-5);
-    --base-shadow: #0000001f;
+    --base-shadow: 0 2px 6px var(--neutral-black-translucent);
     --primary-background-app: var(--orange-light-1);
     --primary-background-component: var(--orange-light-0);
     --primary-background-hover: var(--orange-light-2);
