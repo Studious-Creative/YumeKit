@@ -189,6 +189,12 @@ class YumeButton extends HTMLElement {
           font-size: var(--size-paragraph, 16px);
         }
 
+        .button:disabled {
+            opacity: 0.5;
+            cursor: not-allowed;
+        }
+
+
         .button:hover:not(:disabled),
         .button:hover:not(:disabled) .button-content {
           background: var(--hover-background-color);
@@ -224,56 +230,56 @@ class YumeButton extends HTMLElement {
         const colorVars = {
             primary: [
                 "--primary-content--",
-                "--primary-hover",
-                "--primary-active",
+                "--primary-content-hover",
+                "--primary-content-active",
                 "--primary-background-component",
                 "--primary-background-hover",
                 "--primary-background-active",
             ],
             secondary: [
                 "--secondary-content--",
-                "--secondary-hover",
-                "--secondary-active",
+                "--secondary-content-hover",
+                "--secondary-content-active",
                 "--secondary-background-component",
                 "--secondary-background-hover",
                 "--secondary-background-active",
             ],
             base: [
                 "--base-content--",
-                "--base-content-emphasize",
-                "--base-content-light",
+                "--base-content-lighter",
+                "--base-content-lightest",
                 "--base-background-component",
                 "--base-background-hover",
                 "--base-background-focus",
             ],
             success: [
                 "--success-content--",
-                "--success-hover",
-                "--success-active",
+                "--success-content-hover",
+                "--success-content-active",
                 "--success-background-component",
                 "--success-background-hover",
                 "--success-background-active",
             ],
             error: [
                 "--error-content--",
-                "--error-hover",
-                "--error-active",
+                "--error-content-hover",
+                "--error-content-active",
                 "--error-background-component",
                 "--error-background-hover",
                 "--error-background-active",
             ],
             warning: [
                 "--warning-content--",
-                "--warning-hover",
-                "--warning-active",
+                "--warning-content-hover",
+                "--warning-content-active",
                 "--warning-background-component",
                 "--warning-background-hover",
                 "--warning-background-active",
             ],
             help: [
                 "--help-content--",
-                "--help-hover",
-                "--help-active",
+                "--help-content-hover",
+                "--help-content-active",
                 "--help-background-component",
                 "--help-background-hover",
                 "--help-background-active",
@@ -309,30 +315,60 @@ class YumeButton extends HTMLElement {
             this.button.style.setProperty(key, value);
         });
 
-        this.button.style.setProperty(
-            "--hover-background-color",
-            `var(${colorVars[color][4]}, rgba(215,219,222,1))`
-        );
-        this.button.style.setProperty(
-            "--hover-text-color",
-            `var(${colorVars[color][0]}, rgba(29,29,29,1))`
-        );
-        this.button.style.setProperty(
-            "--focus-background-color",
-            `var(${colorVars[color][5]}, rgba(188,192,195,1))`
-        );
-        this.button.style.setProperty(
-            "--focus-text-color",
-            `var(${colorVars[color][0]}, rgba(29,29,29,1))`
-        );
-        this.button.style.setProperty(
-            "--active-background-color",
-            `var(${colorVars[color][0]}, rgba(29,29,29,1))`
-        );
-        this.button.style.setProperty(
-            "--active-text-color",
-            `var(${colorVars[color][3]}, rgba(241,246,250,1))`
-        );
+        // Determine hover and active background for filled style-type
+        if (styleType === "filled") {
+            // Filled buttons use content-based hover/active backgrounds
+            this.button.style.setProperty(
+                "--hover-background-color",
+                `var(${colorVars[color][1]}, rgba(215,219,222,1))` // content-hover
+            );
+            this.button.style.setProperty(
+                "--hover-text-color",
+                `var(${colorVars[color][3]}, rgba(241,246,250,1))` // background-component
+            );
+            this.button.style.setProperty(
+                "--focus-background-color",
+                `var(${colorVars[color][2]}, rgba(188,192,195,1))` // content-active
+            );
+            this.button.style.setProperty(
+                "--focus-text-color",
+                `var(${colorVars[color][3]}, rgba(241,246,250,1))`
+            );
+            this.button.style.setProperty(
+                "--active-background-color",
+                `var(${colorVars[color][0]}, rgba(29,29,29,1))` // content
+            );
+            this.button.style.setProperty(
+                "--active-text-color",
+                `var(${colorVars[color][3]}, rgba(241,246,250,1))`
+            );
+        } else {
+            // Default hover/active logic for outlined/flat
+            this.button.style.setProperty(
+                "--hover-background-color",
+                `var(${colorVars[color][4]}, rgba(215,219,222,1))`
+            );
+            this.button.style.setProperty(
+                "--hover-text-color",
+                `var(${colorVars[color][0]}, rgba(29,29,29,1))`
+            );
+            this.button.style.setProperty(
+                "--focus-background-color",
+                `var(${colorVars[color][5]}, rgba(188,192,195,1))`
+            );
+            this.button.style.setProperty(
+                "--focus-text-color",
+                `var(${colorVars[color][0]}, rgba(29,29,29,1))`
+            );
+            this.button.style.setProperty(
+                "--active-background-color",
+                `var(${colorVars[color][0]}, rgba(29,29,29,1))`
+            );
+            this.button.style.setProperty(
+                "--active-text-color",
+                `var(${colorVars[color][3]}, rgba(241,246,250,1))`
+            );
+        }
 
         const [contentPadding, buttonPadding] =
             sizeVars[size] || sizeVars.medium;
