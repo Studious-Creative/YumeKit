@@ -27,8 +27,8 @@ class YumeSwitch extends HTMLElement {
             this.setAttribute("label-position", "top");
         if (!this.hasAttribute("animate")) this.setAttribute("animate", "true");
 
-        this._render();
-        this._mirrorToggleLabels();
+        this.render();
+        this.mirrorToggleLabels();
 
         const sw = this.shadowRoot.querySelector(".switch");
         sw.addEventListener("click", () => this.toggle());
@@ -42,7 +42,7 @@ class YumeSwitch extends HTMLElement {
 
     attributeChangedCallback(name, oldValue, newValue) {
         if (oldValue !== newValue) {
-            this._update();
+            this.update();
         }
     }
 
@@ -53,7 +53,7 @@ class YumeSwitch extends HTMLElement {
     set checked(val) {
         if (val) this.setAttribute("checked", "");
         else this.removeAttribute("checked");
-        this._update();
+        this.update();
     }
 
     get value() {
@@ -62,7 +62,7 @@ class YumeSwitch extends HTMLElement {
 
     set value(val) {
         this.setAttribute("value", val);
-        this._update();
+        this.update();
     }
 
     toggle() {
@@ -73,7 +73,7 @@ class YumeSwitch extends HTMLElement {
         );
     }
 
-    _render() {
+    render() {
         this.shadowRoot.innerHTML = `
             <style>
                 :host {
@@ -163,7 +163,7 @@ class YumeSwitch extends HTMLElement {
                 }
             </style>
 
-            ${this._labelTag("top")}
+            ${this.labelTag("top")}
 
             <div class="switch" part="switch" tabindex="0" role="switch" aria-checked="${this.checked}" aria-disabled="${this.disabled}">
                 <div class="track">
@@ -176,24 +176,22 @@ class YumeSwitch extends HTMLElement {
                 </div>
             </div>
 
-            ${this._labelTag("bottom")}
+            ${this.labelTag("bottom")}
         `;
 
-        this._update();
+        this.update();
     }
 
-    _labelTag(pos) {
+    labelTag(pos) {
         const labelPos = this.getAttribute("label-position");
         const shouldRender =
             (pos === "top" && (labelPos === "top" || labelPos === "left")) ||
             (pos === "bottom" &&
                 (labelPos === "bottom" || labelPos === "right"));
-        return shouldRender
-            ? `<div class="label"><slot name="label"></slot></div>`
-            : "";
+        return shouldRender ? `<label><slot name="label"></slot></label>` : "";
     }
 
-    _mirrorToggleLabels() {
+    mirrorToggleLabels() {
         requestAnimationFrame(() => {
             const toggle = this.shadowRoot?.querySelector(".toggle");
             if (!toggle) return;
@@ -222,17 +220,17 @@ class YumeSwitch extends HTMLElement {
         });
     }
 
-    _update() {
-        this._updateSizeStyles();
-        this._updateTogglePosition();
-        this._updateLabelDisplay();
-        this._updateDirection();
-        this._updateAria();
-        this._updateFormValue();
-        this._mirrorToggleLabels();
+    update() {
+        this.updateSizeStyles();
+        this.updateTogglePosition();
+        this.updateLabelDisplay();
+        this.updateDirection();
+        this.updateAria();
+        this.updateFormValue();
+        this.mirrorToggleLabels();
     }
 
-    _updateSizeStyles() {
+    updateSizeStyles() {
         const size = this.getAttribute("size") || "medium";
         const heightMap = { small: "24px", medium: "32px", large: "40px" };
         const fontMap = {
@@ -244,7 +242,7 @@ class YumeSwitch extends HTMLElement {
         this.style.setProperty("--switch-font-size", fontMap[size]);
     }
 
-    _updateTogglePosition() {
+    updateTogglePosition() {
         const isChecked = this.checked;
         this.style.setProperty("--toggle-x", isChecked ? "100%" : "0");
         this.style.setProperty(
@@ -259,12 +257,12 @@ class YumeSwitch extends HTMLElement {
         );
     }
 
-    _updateLabelDisplay() {
+    updateLabelDisplay() {
         const showLabels = this.getAttribute("label-display") !== "false";
         this.style.setProperty("--show-labels", showLabels ? "flex" : "none");
     }
 
-    _updateDirection() {
+    updateDirection() {
         const pos = this.getAttribute("label-position");
         const directionMap = {
             top: "column",
@@ -275,7 +273,7 @@ class YumeSwitch extends HTMLElement {
         this.style.setProperty("--switch-dir", directionMap[pos] || "column");
     }
 
-    _updateAria() {
+    updateAria() {
         const sw = this.shadowRoot?.querySelector(".switch");
         if (sw) {
             sw.setAttribute("aria-checked", this.checked);
@@ -283,7 +281,7 @@ class YumeSwitch extends HTMLElement {
         }
     }
 
-    _updateFormValue() {
+    updateFormValue() {
         this._internals.setFormValue(this.checked ? this.value : "");
     }
 }

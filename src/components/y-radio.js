@@ -20,8 +20,8 @@ export class YumeRadio extends HTMLElement {
         if (oldVal !== newVal) {
             if (name === "value") {
                 this._value = newVal;
-                this.updateChecked();
                 this._internals.setFormValue(newVal, this.name);
+                this.updateChecked();
             } else if (["options", "name", "disabled"].includes(name)) {
                 this.render();
             }
@@ -82,12 +82,10 @@ export class YumeRadio extends HTMLElement {
             }
             input[type="radio"] {
                 appearance: none;
-                -webkit-appearance: none;
                 width: 16px;
                 height: 16px;
                 border: 2px solid var(--base-content--);
                 border-radius: 50%;
-                display: inline-block;
                 position: relative;
                 outline: none;
                 cursor: pointer;
@@ -102,6 +100,10 @@ export class YumeRadio extends HTMLElement {
                 background: var(--primary-content--);
                 border-radius: 50%;
             }
+            input[type="radio"]:focus-visible {
+                outline: 2px solid var(--primary-content--);
+                outline-offset: 2px;
+            }
             input[disabled] {
                 opacity: 0.5;
                 cursor: not-allowed;
@@ -113,7 +115,7 @@ export class YumeRadio extends HTMLElement {
             <fieldset role="radiogroup">
                 ${options
                     .map(
-                        (opt) => `
+                        (opt, idx) => `
                     <label>
                         <input
                             type="radio"
@@ -121,6 +123,9 @@ export class YumeRadio extends HTMLElement {
                             value="${opt.value}"
                             ${disabled ? "disabled" : ""}
                             ${value === opt.value ? "checked" : ""}
+                            tabindex="${value ? (value === opt.value ? "0" : "-1") : idx === 0 ? "0" : "-1"}"
+                            role="radio"
+                            aria-checked="${value === opt.value}"
                         />
                         ${opt.label}
                     </label>
@@ -132,8 +137,11 @@ export class YumeRadio extends HTMLElement {
 
         this.shadowRoot
             .querySelectorAll("input[type=radio]")
-            .forEach((input) => {
-                input.addEventListener("change", (e) => {
+            .forEach((input, i, list) => {
+                input.addEventListener("keydown", (e) =>
+                    this.handleKey(e, i, list)
+                );
+                input.addEventListener("click", (e) => {
                     this.value = e.target.value;
                     this.dispatchEvent(
                         new CustomEvent("change", {
@@ -147,11 +155,42 @@ export class YumeRadio extends HTMLElement {
     }
 
     updateChecked() {
-        this.shadowRoot
-            .querySelectorAll("input[type=radio]")
-            .forEach((input) => {
-                input.checked = input.value === this.value;
-            });
+        const radios = this.shadowRoot.querySelectorAll("input[type=radio]");
+        radios.forEach((input, i) => {
+            const isSelected = input.value === this.value;
+            input.checked = isSelected;
+            input.setAttribute("aria-checked", isSelected);
+            input.setAttribute("tabindex", isSelected ? "0" : "-1");
+        });
+    }
+
+    handleKey(e, index, radios) {
+        const len = radios.length;
+        let newIndex = index;
+
+        if (e.key === "ArrowDown" || e.key === "ArrowRight") {
+            e.preventDefault();
+            newIndex = (index + 1) % len;
+        } else if (e.key === "ArrowUp" || e.key === "ArrowLeft") {
+            e.preventDefault();
+            newIndex = (index - 1 + len) % len;
+        } else if (e.key === " " || e.key === "Enter") {
+            e.preventDefault();
+            this.value = radios[index].value;
+            this.dispatchEvent(
+                new CustomEvent("change", {
+                    detail: { value: this.value },
+                    bubbles: true,
+                    composed: true,
+                })
+            );
+            return;
+        } else {
+            return; // Ignore other keys
+        }
+
+        // Shift focus only (no selection change)
+        radios[newIndex].focus();
     }
 }
 

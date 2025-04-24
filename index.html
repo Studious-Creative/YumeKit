@@ -15,7 +15,7 @@
     </head>
     <body>
         <main>
-            <y-theme theme-path="/styles/blue-dark.css">
+            <y-theme theme-path="/styles/blue-light.css">
                 <y-avatar size="large" shape="square" alt="JR"></y-avatar>
                 <section>
                     <y-card>
@@ -224,14 +224,6 @@
                                 <i class="fas fa-check" slot="left-icon"></i>
                                 Submit
                             </y-button>
-
-                            <y-tag style-type="outlined" shape="round"
-                                >Primary Tag</y-tag
-                            >
-                            <y-tag color="error" removable style-type="filled"
-                                >Filled Tag</y-tag
-                            >
-                            <y-tag color="error" style-type="flat">Error</y-tag>
                             <y-radio
                                 name="fruits"
                                 options='[
@@ -241,7 +233,7 @@
                                 ]'
                             >
                             </y-radio>
-                            <y-switch label-position="right">
+                            <y-switch label-position="right" size="large">
                                 <span slot="label">Dark Mode</span>
                                 <span slot="on-label">🌙</span>
                                 <span slot="off-label">☀️</span>
@@ -252,7 +244,11 @@
                                 <!-- No on-label or off-label provided: defaults should show "On" and "Off" in both toggle and track -->
                             </y-switch>
 
-                            <y-switch label-position="right">
+                            <y-switch
+                                label-position="right"
+                                size="small"
+                                disabled
+                            >
                                 <span slot="label">Single Slot Provided</span>
                                 <span slot="on-label">🔥</span>
                                 <!-- Only on-label provided: it will be reused for off-label too -->

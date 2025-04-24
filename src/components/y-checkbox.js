@@ -199,9 +199,9 @@ export class YumeCheckbox extends HTMLElement {
                 <div class="checkbox" role="checkbox" tabindex="0">
                     <span class="icon"></span>
                 </div>
-                <div class="label">
+                <label part="label">
                     <slot></slot>
-                </div>
+                </label>
             </div>
         `;
 
