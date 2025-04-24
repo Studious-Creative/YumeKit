@@ -1,4 +1,4 @@
-class YumeTag extends HTMLElement {
+export class YumeTag extends HTMLElement {
     static get observedAttributes() {
         return ["removable", "color", "style-type", "shape"];
     }

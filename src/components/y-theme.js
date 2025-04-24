@@ -1,4 +1,4 @@
-class YumeTheme extends HTMLElement {
+export class YumeTheme extends HTMLElement {
     static defaultVariablesLoaded = false;
     static defaultVariablesCSS = "";
 

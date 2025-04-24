@@ -1,6 +1,6 @@
 import { hideEmptySlotContainers } from "../modules/helpers.js";
 
-class YumeCard extends HTMLElement {
+export class YumeCard extends HTMLElement {
     constructor() {
         super();
         this.attachShadow({ mode: "open" });

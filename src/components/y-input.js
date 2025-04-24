@@ -1,4 +1,4 @@
-class YumeInput extends HTMLElement {
+export class YumeInput extends HTMLElement {
     static formAssociated = true;
 
     static get observedAttributes() {

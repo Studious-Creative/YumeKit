@@ -1,0 +1,27 @@
+main {
+    display: flex;
+    flex-direction: column;
+    height: 100vh;
+}
+
+y-theme {
+    background: var(--base-background-app);
+    padding: var(--spacing-medium);
+    flex: 1;
+}
+
+y-theme section {
+    display: flex;
+    padding: var(--spacing-small) 0;
+}
+
+y-card::part(body) {
+    display: flex;
+    gap: var(--spacing-large);
+}
+
+.form-card form {
+    display: flex;
+    flex-direction: column;
+    gap: var(--spacing-large);
+}

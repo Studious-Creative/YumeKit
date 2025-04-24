@@ -1,4 +1,4 @@
-class YumeButton extends HTMLElement {
+export class YumeButton extends HTMLElement {
     constructor() {
         super();
         this.attachShadow({ mode: "open" });

@@ -1,4 +1,4 @@
-class YumeAvatar extends HTMLElement {
+export class YumeAvatar extends HTMLElement {
     constructor() {
         super();
         this.attachShadow({ mode: "open" });
