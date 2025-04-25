@@ -7,4 +7,5 @@ export * from "./components/y-radio.js";
 export * from "./components/y-select.js";
 export * from "./components/y-switch.js";
 export * from "./components/y-tag.js";
+export * from "./components/y-tabs.js";
 export * from "./components/y-theme.js";

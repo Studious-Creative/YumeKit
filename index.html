@@ -15,246 +15,250 @@
     </head>
     <body>
         <main>
-            <y-theme theme-path="/styles/blue-light.css">
-                <y-avatar size="large" shape="square" alt="JR"></y-avatar>
+            <y-theme theme-path="/styles/blue-dark.css">
                 <section>
-                    <y-card>
-                        <h3 slot="header">Outlined</h3>
-                        <y-button
-                            color="primary"
-                            style-type="outlined"
-                            size="small"
-                        >
-                            <i class="fas fa-smile" slot="left-icon"></i>
-                            Log In
-                            <i class="fas fa-smile" slot="right-icon"></i>
-                        </y-button>
-                        <y-button
-                            color="secondary"
-                            style-type="outlined"
-                            size="small"
-                        >
-                            <i class="fas fa-smile" slot="left-icon"></i>
-                            Log In
-                            <i class="fas fa-smile" slot="right-icon"></i>
-                        </y-button>
-                        <y-button
-                            color="base"
-                            style-type="outlined"
-                            size="small"
-                        >
-                            <i class="fas fa-smile" slot="left-icon"></i>
-                            Log In
-                            <i class="fas fa-smile" slot="right-icon"></i>
-                        </y-button>
-                        <y-button
-                            color="success"
-                            style-type="outlined"
-                            size="small"
-                        >
-                            <i class="fas fa-smile" slot="left-icon"></i>
-                            Log In
-                            <i class="fas fa-smile" slot="right-icon"></i>
-                        </y-button>
-                        <y-button
-                            color="warning"
-                            style-type="outlined"
-                            size="small"
-                        >
-                            <i class="fas fa-smile" slot="left-icon"></i>
-                            Log In
-                            <i class="fas fa-smile" slot="right-icon"></i>
-                        </y-button>
-                        <y-button
-                            color="error"
-                            style-type="outlined"
-                            size="small"
-                        >
-                            <i class="fas fa-smile" slot="left-icon"></i>
-                            Log In
-                            <i class="fas fa-smile" slot="right-icon"></i>
-                        </y-button>
-                        <y-button
-                            color="help"
-                            style-type="outlined"
-                            size="small"
-                        >
-                            <i class="fas fa-smile" slot="left-icon"></i>
-                            Log In
-                            <i class="fas fa-smile" slot="right-icon"></i>
-                        </y-button>
-                        <small slot="footer">Card Footer</small>
-                    </y-card>
+                    <y-tabs
+                        position="right"
+                        options='[
+                      {"id":"profile",       "label":"Profile",       "slot":"profile-slot"},
+                      {"id":"settings",      "label":"Settings",      "slot":"settings-slot"},
+                      {"id":"notifications", "label":"Notifications", "slot":"notifications-slot", "disabled": true}
+                    ]'
+                    >
+                        <!-- icon in the left-icon-profile slot -->
+                        <i slot="left-icon-profile" class="fas fa-user"></i>
+                        <div slot="profile-slot">
+                            <h2>Welcome, User!</h2>
+                            <p>This is your profile overview.</p>
+                        </div>
+
+                        <!-- icon in the right-icon-settings slot -->
+                        <i slot="right-icon-settings" class="fas fa-cog"></i>
+                        <div slot="settings-slot">
+                            <h2>Settings</h2>
+                            <p>Adjust your preferences here.</p>
+                        </div>
+
+                        <!-- icon in the left-icon-notifications slot (but tab is disabled) -->
+                        <i
+                            slot="left-icon-notifications"
+                            class="fas fa-bell"
+                        ></i>
+                        <div slot="notifications-slot">
+                            <h2>Notifications</h2>
+                            <p>You have no new alerts.</p>
+                        </div>
+                    </y-tabs>
                 </section>
                 <section>
-                    <y-card raised>
-                        <y-button color="primary" style-type="filled">
-                            <i class="fas fa-smile" slot="left-icon"></i>
-                            Log In
-                            <i class="fas fa-smile" slot="right-icon"></i>
-                        </y-button>
-                        <y-button color="secondary" style-type="filled">
-                            <i class="fas fa-smile" slot="left-icon"></i>
-                            Log In
-                            <i class="fas fa-smile" slot="right-icon"></i>
-                        </y-button>
-                        <y-button color="base" style-type="filled">
-                            <i class="fas fa-smile" slot="left-icon"></i>
-                            Log In
-                            <i class="fas fa-smile" slot="right-icon"></i>
-                        </y-button>
-                        <y-button color="success" style-type="filled">
-                            <i class="fas fa-smile" slot="left-icon"></i>
-                            Log In
-                            <i class="fas fa-smile" slot="right-icon"></i>
-                        </y-button>
-                        <y-button color="warning" style-type="filled">
-                            <i class="fas fa-smile" slot="left-icon"></i>
-                            Log In
-                            <i class="fas fa-smile" slot="right-icon"></i>
-                        </y-button>
-                        <y-button color="error" style-type="filled">
-                            <i class="fas fa-smile" slot="left-icon"></i>
-                            Log In
-                            <i class="fas fa-smile" slot="right-icon"></i>
-                        </y-button>
-                        <y-button color="help" style-type="filled">
-                            <i class="fas fa-smile" slot="left-icon"></i>
-                            Log In
-                            <i class="fas fa-smile" slot="right-icon"></i>
-                        </y-button>
-                    </y-card>
-                </section>
-                <section>
-                    <y-card>
-                        <y-button color="primary" style-type="flat">
-                            <i class="fas fa-smile" slot="left-icon"></i>
-                            Log In
-                            <i class="fas fa-smile" slot="right-icon"></i>
-                        </y-button>
-                        <y-button color="secondary" style-type="flat">
-                            <i class="fas fa-smile" slot="left-icon"></i>
-                            Log In
-                            <i class="fas fa-smile" slot="right-icon"></i>
-                        </y-button>
-                        <y-button color="base" style-type="flat">
-                            <i class="fas fa-smile" slot="left-icon"></i>
-                            Log In
-                            <i class="fas fa-smile" slot="right-icon"></i>
-                        </y-button>
-                        <y-button color="success" style-type="flat">
-                            <i class="fas fa-smile" slot="left-icon"></i>
-                            Log In
-                            <i class="fas fa-smile" slot="right-icon"></i>
-                        </y-button>
-                        <y-button color="warning" style-type="flat">
-                            <i class="fas fa-smile" slot="left-icon"></i>
-                            Log In
-                            <i class="fas fa-smile" slot="right-icon"></i>
-                        </y-button>
-                        <y-button color="error" style-type="flat">
-                            <i class="fas fa-smile" slot="left-icon"></i>
-                            Log In
-                            <i class="fas fa-smile" slot="right-icon"></i>
-                        </y-button>
-                        <y-button color="help" style-type="flat">
-                            <i class="fas fa-smile" slot="left-icon"></i>
-                            Log In
-                            <i class="fas fa-smile" slot="right-icon"></i>
-                        </y-button>
-                    </y-card>
-                </section>
-                <section>
-                    <y-card class="form-card">
-                        <h3 slot="header">Form</h3>
-                        <form id="form">
-                            <y-input
-                                name="email"
-                                type="email"
-                                size="medium"
-                                value="me@example.com"
-                            >
-                                <span slot="label">Email</span>
-                            </y-input>
-                            <y-input
-                                name="password"
-                                type="password"
-                                size="medium"
-                                value="password"
-                            >
-                                <span slot="label">Password</span>
-                            </y-input>
-                            <y-input
-                                type="text"
-                                size="medium"
-                                value="username"
-                                name="username"
-                            >
-                                <span slot="label">Username</span>
-                            </y-input>
-                            <y-select
-                                name="flavor"
-                                display-mode="tag"
-                                multiple
-                                placeholder="Choose a flavor"
-                                options='[
-                                    {"label": "Vanilla", "value": "vanilla"},
-                                    {"label": "Chocolate", "value": "chocolate"},
-                                    {"label": "Strawberry", "value": "strawberry"}
-                                ]'
-                            >
-                                <span slot="label">Favorite Flavor</span>
-                            </y-select>
+                    <y-tabs
+                        options='[
+                        { "id": "home", "label": "Home", "slot": "home-slot" },
+                        { "id": "search", "label": "Search", "slot": "search-slot" },
+                        { "id": "settings", "label": "Settings", "slot": "settings-slot" }
+                    ]'
+                        style="height: 100%; width: 100%"
+                    >
+                        <div slot="home-slot">
+                            <y-card class="form-card">
+                                <h3 slot="header">Form</h3>
+                                <form id="form">
+                                    <y-input
+                                        name="email"
+                                        type="email"
+                                        size="medium"
+                                        value="me@example.com"
+                                    >
+                                        <span slot="label">Email</span>
+                                    </y-input>
+                                    <y-input
+                                        name="password"
+                                        type="password"
+                                        size="medium"
+                                        value="password"
+                                    >
+                                        <span slot="label">Password</span>
+                                    </y-input>
+                                    <y-input
+                                        type="text"
+                                        size="medium"
+                                        value="username"
+                                        name="username"
+                                    >
+                                        <span slot="label">Username</span>
+                                    </y-input>
+                                    <y-select
+                                        name="flavor"
+                                        display-mode="tag"
+                                        multiple
+                                        placeholder="Choose a flavor"
+                                        options='[
+                                            {"label": "Vanilla", "value": "vanilla"},
+                                            {"label": "Chocolate", "value": "chocolate"},
+                                            {"label": "Strawberry", "value": "strawberry"}
+                                        ]'
+                                    >
+                                        <span slot="label"
+                                            >Favorite Flavor</span
+                                        >
+                                    </y-select>
 
-                            <y-checkbox name="subscribe" value="yes" checked>
-                                Subscribe to newsletter
-                            </y-checkbox>
+                                    <y-checkbox
+                                        name="subscribe"
+                                        value="yes"
+                                        checked
+                                    >
+                                        Subscribe to newsletter
+                                    </y-checkbox>
 
-                            <y-checkbox label-position="left" indeterminate>
-                                Agree to Terms (Pending)
-                            </y-checkbox>
+                                    <y-checkbox
+                                        label-position="left"
+                                        indeterminate
+                                    >
+                                        Agree to Terms (Pending)
+                                    </y-checkbox>
 
-                            <y-checkbox disabled> Disabled Option </y-checkbox>
+                                    <y-checkbox disabled>
+                                        Disabled Option
+                                    </y-checkbox>
 
-                            <y-button
-                                color="primary"
-                                style-type="filled"
-                                type="submit"
-                            >
-                                <i class="fas fa-check" slot="left-icon"></i>
-                                Submit
-                            </y-button>
-                            <y-radio
-                                name="fruits"
-                                options='[
-                                    { "label": "Apple", "value": "apple" },
-                                    { "label": "Banana", "value": "banana" },
-                                    { "label": "Cherry", "value": "cherry" }
-                                ]'
-                            >
-                            </y-radio>
-                            <y-switch label-position="right" size="large">
-                                <span slot="label">Dark Mode</span>
-                                <span slot="on-label">🌙</span>
-                                <span slot="off-label">☀️</span>
-                            </y-switch>
+                                    <y-button
+                                        color="primary"
+                                        style-type="filled"
+                                        type="submit"
+                                    >
+                                        <i
+                                            class="fas fa-check"
+                                            slot="left-icon"
+                                        ></i>
+                                        Submit
+                                    </y-button>
+                                    <y-radio
+                                        name="fruits"
+                                        options='[
+                                            { "label": "Apple", "value": "apple" },
+                                            { "label": "Banana", "value": "banana" },
+                                            { "label": "Cherry", "value": "cherry" }
+                                        ]'
+                                    >
+                                    </y-radio>
+                                    <y-switch
+                                        label-position="right"
+                                        size="large"
+                                    >
+                                        <span slot="label">Dark Mode</span>
+                                        <span slot="on-label">🌙</span>
+                                        <span slot="off-label">☀️</span>
+                                    </y-switch>
 
-                            <y-switch label-position="right">
-                                <span slot="label">Default Example</span>
-                                <!-- No on-label or off-label provided: defaults should show "On" and "Off" in both toggle and track -->
-                            </y-switch>
+                                    <y-switch label-position="right">
+                                        <span slot="label"
+                                            >Default Example</span
+                                        >
+                                        <!-- No on-label or off-label provided: defaults should show "On" and "Off" in both toggle and track -->
+                                    </y-switch>
 
-                            <y-switch
-                                label-position="right"
-                                size="small"
-                                disabled
-                            >
-                                <span slot="label">Single Slot Provided</span>
-                                <span slot="on-label">🔥</span>
-                                <!-- Only on-label provided: it will be reused for off-label too -->
-                            </y-switch>
-                        </form>
-                    </y-card>
+                                    <y-switch
+                                        label-position="right"
+                                        size="small"
+                                        disabled
+                                    >
+                                        <span slot="label"
+                                            >Single Slot Provided</span
+                                        >
+                                        <span slot="on-label">🔥</span>
+                                        <!-- Only on-label provided: it will be reused for off-label too -->
+                                    </y-switch>
+                                </form>
+                            </y-card>
+                        </div>
+                        <div slot="search-slot">
+                            <y-card raised>
+                                <y-button color="primary" style-type="filled">
+                                    <i
+                                        class="fas fa-smile"
+                                        slot="left-icon"
+                                    ></i>
+                                    Log In
+                                    <i
+                                        class="fas fa-smile"
+                                        slot="right-icon"
+                                    ></i>
+                                </y-button>
+                                <y-button color="secondary" style-type="filled">
+                                    <i
+                                        class="fas fa-smile"
+                                        slot="left-icon"
+                                    ></i>
+                                    Log In
+                                    <i
+                                        class="fas fa-smile"
+                                        slot="right-icon"
+                                    ></i>
+                                </y-button>
+                                <y-button color="base" style-type="filled">
+                                    <i
+                                        class="fas fa-smile"
+                                        slot="left-icon"
+                                    ></i>
+                                    Log In
+                                    <i
+                                        class="fas fa-smile"
+                                        slot="right-icon"
+                                    ></i>
+                                </y-button>
+                                <y-button color="success" style-type="filled">
+                                    <i
+                                        class="fas fa-smile"
+                                        slot="left-icon"
+                                    ></i>
+                                    Log In
+                                    <i
+                                        class="fas fa-smile"
+                                        slot="right-icon"
+                                    ></i>
+                                </y-button>
+                                <y-button color="warning" style-type="filled">
+                                    <i
+                                        class="fas fa-smile"
+                                        slot="left-icon"
+                                    ></i>
+                                    Log In
+                                    <i
+                                        class="fas fa-smile"
+                                        slot="right-icon"
+                                    ></i>
+                                </y-button>
+                                <y-button color="error" style-type="filled">
+                                    <i
+                                        class="fas fa-smile"
+                                        slot="left-icon"
+                                    ></i>
+                                    Log In
+                                    <i
+                                        class="fas fa-smile"
+                                        slot="right-icon"
+                                    ></i>
+                                </y-button>
+                                <y-button color="help" style-type="filled">
+                                    <i
+                                        class="fas fa-smile"
+                                        slot="left-icon"
+                                    ></i>
+                                    Log In
+                                    <i
+                                        class="fas fa-smile"
+                                        slot="right-icon"
+                                    ></i>
+                                </y-button>
+                            </y-card>
+                        </div>
+                        <div slot="settings-slot">
+                            <div>
+                                <p>Notifications Content Here</p>
+                            </div>
+                        </div>
+                    </y-tabs>
                 </section>
             </y-theme>
         </main>

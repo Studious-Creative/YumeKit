@@ -16,4 +16,5 @@ a,
 label {
     font-family: var(--font-family-header, "Lexend", sans-serif);
     font-weight: 600;
+    color: var(--base-content--, #000);
 }
