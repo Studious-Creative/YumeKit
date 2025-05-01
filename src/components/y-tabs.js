@@ -134,7 +134,7 @@ export class YumeTabs extends HTMLElement {
             :host([position="right"])  .tablist button:last-child   { border-bottom-right-radius: var(--component-tab-border-radius-outer); }
 
             button[aria-selected="true"] {
-                background: var(--base-background-component);
+                background: var(--base-background-app);
             }
             button:focus-visible {
                 outline: 2px solid var(--primary-content--);
@@ -154,7 +154,7 @@ export class YumeTabs extends HTMLElement {
                 z-index: 0;
                 border: var(--component-tab-border-width) solid var(--base-background-border);
                 padding: var(--spacing-large);
-                background: var(--base-background-component);
+                background: var(--base-background-app);
             }
             /* panel offsets */
             :host([position="top"])    .tabpanel { margin-top: -1px; }

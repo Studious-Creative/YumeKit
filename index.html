@@ -16,6 +16,21 @@
     <body>
         <main>
             <y-theme theme-path="/styles/blue-dark.css">
+                <button id="open-dialog">Open Dialog</button>
+
+                <!-- Your dialog -->
+                <y-dialog anchor="open-dialog" id="my-dialog">
+                    <div slot="header">
+                        <h3>Notification</h3>
+                    </div>
+                    <div slot="body">
+                        <p>This is the body of the dialog.</p>
+                        <p>It scrolls if the content grows too large.</p>
+                    </div>
+                    <div slot="footer">
+                        <y-button id="close-btn">Close</button>
+                    </div>
+                </y-dialog>
                 <section>
                     <y-tabs
                         position="right"
@@ -271,6 +286,12 @@
                 const formData = new FormData(form);
                 console.log(Object.fromEntries(formData.entries()));
             });
+
+            document
+                .getElementById("close-btn")
+                .addEventListener("click", () => {
+                    document.getElementById("my-dialog").visible = false;
+                });
         </script>
     </body>
 </html>

@@ -15,6 +15,7 @@
         "eslint": "^9.22.0",
         "eslint-plugin-prettier": "^5.2.3",
         "playwright": "^1.51.1",
-        "prettier": "^3.5.3"
+        "prettier": "^3.5.3",
+        "sinon": "^20.0.0"
     }
 }

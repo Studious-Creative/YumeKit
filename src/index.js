@@ -2,6 +2,7 @@ export * from "./components/y-avatar.js";
 export * from "./components/y-button.js";
 export * from "./components/y-card.js";
 export * from "./components/y-checkbox.js";
+export * from "./components/y-dialog.js";
 export * from "./components/y-input.js";
 export * from "./components/y-radio.js";
 export * from "./components/y-select.js";
