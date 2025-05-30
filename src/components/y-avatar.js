@@ -19,7 +19,6 @@ export class YumeAvatar extends HTMLElement {
         const src = this.getAttribute("src");
         const altRaw = this.getAttribute("alt") || "AN";
         const shape = this.getAttribute("shape") || "circle";
-        // Use the custom property with a fallback value if not defined.
         const borderRadius = `var(--component-avatar-border-radius-${shape}, 9999px)`;
 
         let dimensions;
@@ -37,12 +36,10 @@ export class YumeAvatar extends HTMLElement {
                 break;
         }
 
-        // Create a new stylesheet for component-specific styles.
         const componentSheet = new CSSStyleSheet();
         let componentStyles = "";
 
         if (src) {
-            // Styles for the image version.
             componentStyles = `
           :host {
             display: inline-block;
@@ -57,7 +54,6 @@ export class YumeAvatar extends HTMLElement {
           }
         `;
         } else {
-            // Styles for the fallback text avatar.
             componentStyles = `
           :host {
             display: inline-block;
@@ -85,10 +81,8 @@ export class YumeAvatar extends HTMLElement {
         }
 
         componentSheet.replaceSync(componentStyles);
-        // Adopt only the component-specific stylesheet.
         this.shadowRoot.adoptedStyleSheets = [componentSheet];
 
-        // Set the component's inner HTML.
         if (src) {
             this.shadowRoot.innerHTML = `<img src="${src}" alt="${altRaw}" part="avatar" />`;
         } else {
