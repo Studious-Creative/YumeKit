@@ -80,6 +80,10 @@ class YumeDialog extends HTMLElement {
                 border-top: var(--component-dialog-border-width, 1px) solid var(--base-background-border);
                 text-align: right;
             }
+
+            ::slotted(*) {
+                margin: 0;
+            }
         `;
 
         this.shadowRoot.innerHTML = "";

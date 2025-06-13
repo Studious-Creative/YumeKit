@@ -1,4 +1,5 @@
 export * from "./components/y-avatar.js";
+export * from "./components/y-badge.js";
 export * from "./components/y-button.js";
 export * from "./components/y-card.js";
 export * from "./components/y-checkbox.js";

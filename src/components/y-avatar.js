@@ -23,6 +23,7 @@ export class YumeAvatar extends HTMLElement {
 
         let dimensions;
         const size = this.getAttribute("size") || "medium";
+
         switch (size) {
             case "small":
                 dimensions = "var(--component-avatar-size-small, 27px)";
