@@ -15,7 +15,41 @@
     </head>
     <body>
         <main>
-            <y-theme theme-path="/styles/blue-dark.css">
+            <y-theme theme-path="/styles/blue-light.css">
+                <y-button
+                    color="primary"
+                    id="menu-trigger"
+                    style-type="filled"
+                >Menu</y-button>
+                <y-badge value="3" position="bottom" alignment="right" color="error" size="small">
+                    <y-avatar alt="John Doe"></y-avatar>
+                </y-badge>
+
+                <y-menu
+                    id="main-menu"
+                    anchor="menu-trigger"
+                    items='[
+                        { "text": "Dashboard", "url": "https://example.com/dashboard" },
+                        { "text": "Settings", "children": [
+                            { "text": "Profile", "url": "https://example.com/settings/profile" },
+                            { "text": "Security" }
+                        ]},
+                        { "text": "Help", "value": "help" }
+                    ]'
+                >
+                    <!-- <template slot="icon-dashboard">
+                        <i class="fas fa-tachometer-alt"></i>
+                    </template>
+                    <template slot="template-settings">
+                        <strong>⚙️ Settings</strong>
+                    </template>
+                    <template slot="template-security">
+                        🔒 Security Center
+                    </template>
+                    <template slot="template-help">
+                        ❓ Help &amp; Support
+                    </template> -->
+                </y-menu>
                 <button id="open-dialog">Open Dialog</button>
 
                 <!-- Your dialog -->
@@ -275,6 +309,7 @@
                         </div>
                     </y-tabs>
                 </section>
+                
             </y-theme>
         </main>
         <script type="module" src="./src/index.js"></script>

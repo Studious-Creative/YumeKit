@@ -163,7 +163,7 @@ export class YumeButton extends HTMLElement {
         }
         /* Ensure fonts exist in Shadow DOM */
         @font-face {
-            font-family: "Fredoka";
+            font-family: "Lexend";
             font-display: swap;
         }
 
@@ -185,7 +185,7 @@ export class YumeButton extends HTMLElement {
           cursor: pointer;
           width: 100%;
           color: var(--text-color);
-          font-family: Fredoka, sans-serif;
+          font-family: Lexend, sans-serif;
           font-size: var(--size-paragraph, 16px);
         }
 

@@ -116,8 +116,8 @@ export class YumeTag extends HTMLElement {
             .tag {
                 display: inline-flex;
                 align-items: center;
-                gap: 4px;
-                padding: 2px 6px;
+                gap: var(--spacing-2x-small);
+                padding: 0 var(--spacing-2x-small);
                 border: 1px solid transparent;
                 transition: background-color 0.2s, color 0.2s;
                 border-radius: ${borderRadius};

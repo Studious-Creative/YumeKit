@@ -59,7 +59,7 @@
     --help-content-hover: var(--indigo-dark-7);
     --help-content-active: var(--indigo-dark-6);
     --font-family-header: "Lexend", sans-serif;
-    --font-family-body: "Fredoka", sans-serif;
+    --font-family-body: "Lexend", sans-serif;
     --component-avatar-border-radius-circle: var(--radii-full);
     --component-badge-border-radius-circle: var(--radii-full);
     --component-badge-border-radius-square: var(--radii-small);
