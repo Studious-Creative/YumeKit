@@ -92,7 +92,7 @@ export class YumeCheckbox extends HTMLElement {
         }
 
         this.dispatchEvent(
-            new Event("change", { bubbles: true, composed: true })
+            new Event("change", { bubbles: true, composed: true }),
         );
     }
 
@@ -121,7 +121,7 @@ export class YumeCheckbox extends HTMLElement {
         const box = this.shadowRoot.querySelector(".checkbox");
         box.setAttribute(
             "aria-checked",
-            this.indeterminate ? "mixed" : this.checked ? "true" : "false"
+            this.indeterminate ? "mixed" : this.checked ? "true" : "false",
         );
         this.updateIcon();
     }
@@ -133,7 +133,10 @@ export class YumeCheckbox extends HTMLElement {
         const sheet = new CSSStyleSheet();
         sheet.replaceSync(`
             :host {
-                display: inline-block;
+                display: inline-flex;
+                align-items: center;
+                line-height: 1;
+                vertical-align: middle;
                 font-family: var(--font-family-body);
                 cursor: ${isDisabled ? "not-allowed" : "pointer"};
                 opacity: ${isDisabled ? "0.6" : "1"};
@@ -143,6 +146,7 @@ export class YumeCheckbox extends HTMLElement {
                 display: inline-flex;
                 align-items: center;
                 gap: var(--spacing-x-small, 6px);
+                line-height: 1;
                 flex-direction: ${
                     labelPosition === "top"
                         ? "column"
@@ -165,6 +169,7 @@ export class YumeCheckbox extends HTMLElement {
                 background: var(--base-background-component);
                 box-sizing: border-box;
                 transition: border-color 0.2s ease;
+                line-height: 0;
             }
 
             .checkbox:hover {
@@ -175,10 +180,14 @@ export class YumeCheckbox extends HTMLElement {
                 width: 16px;
                 height: 16px;
                 stroke: var(--primary-content--);
+                display: block;
             }
 
             .label {
+                display: inline-flex;
+                align-items: center;
                 font-size: 0.9em;
+                line-height: 1;
                 color: var(--base-content--);
             }
 
@@ -188,6 +197,7 @@ export class YumeCheckbox extends HTMLElement {
                 justify-content: center;
                 width: 100%;
                 height: 100%;
+                line-height: 0;
             }
 
         `);

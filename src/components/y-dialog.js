@@ -66,9 +66,9 @@ class YumeDialog extends HTMLElement {
                 box-shadow: var(--component-dialog-shadow, 0 2px 10px rgba(0,0,0,0.3));
             }
             .header {
-                background: var(--base-background-border);
                 padding: var(--spacing-medium);
                 font-weight: bold;
+                border-bottom: var(--component-dialog-border-width, 1px) solid var(--base-background-border);
             }
             .body {
                 padding: var(--spacing-medium);

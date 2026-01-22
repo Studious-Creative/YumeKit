@@ -77,7 +77,7 @@ export class YumeCard extends HTMLElement {
         this.style.setProperty("--card-background", `var(${selected[1]})`);
         this.style.setProperty(
             "--card-section-background",
-            `var(${selected[2]})`
+            `var(${selected[2]})`,
         );
     }
 
@@ -90,7 +90,7 @@ export class YumeCard extends HTMLElement {
         } else {
             this.style.setProperty(
                 "--card-border-width",
-                "var(--component-card-border-width)"
+                "var(--component-card-border-width)",
             );
             this.style.setProperty("--card-box-shadow", "none");
         }
@@ -111,8 +111,8 @@ export class YumeCard extends HTMLElement {
             }
 
             .header {
-                background: var(--card-section-background, var(--base-background-border));
-                padding: var(--component-card-padding-inner) var(--component-card-padding-outer);
+                padding: var(--component-card-padding-outer);
+                border-bottom: var(--card-border-width, var(--component-card-border-width)) solid var(--card-border-color, var(--base-background-border));
             }
 
             .body {
