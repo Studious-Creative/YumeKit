@@ -1,0 +1,231 @@
+import { html, fixture, expect } from "@open-wc/testing";
+import "../src/components/y-slider.js";
+
+describe("YumeSlider", () => {
+    it("renders with default attributes", async () => {
+        const el = await fixture(html`<y-slider></y-slider>`);
+        const track = el.shadowRoot.querySelector(".slider-track");
+        const thumb = el.shadowRoot.querySelector(".thumb");
+        const fill = el.shadowRoot.querySelector(".fill");
+
+        expect(track).to.exist;
+        expect(thumb).to.exist;
+        expect(fill).to.exist;
+        expect(track.getAttribute("role")).to.equal("slider");
+        expect(track.getAttribute("aria-valuenow")).to.equal("50");
+        expect(track.getAttribute("aria-valuemin")).to.equal("0");
+        expect(track.getAttribute("aria-valuemax")).to.equal("100");
+    });
+
+    it("defaults min to 0, max to 100, value to 50", async () => {
+        const el = await fixture(html`<y-slider></y-slider>`);
+        expect(el.min).to.equal(0);
+        expect(el.max).to.equal(100);
+        expect(el.value).to.equal(50);
+    });
+
+    it("computes percentage correctly", async () => {
+        const el = await fixture(
+            html`<y-slider value="25" min="0" max="200"></y-slider>`,
+        );
+        expect(el.percentage).to.equal(12.5);
+    });
+
+    it("clamps value to min and max", async () => {
+        const el = await fixture(html`<y-slider min="0" max="100"></y-slider>`);
+        el.value = 150;
+        expect(el.value).to.equal(100);
+
+        el.value = -10;
+        expect(el.value).to.equal(0);
+    });
+
+    it("snaps value to step", async () => {
+        const el = await fixture(
+            html`<y-slider value="0" min="0" max="100" step="25"></y-slider>`,
+        );
+        el.value = 33;
+        expect(el.value).to.equal(25);
+
+        el.value = 38;
+        expect(el.value).to.equal(50);
+    });
+
+    it("applies fill width from percentage", async () => {
+        const el = await fixture(
+            html`<y-slider value="75" min="0" max="100"></y-slider>`,
+        );
+        const style = el.shadowRoot.querySelector("style").textContent;
+        expect(style).to.include("width: 75%");
+    });
+
+    it("displays value label by default", async () => {
+        const el = await fixture(html`<y-slider value="60"></y-slider>`);
+        const label = el.shadowRoot.querySelector(".value-label");
+        expect(label).to.exist;
+        expect(label.textContent).to.equal("60");
+    });
+
+    it("hides label when label-display is false", async () => {
+        const el = await fixture(
+            html`<y-slider value="60" label-display="false"></y-slider>`,
+        );
+        const label = el.shadowRoot.querySelector(".value-label");
+        expect(label).to.not.exist;
+    });
+
+    it("shows percent format when label-format is percent", async () => {
+        const el = await fixture(
+            html`<y-slider value="40" label-format="percent"></y-slider>`,
+        );
+        const label = el.shadowRoot.querySelector(".value-label");
+        expect(label.textContent).to.equal("40%");
+    });
+
+    it("shows fraction format when label-format is fraction", async () => {
+        const el = await fixture(
+            html`<y-slider
+                value="30"
+                min="10"
+                max="60"
+                label-format="fraction"
+            ></y-slider>`,
+        );
+        const label = el.shadowRoot.querySelector(".value-label");
+        expect(label.textContent).to.equal("20 / 50");
+    });
+
+    it("applies track fill color from background variable", async () => {
+        const el = await fixture(
+            html`<y-slider value="50" color="success"></y-slider>`,
+        );
+        const style = el.shadowRoot.querySelector("style").textContent;
+        expect(style).to.include("var(--success-background-component)");
+    });
+
+    it("applies thumb color from content variable", async () => {
+        const el = await fixture(
+            html`<y-slider value="50" color="success"></y-slider>`,
+        );
+        const style = el.shadowRoot.querySelector("style").textContent;
+        expect(style).to.include("var(--success-content--)");
+    });
+
+    it("uses fallback color if custom color provided", async () => {
+        const el = await fixture(
+            html`<y-slider value="50" color="#ff0000"></y-slider>`,
+        );
+        const style = el.shadowRoot.querySelector("style").textContent;
+        expect(style).to.include("#ff0000");
+    });
+
+    it("applies disabled styling", async () => {
+        const el = await fixture(
+            html`<y-slider value="50" disabled></y-slider>`,
+        );
+        const style = el.shadowRoot.querySelector("style").textContent;
+        expect(style).to.include("opacity: 0.5");
+        expect(style).to.include("pointer-events: none");
+        const track = el.shadowRoot.querySelector(".slider-track");
+        expect(track.getAttribute("tabindex")).to.equal("-1");
+    });
+
+    it("defaults size to medium", async () => {
+        const el = await fixture(html`<y-slider></y-slider>`);
+        expect(el.size).to.equal("medium");
+    });
+
+    it("sets aria-valuestep when step is provided", async () => {
+        const el = await fixture(
+            html`<y-slider value="50" step="10"></y-slider>`,
+        );
+        const track = el.shadowRoot.querySelector(".slider-track");
+        expect(track.getAttribute("aria-valuestep")).to.equal("10");
+    });
+
+    it("is focusable via tabindex", async () => {
+        const el = await fixture(html`<y-slider></y-slider>`);
+        const track = el.shadowRoot.querySelector(".slider-track");
+        expect(track.getAttribute("tabindex")).to.equal("0");
+    });
+
+    it("updates when attributes change", async () => {
+        const el = await fixture(html`<y-slider value="20"></y-slider>`);
+        el.setAttribute("value", "80");
+        const label = el.shadowRoot.querySelector(".value-label");
+        expect(label.textContent).to.equal("80");
+    });
+
+    it("renders slotted label content", async () => {
+        const el = await fixture(html`<y-slider value="50">Volume</y-slider>`);
+        const slot = el.shadowRoot.querySelector("slot");
+        expect(slot).to.exist;
+    });
+
+    it("is form-associated", async () => {
+        const el = await fixture(
+            html`<y-slider name="volume" value="70"></y-slider>`,
+        );
+        expect(el._internals).to.exist;
+    });
+
+    it("dispatches input event on keyboard navigation", async () => {
+        const el = await fixture(
+            html`<y-slider value="50" step="10"></y-slider>`,
+        );
+        const track = el.shadowRoot.querySelector(".slider-track");
+        let inputFired = false;
+        el.addEventListener("input", () => {
+            inputFired = true;
+        });
+        track.dispatchEvent(
+            new KeyboardEvent("keydown", { key: "ArrowRight", bubbles: true }),
+        );
+        expect(inputFired).to.be.true;
+        expect(el.value).to.equal(60);
+    });
+
+    it("does not go above max on ArrowRight", async () => {
+        const el = await fixture(
+            html`<y-slider value="95" step="10" max="100"></y-slider>`,
+        );
+        const track = el.shadowRoot.querySelector(".slider-track");
+        track.dispatchEvent(
+            new KeyboardEvent("keydown", { key: "ArrowRight", bubbles: true }),
+        );
+        expect(el.value).to.equal(100);
+    });
+
+    it("does not go below min on ArrowLeft", async () => {
+        const el = await fixture(
+            html`<y-slider value="5" step="10" min="0"></y-slider>`,
+        );
+        const track = el.shadowRoot.querySelector(".slider-track");
+        track.dispatchEvent(
+            new KeyboardEvent("keydown", { key: "ArrowLeft", bubbles: true }),
+        );
+        expect(el.value).to.equal(0);
+    });
+
+    it("jumps to min on Home key", async () => {
+        const el = await fixture(
+            html`<y-slider value="50" min="10" max="100"></y-slider>`,
+        );
+        const track = el.shadowRoot.querySelector(".slider-track");
+        track.dispatchEvent(
+            new KeyboardEvent("keydown", { key: "Home", bubbles: true }),
+        );
+        expect(el.value).to.equal(10);
+    });
+
+    it("jumps to max on End key", async () => {
+        const el = await fixture(
+            html`<y-slider value="50" min="0" max="90"></y-slider>`,
+        );
+        const track = el.shadowRoot.querySelector(".slider-track");
+        track.dispatchEvent(
+            new KeyboardEvent("keydown", { key: "End", bubbles: true }),
+        );
+        expect(el.value).to.equal(90);
+    });
+});

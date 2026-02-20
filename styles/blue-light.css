@@ -103,7 +103,8 @@
     --component-panelbar-border-radius: var(--radii-x-small);
     --component-panelbar-border-width: var(--border-thin);
     --component-panelbar-padding: var(--spacing-medium);
-    --component-progress-border-radius: var(--radii-full);
+    --component-progress-border-radius-inner: var(--radii-full);
+    --component-progress-border-radius-outer: var(--radii-full);
     --component-progress-border-width: var(--border-thin);
     --component-progress-padding: var(--spacing-x-small);
     --component-progress-size-small: var(--sizing-small);
@@ -117,6 +118,7 @@
     --component-slider-border-radius: var(--radii-small);
     --component-slider-border-width: var(--border-thin);
     --component-slider-padding: var(--spacing-x-small);
+    --component-slider-thumb-border-radius: var(--radii-x-small);
     --component-sidebar-border-width: var(--border-thin);
     --component-sidebar-padding: var(--spacing-medium);
     --component-switch-border-radius: var(--radii-full);

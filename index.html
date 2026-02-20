@@ -237,6 +237,10 @@
                                         >
                                         <span slot="on-label">🔥</span>
                                     </y-switch> -->
+
+                                    <y-slider name="volume" value="60" color="primary">Volume</y-slider>
+                                    <y-slider name="brightness" value="80" color="secondary" step="10" label-format="percent">Brightness</y-slider>
+                                    <y-slider name="rating" value="3" min="0" max="5" step="1" color="success" size="small">Rating</y-slider>
                                 </form>
                             </y-card>
                             <y-card class="form-card">
@@ -261,6 +265,14 @@
                                     </y-panel>
                                 </y-panelbar>
                             </y-card>
+                              <div style="display: flex; flex-direction: column; gap: 16px; width: 200px;">
+                                <y-progress value="75" color="primary">Upload Progress</y-progress>
+                                <y-progress value="40" color="success" size="small">Storage Used</y-progress>
+                                <y-progress value="90" color="error" size="large" label-format="value" max="100">Disk Space</y-progress>
+                                <y-progress value="3" min="0" max="10" step="1" color="secondary" label-format="fraction">Steps Completed</y-progress>
+                                <y-progress indeterminate color="help">Loading...</y-progress>
+                                <y-progress value="50" color="warning" disabled>Disabled</y-progress>
+                            </div>
                         </div>
                         <div slot="search-slot">
                             <y-card raised>
@@ -350,7 +362,6 @@
                         </div>
                     </y-tabs>
                 </section>
-                
             </y-theme>
         </main>
         <script type="module" src="./src/index.js"></script>
