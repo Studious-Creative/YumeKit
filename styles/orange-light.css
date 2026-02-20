@@ -102,7 +102,7 @@
     --component-menu-border-radius: var(--radii-x-small);
     --component-panelbar-border-radius: var(--radii-x-small);
     --component-panelbar-border-width: var(--border-thin);
-    --component-panelbar-padding: var(--spacing-x-small);
+    --component-panelbar-padding: var(--spacing-medium);
     --component-progress-border-radius: var(--radii-full);
     --component-progress-border-width: var(--border-thin);
     --component-progress-padding: var(--spacing-x-small);
@@ -110,7 +110,6 @@
     --component-progress-size-medium: var(--sizing-medium);
     --component-progress-size-large: var(--sizing-large);
     --component-panelbar-border-width: var(--border-thin);
-    --component-panelbar-padding: var(--spacing-x-small);
     --component-menu-border-width: var(--border-thin);
     --component-menu-padding-vertical: var(--spacing-x-small);
     --component-menu-padding-horizontal: var(--spacing-small);

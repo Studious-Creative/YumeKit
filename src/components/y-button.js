@@ -106,7 +106,6 @@ export class YumeButton extends HTMLElement {
     }
 
     addEventListeners() {
-        // Focus and blur events.
         this.button.addEventListener("focus", () => {
             this.dispatchEvent(
                 new CustomEvent("focus", { bubbles: true, composed: true }),
@@ -119,7 +118,6 @@ export class YumeButton extends HTMLElement {
             );
         });
 
-        // Keyboard events.
         this.button.addEventListener("keydown", (event) => {
             this.dispatchEvent(
                 new CustomEvent("keydown", {
@@ -140,11 +138,9 @@ export class YumeButton extends HTMLElement {
             );
         });
 
-        // Click event.
         this.button.addEventListener("click", (event) => {
             this.handleClick();
 
-            // If button type is "submit", trigger form submission.
             if (this.getAttribute("type") === "submit") {
                 const form = this.closest("form");
                 if (form) {
@@ -325,20 +321,18 @@ export class YumeButton extends HTMLElement {
             this.button.style.setProperty(key, value);
         });
 
-        // Determine hover and active background for filled style-type
         if (styleType === "filled") {
-            // Filled buttons use content-based hover/active backgrounds
             this.button.style.setProperty(
                 "--hover-background-color",
-                `var(${colorVars[color][1]}, rgba(215,219,222,1))`, // content-hover
+                `var(${colorVars[color][1]}, rgba(215,219,222,1))`,
             );
             this.button.style.setProperty(
                 "--hover-text-color",
-                `var(${colorVars[color][3]}, rgba(241,246,250,1))`, // background-component
+                `var(${colorVars[color][3]}, rgba(241,246,250,1))`,
             );
             this.button.style.setProperty(
                 "--focus-background-color",
-                `var(${colorVars[color][2]}, rgba(188,192,195,1))`, // content-active
+                `var(${colorVars[color][2]}, rgba(188,192,195,1))`,
             );
             this.button.style.setProperty(
                 "--focus-text-color",
@@ -346,14 +340,13 @@ export class YumeButton extends HTMLElement {
             );
             this.button.style.setProperty(
                 "--active-background-color",
-                `var(${colorVars[color][0]}, rgba(29,29,29,1))`, // content
+                `var(${colorVars[color][0]}, rgba(29,29,29,1))`,
             );
             this.button.style.setProperty(
                 "--active-text-color",
                 `var(${colorVars[color][3]}, rgba(241,246,250,1))`,
             );
         } else {
-            // Default hover/active logic for outlined/flat
             this.button.style.setProperty(
                 "--hover-background-color",
                 `var(${colorVars[color][4]}, rgba(215,219,222,1))`,

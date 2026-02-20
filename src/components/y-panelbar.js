@@ -11,10 +11,6 @@ export class YumePanelBar extends HTMLElement {
             :host {
                 display: block;
             }
-
-            ::slotted(y-panel) {
-                margin-bottom: var(--component-panelbar-padding, 6px);
-            }
         `);
 
         this.shadowRoot.adoptedStyleSheets = [sheet];

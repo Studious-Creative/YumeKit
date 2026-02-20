@@ -116,7 +116,8 @@ export class YumePanel extends HTMLElement {
             }
 
             :host([data-is-child="true"]) .header {
-                padding-left: calc(var(--component-panelbar-padding, 4px) * 2);}
+                padding-left: calc(var(--component-panelbar-padding, 4px) * 2);
+            }
 
             .header {
                 display: flex;
