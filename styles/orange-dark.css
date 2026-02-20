@@ -115,7 +115,8 @@
     --component-menu-padding-vertical: var(--spacing-x-small);
     --component-menu-padding-horizontal: var(--spacing-small);
     --component-sidebar-border-radius: var(--radii-small);
-    --component-slider-border-radius: var(--radii-small);
+    --component-slider-border-radius-inner: var(--radii-small);
+    --component-slider-border-radius-outer: calc(var(--radii-small) + 4px);
     --component-slider-border-width: var(--border-thin);
     --component-slider-padding: var(--spacing-x-small);
     --component-slider-thumb-border-radius: var(--radii-x-small);

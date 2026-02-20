@@ -214,6 +214,7 @@ export class YumeButton extends HTMLElement {
         .label {
             line-height: inherit;
             min-height: 20px;
+            align-items: center;
         }
       `;
         this.shadowRoot.appendChild(style);

@@ -170,13 +170,13 @@ export class YumeSlider extends HTMLElement {
 
     getTrackColor(color) {
         const colorMap = {
-            primary: "var(--primary-background-component)",
-            secondary: "var(--secondary-background-component)",
+            primary: "var(--primary-background-hover)",
+            secondary: "var(--secondary-background-hover)",
             base: "var(--base-background-active)",
-            success: "var(--success-background-component)",
-            warning: "var(--warning-background-component)",
-            error: "var(--error-background-component)",
-            help: "var(--help-background-component)",
+            success: "var(--success-background-hover)",
+            warning: "var(--warning-background-hover)",
+            error: "var(--error-background-hover)",
+            help: "var(--help-background-hover)",
         };
         return colorMap[color] || color;
     }
@@ -354,7 +354,7 @@ export class YumeSlider extends HTMLElement {
                     height: ${trackHeight};
                     background: var(--base-background-component);
                     border: var(--component-slider-border-width) solid var(--base-background-border);
-                    border-radius: var(--component-slider-border-radius);
+                    border-radius: var(--component-slider-border-radius-outer);
                     box-sizing: border-box;
                     padding: var(--component-slider-padding);
                     cursor: pointer;
@@ -371,7 +371,7 @@ export class YumeSlider extends HTMLElement {
                 .fill {
                     height: 100%;
                     background: ${trackFillColor};
-                    border-radius: var(--component-slider-border-radius) 0 0 var(--component-slider-border-radius);
+                    border-radius: var(--component-slider-border-radius-inner) 0 0 var(--component-slider-border-radius-inner);
                     width: ${pct}%;
                     pointer-events: none;
                     transition: width 0.1s ease;

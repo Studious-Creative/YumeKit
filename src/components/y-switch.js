@@ -253,7 +253,7 @@ class YumeSwitch extends HTMLElement {
         this.style.setProperty("--switch-width-fixed", widthMap[size]);
         this.style.setProperty(
             "--toggle-size",
-            "calc(var(--switch-height) - (var(--switch-padding) * 2))",
+            "calc(var(--switch-height) - (var(--switch-padding) * 2) - (var(--component-switch-border-width, 0px) * 2))",
         );
         this.style.setProperty("--switch-font-size", fontMap[size]);
     }
@@ -268,7 +268,7 @@ class YumeSwitch extends HTMLElement {
             isChecked
                 ? showToggleLabels
                     ? "100%"
-                    : "calc(var(--switch-width) - var(--toggle-size) - (var(--switch-padding) * 2))"
+                    : "calc(var(--switch-width) - var(--toggle-size) - (var(--switch-padding) * 2) - (var(--component-switch-border-width, 0px) * 2))"
                 : "0",
         );
         this.style.setProperty(

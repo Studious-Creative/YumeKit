@@ -38,7 +38,7 @@ export class YumeInput extends HTMLElement {
             if (this._internals) {
                 this._internals.setFormValue(
                     newValue,
-                    this.getAttribute("name")
+                    this.getAttribute("name"),
                 );
             }
             return;
@@ -151,6 +151,7 @@ export class YumeInput extends HTMLElement {
                 font-size: 1em;
                 color: inherit;
                 min-width: 0;
+                min-height: 20px;
             }
 
             .input-container:hover {
@@ -207,7 +208,7 @@ export class YumeInput extends HTMLElement {
                         detail: { value: e.target.value },
                         bubbles: true,
                         composed: true,
-                    })
+                    }),
                 );
                 this.updateValidationState();
             });
