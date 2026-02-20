@@ -201,8 +201,9 @@ class YumeMenu extends HTMLElement {
                 margin: 0;
                 padding: 0;
                 background: var(--base-background-component, #fff);
-                border: 1px solid var(--base-background-border, #ccc);
-                box-shadow: 0 2px 8px rgba(0, 0, 0, 0.15);
+                border: var(--component-menu-border-width, 1px) solid var(--base-background-border, #ccc);
+                border-radius: var(--component-menu-border-radius, 4px);
+                box-shadow: var(--base-shadow, 0 2px 8px rgba(0, 0, 0, 0.15));
                 min-width: 150px;
                 max-height: 300px;
                 overflow-y: auto;
@@ -210,7 +211,8 @@ class YumeMenu extends HTMLElement {
 
             li.menuitem {
                 cursor: pointer;
-                padding: var(--spacing-small, 0.5rem) var(--spacing-medium, 1rem);
+                padding: var(--component-menu-padding-vertical, 0.5rem)
+                    var(--component-menu-padding-horizontal, 1rem);
                 display: flex;
                 align-items: center;
                 justify-content: space-between;

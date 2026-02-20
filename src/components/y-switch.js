@@ -6,6 +6,7 @@ class YumeSwitch extends HTMLElement {
             "checked",
             "disabled",
             "animate",
+            "toggle-label",
             "label-display",
             "label-position",
             "size",
@@ -69,7 +70,7 @@ class YumeSwitch extends HTMLElement {
         if (this.hasAttribute("disabled")) return;
         this.checked = !this.checked;
         this.dispatchEvent(
-            new Event("change", { bubbles: true, composed: true })
+            new Event("change", { bubbles: true, composed: true }),
         );
     }
 
@@ -82,6 +83,13 @@ class YumeSwitch extends HTMLElement {
                     align-items: center;
                     gap: var(--spacing-x-small);
                     font-family: var(--font-family-body);
+                    --switch-padding: var(--component-switch-padding, 2px);
+                    --show-labels: flex;
+                    --show-toggle-label: none;
+                    --switch-width: max-content;
+                    --toggle-width: auto;
+                    --toggle-padding: 0 var(--spacing-small);
+                    --toggle-radius: var(--component-switch-border-radius);
                 }
 
                 .label {
@@ -100,8 +108,8 @@ class YumeSwitch extends HTMLElement {
                     height: var(--switch-height);
                     font-size: var(--switch-font-size);
                     box-sizing: border-box;
-                    padding: 2px;
-                    width: max-content;
+                    padding: var(--switch-padding);
+                    width: var(--switch-width, max-content);
                 }
 
                 .track {
@@ -116,7 +124,7 @@ class YumeSwitch extends HTMLElement {
                     flex: 0 0 auto;
                     align-items: center;
                     justify-content: center;
-                    padding: 0 8px;
+                    padding: 0 var(--spacing-small);
                     white-space: nowrap;
                     position: relative;
                     z-index: 0;
@@ -126,17 +134,18 @@ class YumeSwitch extends HTMLElement {
 
                 .toggle {
                     position: absolute;
-                    top: 2px;
-                    bottom: 2px;
-                    left: 2px;
-                    height: calc(100% - 4px);
+                    top: var(--switch-padding);
+                    bottom: var(--switch-padding);
+                    left: var(--switch-padding);
+                    height: calc(100% - (var(--switch-padding) + var(--switch-padding)));
+                    width: var(--toggle-width, auto);
                     background: var(--toggle-bg, var(--base-content-light));
                     color: var(--base-background-component);
-                    border-radius: var(--component-switch-border-radius);
+                    border-radius: var(--toggle-radius, var(--component-switch-border-radius));
                     display: flex;
                     align-items: center;
                     justify-content: center;
-                    padding: 0 8px;
+                    padding: var(--toggle-padding, 0 var(--spacing-small));
                     font-weight: 500;
                     z-index: 1;
                     white-space: nowrap;
@@ -150,11 +159,11 @@ class YumeSwitch extends HTMLElement {
                 }
 
                 :host([checked]) .toggle .on {
-                    display: inline-flex;
+                    display: var(--show-toggle-label, none);
                 }
 
                 :host(:not([checked])) .toggle .off {
-                    display: inline-flex;
+                    display: var(--show-toggle-label, none);
                 }
 
 
@@ -223,6 +232,7 @@ class YumeSwitch extends HTMLElement {
     update() {
         this.updateSizeStyles();
         this.updateTogglePosition();
+        this.updateToggleLabelDisplay();
         this.updateLabelDisplay();
         this.updateDirection();
         this.updateAria();
@@ -233,33 +243,85 @@ class YumeSwitch extends HTMLElement {
     updateSizeStyles() {
         const size = this.getAttribute("size") || "medium";
         const heightMap = { small: "24px", medium: "32px", large: "40px" };
+        const widthMap = { small: "44px", medium: "56px", large: "72px" };
         const fontMap = {
             small: "var(--font-size-small)",
             medium: "var(--font-size-label)",
             large: "var(--font-size-h4)",
         };
         this.style.setProperty("--switch-height", heightMap[size]);
+        this.style.setProperty("--switch-width-fixed", widthMap[size]);
+        this.style.setProperty(
+            "--toggle-size",
+            "calc(var(--switch-height) - (var(--switch-padding) * 2))",
+        );
         this.style.setProperty("--switch-font-size", fontMap[size]);
     }
 
     updateTogglePosition() {
         const isChecked = this.checked;
-        this.style.setProperty("--toggle-x", isChecked ? "100%" : "0");
+        const showToggleLabels =
+            this.hasAttribute("toggle-label") &&
+            this.getAttribute("toggle-label") !== "false";
+        this.style.setProperty(
+            "--toggle-x",
+            isChecked
+                ? showToggleLabels
+                    ? "100%"
+                    : "calc(var(--switch-width) - var(--toggle-size) - (var(--switch-padding) * 2))"
+                : "0",
+        );
         this.style.setProperty(
             "--toggle-bg",
-            isChecked ? "var(--primary-content--)" : "var(--base-content-light)"
+            isChecked
+                ? "var(--primary-content--)"
+                : "var(--base-content-light)",
         );
         this.style.setProperty(
             "--toggle-transition",
             this.getAttribute("animate") === "false"
                 ? "none"
-                : "transform 0.25s ease, background 0.25s ease"
+                : "transform 0.25s ease, background 0.25s ease",
         );
     }
 
     updateLabelDisplay() {
         const showLabels = this.getAttribute("label-display") !== "false";
-        this.style.setProperty("--show-labels", showLabels ? "flex" : "none");
+        const showToggleLabels =
+            this.hasAttribute("toggle-label") &&
+            this.getAttribute("toggle-label") !== "false";
+        this.style.setProperty(
+            "--show-labels",
+            showLabels && showToggleLabels ? "flex" : "none",
+        );
+    }
+
+    updateToggleLabelDisplay() {
+        const showToggleLabels =
+            this.hasAttribute("toggle-label") &&
+            this.getAttribute("toggle-label") !== "false";
+        this.style.setProperty(
+            "--show-toggle-label",
+            showToggleLabels ? "inline-flex" : "none",
+        );
+        this.style.setProperty(
+            "--switch-width",
+            showToggleLabels ? "max-content" : "var(--switch-width-fixed)",
+        );
+        this.style.setProperty(
+            "--toggle-width",
+            showToggleLabels ? "auto" : "var(--toggle-size)",
+        );
+        this.style.setProperty(
+            "--toggle-padding",
+            showToggleLabels ? "0 var(--spacing-small)" : "0",
+        );
+        this.style.setProperty(
+            "--toggle-radius",
+            showToggleLabels
+                ? "var(--component-switch-border-radius)"
+                : "9999px",
+        );
     }
 
     updateDirection() {

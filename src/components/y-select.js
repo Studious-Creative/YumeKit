@@ -69,7 +69,7 @@ export class YumeSelect extends HTMLElement {
         if (this.hasAttribute("multiple")) {
             if (typeof val === "string") {
                 this.selectedValues = new Set(
-                    val.split(",").map((v) => v.trim())
+                    val.split(",").map((v) => v.trim()),
                 );
             } else if (Array.isArray(val)) {
                 this.selectedValues = new Set(val);
@@ -165,10 +165,10 @@ export class YumeSelect extends HTMLElement {
                 right: 0;
                 z-index: 10;
                 background: var(--base-background-app);
-                border: 1px solid var(--base-background-border);
+                border: var(--component-inputs-border-width) solid var(--base-background-border);
                 border-radius: var(--component-inputs-border-radius-outer);
-                box-shadow: 0 2px 8px rgba(0,0,0,0.1);
-                margin-top: 4px;
+                box-shadow: var(--base-shadow, 0 2px 8px rgba(0,0,0,0.1));
+                margin-top: var(--spacing-2x-small, 4px);
                 max-height: 200px;
                 overflow-y: auto;
                 display: none;
@@ -184,7 +184,7 @@ export class YumeSelect extends HTMLElement {
             }
 
             .dropdown-item:hover {
-                background: var(--base-hover);
+                background: var(--base-background-hover);
             }
 
             .dropdown-item.selected {
@@ -252,7 +252,7 @@ export class YumeSelect extends HTMLElement {
                         <div class="dropdown-item ${valueSet.has(opt.value) ? "selected" : ""}" data-value="${opt.value}">
                             ${opt.label}
                         </div>
-                    `
+                    `,
                         )
                         .join("")}
                 </div>
@@ -272,7 +272,7 @@ export class YumeSelect extends HTMLElement {
 
         if (isMulti) {
             const count = options.filter((opt) =>
-                this.selectedValues.has(opt.value)
+                this.selectedValues.has(opt.value),
             ).length;
             return count > 0
                 ? `${count} Selected`
@@ -289,7 +289,7 @@ export class YumeSelect extends HTMLElement {
 
     attachEventListeners() {
         this.selectContainer.addEventListener("click", () =>
-            this.toggleDropdown()
+            this.toggleDropdown(),
         );
 
         this.dropdown.querySelectorAll(".dropdown-item").forEach((item) => {
@@ -309,7 +309,7 @@ export class YumeSelect extends HTMLElement {
 
                     this.setAttribute(
                         "value",
-                        Array.from(this.selectedValues).join(",")
+                        Array.from(this.selectedValues).join(","),
                     );
                 } else {
                     const isSelected = val === this.value;
@@ -325,7 +325,7 @@ export class YumeSelect extends HTMLElement {
                         detail: { value: this.value },
                         bubbles: true,
                         composed: true,
-                    })
+                    }),
                 );
 
                 this.updateValidation();
@@ -370,7 +370,7 @@ export class YumeSelect extends HTMLElement {
         this.displayElement.innerHTML = "";
 
         const selected = options.filter((opt) =>
-            this.selectedValues.has(opt.value)
+            this.selectedValues.has(opt.value),
         );
 
         selected.forEach((opt) => {
@@ -385,7 +385,7 @@ export class YumeSelect extends HTMLElement {
                 this.selectedValues.delete(opt.value);
                 this.setAttribute(
                     "value",
-                    Array.from(this.selectedValues).join(",")
+                    Array.from(this.selectedValues).join(","),
                 );
                 this.renderTags();
                 this.updateSelectedStyles();
@@ -396,7 +396,7 @@ export class YumeSelect extends HTMLElement {
                         detail: { value: this.value },
                         bubbles: true,
                         composed: true,
-                    })
+                    }),
                 );
             });
 

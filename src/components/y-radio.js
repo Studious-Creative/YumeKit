@@ -82,9 +82,9 @@ export class YumeRadio extends HTMLElement {
             }
             input[type="radio"] {
                 appearance: none;
-                width: 16px;
-                height: 16px;
-                border: 2px solid var(--base-content--);
+                width: var(--component-radio-size, 16px);
+                height: var(--component-radio-size, 16px);
+                border: var(--component-inputs-border-width, 2px) solid var(--base-content--);
                 border-radius: 50%;
                 position: relative;
                 outline: none;
@@ -93,12 +93,13 @@ export class YumeRadio extends HTMLElement {
             input[type="radio"]:checked::after {
                 content: '';
                 position: absolute;
-                top: 2px;
-                left: 2px;
-                width: 8px;
-                height: 8px;
-                background: var(--primary-content--);
+                top: 50%;
+                left: 50%;
+                width: var(--component-radio-dot-size, 8px);
+                height: var(--component-radio-dot-size, 8px);
+                background: var(--base-content--);
                 border-radius: 50%;
+                transform: translate(-50%, -50%);
             }
             input[type="radio"]:focus-visible {
                 outline: 2px solid var(--primary-content--);
@@ -129,7 +130,7 @@ export class YumeRadio extends HTMLElement {
                         />
                         ${opt.label}
                     </label>
-                `
+                `,
                     )
                     .join("")}
             </fieldset>
@@ -139,7 +140,7 @@ export class YumeRadio extends HTMLElement {
             .querySelectorAll("input[type=radio]")
             .forEach((input, i, list) => {
                 input.addEventListener("keydown", (e) =>
-                    this.handleKey(e, i, list)
+                    this.handleKey(e, i, list),
                 );
                 input.addEventListener("click", (e) => {
                     this.value = e.target.value;
@@ -148,7 +149,7 @@ export class YumeRadio extends HTMLElement {
                             detail: { value: this.value },
                             bubbles: true,
                             composed: true,
-                        })
+                        }),
                     );
                 });
             });
@@ -182,7 +183,7 @@ export class YumeRadio extends HTMLElement {
                     detail: { value: this.value },
                     bubbles: true,
                     composed: true,
-                })
+                }),
             );
             return;
         } else {

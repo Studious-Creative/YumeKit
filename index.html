@@ -15,7 +15,7 @@
     </head>
     <body>
         <main>
-            <y-theme theme-path="/styles/blue-light.css">
+            <y-theme theme-path="/styles/orange-light.css" style="color: var(--base-content--)">
                 <y-button
                     color="primary"
                     id="menu-trigger"
@@ -50,7 +50,7 @@
                         ❓ Help &amp; Support
                     </template> -->
                 </y-menu>
-                <button id="open-dialog">Open Dialog</button>
+                <y-button id="open-dialog" color="base" style-type="filled">Open Dialog</y-button>
 
                 <!-- Your dialog -->
                 <y-dialog anchor="open-dialog" id="my-dialog">
@@ -108,18 +108,32 @@
                     ]'
                         style="height: 100%; width: 100%"
                     >
-                        <div slot="home-slot">
-                            <y-card class="form-card">
+                        <div slot="home-slot" style="display: flex; gap: 12px;">
+                            <y-card class="form-card" raised>
                                 <h3 slot="header">Form</h3>
                                 <form id="form">
-                                    <y-input
-                                        name="email"
-                                        type="email"
-                                        size="medium"
-                                        value="me@example.com"
-                                    >
-                                        <span slot="label">Email</span>
-                                    </y-input>
+                                    <div style="display: flex; align-items: flex-end;">
+                                        <y-input
+                                            name="email"
+                                            type="email"
+                                            size="medium"
+                                            value="me@example.com"
+                                        >
+                                            <span slot="label">Email</span>
+                                        </y-input>
+                                        <y-button
+                                            slot="append"
+                                            style-type="filled">
+                                            <i
+                                            class="fas fa-check"
+                                            slot="left-icon"
+                                        ></i>
+                                            Verify
+                                        </y-button>
+                                    </div>
+                                   
+                
+                                    
                                     <y-input
                                         name="password"
                                         type="password"
@@ -191,14 +205,14 @@
                                         ]'
                                     >
                                     </y-radio>
-                                    <y-switch
+                                    <!-- <y-switch
                                         label-position="right"
                                         size="large"
                                     >
                                         <span slot="label">Dark Mode</span>
                                         <span slot="on-label">🌙</span>
                                         <span slot="off-label">☀️</span>
-                                    </y-switch>
+                                    </y-switch> -->
 
                                     <y-switch label-position="right">
                                         <span slot="label"
@@ -206,8 +220,14 @@
                                         >
                                         <!-- No on-label or off-label provided: defaults should show "On" and "Off" in both toggle and track -->
                                     </y-switch>
+                                    <y-switch label-position="right" toggle-label="true">
+                                        <span slot="label"
+                                            >Default Example</span
+                                        >
+                                        <!-- No on-label or off-label provided: defaults should show "On" and "Off" in both toggle and track -->
+                                    </y-switch>
 
-                                    <y-switch
+                                    <!-- <y-switch
                                         label-position="right"
                                         size="small"
                                         disabled
@@ -216,9 +236,30 @@
                                             >Single Slot Provided</span
                                         >
                                         <span slot="on-label">🔥</span>
-                                        <!-- Only on-label provided: it will be reused for off-label too -->
-                                    </y-switch>
+                                    </y-switch> -->
                                 </form>
+                            </y-card>
+                            <y-card class="form-card">
+                                <y-panelbar exclusive>
+                                    <y-panel expanded>
+                                        <span slot="label">Account</span>
+                                        <div slot="children">
+                                            <y-panel href="/profile">
+                                                <span slot="label">Profile</span>
+                                            </y-panel>
+                                            <y-panel href="/settings">
+                                                <span slot="label">Settings</span>
+                                            </y-panel>
+                                        </div>
+                                    </y-panel>
+
+                                    <y-panel href="/friends">
+                                        <span slot="label">Friends</span>
+                                    </y-panel>
+                                    <y-panel href="/other">
+                                        <span slot="label">Other</span>
+                                    </y-panel>
+                                </y-panelbar>
                             </y-card>
                         </div>
                         <div slot="search-slot">

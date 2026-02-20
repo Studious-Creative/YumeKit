@@ -74,6 +74,7 @@ export class YumeTabs extends HTMLElement {
         const activeDef = tabs.find((t) => t.id === this._activeTab);
         const activeSlot = activeDef?.slot || "";
         const paddingVar = `var(--component-tab-padding-${this.size})`;
+        const gapVar = `var(--component-tab-gap-${this.size})`;
 
         // clear shadow
         this.shadowRoot.innerHTML = "";
@@ -118,7 +119,7 @@ export class YumeTabs extends HTMLElement {
                 font-size: var(--font-size-label);
                 display: inline-flex;
                 align-items: center;
-                gap: var(--spacing-small);
+                gap: ${gapVar};
                 transition: background 0.2s ease;
                 outline: none;
                 font-family: inherit;
@@ -223,7 +224,7 @@ export class YumeTabs extends HTMLElement {
         buttons.forEach((button) => {
             if (button.disabled) return;
             button.addEventListener("click", () =>
-                this.activateTab(button.dataset.id)
+                this.activateTab(button.dataset.id),
             );
             button.addEventListener("keydown", (e) => {
                 const idx = buttons.indexOf(e.currentTarget);

@@ -66,7 +66,7 @@ export class YumeCheckbox extends HTMLElement {
         return this.getAttribute("name");
     }
 
-    attributeChangedCallback(name, oldVal, newVal) {
+    attributeChangedCallback(name) {
         if (name === "checked" || name === "value") {
             this._internals.setFormValue(this.checked ? this.value : null);
         }
@@ -159,10 +159,10 @@ export class YumeCheckbox extends HTMLElement {
             }
 
             .checkbox {
-                width: 20px;
-                height: 20px;
-                border: 2px solid var(--base-content--);
-                border-radius: var(--border-radius-small, 4px);
+                width: var(--component-checkbox-size, 20px);
+                height: var(--component-checkbox-size, 20px);
+                border: var(--component-inputs-border-width, 2px) solid var(--base-content--);
+                border-radius: var(--component-inputs-border-radius-outer, 4px);
                 display: flex;
                 align-items: center;
                 justify-content: center;
@@ -177,8 +177,8 @@ export class YumeCheckbox extends HTMLElement {
             }
 
             .checkbox svg {
-                width: 16px;
-                height: 16px;
+                width: var(--component-checkbox-icon-size, 16px);
+                height: var(--component-checkbox-icon-size, 16px);
                 stroke: var(--primary-content--);
                 display: block;
             }

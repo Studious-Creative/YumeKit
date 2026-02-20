@@ -109,13 +109,13 @@ export class YumeButton extends HTMLElement {
         // Focus and blur events.
         this.button.addEventListener("focus", () => {
             this.dispatchEvent(
-                new CustomEvent("focus", { bubbles: true, composed: true })
+                new CustomEvent("focus", { bubbles: true, composed: true }),
             );
         });
 
         this.button.addEventListener("blur", () => {
             this.dispatchEvent(
-                new CustomEvent("blur", { bubbles: true, composed: true })
+                new CustomEvent("blur", { bubbles: true, composed: true }),
             );
         });
 
@@ -126,7 +126,7 @@ export class YumeButton extends HTMLElement {
                     detail: { key: event.key, code: event.code },
                     bubbles: true,
                     composed: true,
-                })
+                }),
             );
         });
 
@@ -136,7 +136,7 @@ export class YumeButton extends HTMLElement {
                     detail: { key: event.key, code: event.code },
                     bubbles: true,
                     composed: true,
-                })
+                }),
             );
         });
 
@@ -161,32 +161,32 @@ export class YumeButton extends HTMLElement {
         :host {
           display: inline-block;
         }
-        /* Ensure fonts exist in Shadow DOM */
+
         @font-face {
             font-family: "Lexend";
             font-display: swap;
         }
 
         .button {
-          box-sizing: border-box;
-          display: inline-flex;
-          min-height: var(--button-min-height, 35px);
-          min-width: var(--button-min-width, 35px);
-          padding: var(--button-padding, 16px);
-          gap: var(--button-padding, 16px);
-          justify-content: center;
-          align-items: center;
-          position: relative;
-          overflow: hidden;
-          border-radius: var(--border-small, 4px);
-          border: var(--button-border-width, 1px) solid var(--border-color, #1D1D1D);
-          background: var(--background-color, #F1F6FA);
-          transition: background-color 0.1s, color 0.1s, border-color 0.1s;
-          cursor: pointer;
-          width: 100%;
-          color: var(--text-color);
-          font-family: Lexend, sans-serif;
-          font-size: var(--size-paragraph, 16px);
+            box-sizing: border-box;
+            display: inline-flex;
+            min-height: var(--button-min-height, 32px);
+            min-width: var(--button-min-width, 32px);
+            padding: var(--button-padding, var(--component-button-padding-medium));
+            gap: var(--button-gap, var(--component-button-padding-medium));
+            justify-content: center;
+            align-items: center;
+            position: relative;
+            overflow: hidden;
+            border-radius: var(--component-button-border-radius-outer, 4px);
+            border: var(--component-button-border-width, 1px) solid var(--border-color, var(--base-content--, #1D1D1D));
+            background: var(--background-color, #F1F6FA);
+            transition: background-color 0.1s, color 0.1s, border-color 0.1s;
+            cursor: pointer;
+            color: var(--text-color);
+            font-family: var(--font-family-body, Lexend, sans-serif);
+            font-size: var(--font-size-button, 1em);
+            line-height: 1;
         }
 
         .button:disabled {
@@ -197,26 +197,27 @@ export class YumeButton extends HTMLElement {
 
         .button:hover:not(:disabled),
         .button:hover:not(:disabled) .button-content {
-          background: var(--hover-background-color);
-          color: var(--hover-text-color);
+            background: var(--hover-background-color);
+            color: var(--hover-text-color);
         }
         .button:focus:not(:disabled),
         .button:focus:not(:disabled) .button-content {
-          background: var(--focus-background-color);
-          color: var(--focus-text-color);
+            background: var(--focus-background-color);
+            color: var(--focus-text-color);
         }
         .button:active:not(:disabled),
         .button:active:not(:disabled) .button-content {
-          background: var(--active-background-color);
-          color: var(--active-text-color);
+            background: var(--active-background-color);
+            color: var(--active-text-color);
         }
         .icon {
-          display: flex;
-          min-width: 16px;
-          justify-content: center;
+            display: flex;
+            min-width: 16px;
+            justify-content: center;
         }
         .label {
-          padding-bottom: var(--spacing-2x-small, 2px);
+            line-height: inherit;
+            min-height: 20px;
         }
       `;
         this.shadowRoot.appendChild(style);
@@ -250,7 +251,7 @@ export class YumeButton extends HTMLElement {
                 "--base-content-lightest",
                 "--base-background-component",
                 "--base-background-hover",
-                "--base-background-focus",
+                "--base-background-active",
             ],
             success: [
                 "--success-content--",
@@ -287,9 +288,18 @@ export class YumeButton extends HTMLElement {
         };
 
         const sizeVars = {
-            small: ["--spacing-2x-small", "--spacing-x-small"],
-            medium: ["--spacing-x-small", "--spacing-small"],
-            large: ["--spacing-small", "--spacing-medium"],
+            small: [
+                "--component-button-padding-small",
+                "--component-button-padding-small",
+            ],
+            medium: [
+                "--component-button-padding-medium",
+                "--component-button-padding-medium",
+            ],
+            large: [
+                "--component-button-padding-large",
+                "--component-button-padding-large",
+            ],
         };
 
         const styleVars = {
@@ -320,80 +330,79 @@ export class YumeButton extends HTMLElement {
             // Filled buttons use content-based hover/active backgrounds
             this.button.style.setProperty(
                 "--hover-background-color",
-                `var(${colorVars[color][1]}, rgba(215,219,222,1))` // content-hover
+                `var(${colorVars[color][1]}, rgba(215,219,222,1))`, // content-hover
             );
             this.button.style.setProperty(
                 "--hover-text-color",
-                `var(${colorVars[color][3]}, rgba(241,246,250,1))` // background-component
+                `var(${colorVars[color][3]}, rgba(241,246,250,1))`, // background-component
             );
             this.button.style.setProperty(
                 "--focus-background-color",
-                `var(${colorVars[color][2]}, rgba(188,192,195,1))` // content-active
+                `var(${colorVars[color][2]}, rgba(188,192,195,1))`, // content-active
             );
             this.button.style.setProperty(
                 "--focus-text-color",
-                `var(${colorVars[color][3]}, rgba(241,246,250,1))`
+                `var(${colorVars[color][3]}, rgba(241,246,250,1))`,
             );
             this.button.style.setProperty(
                 "--active-background-color",
-                `var(${colorVars[color][0]}, rgba(29,29,29,1))` // content
+                `var(${colorVars[color][0]}, rgba(29,29,29,1))`, // content
             );
             this.button.style.setProperty(
                 "--active-text-color",
-                `var(${colorVars[color][3]}, rgba(241,246,250,1))`
+                `var(${colorVars[color][3]}, rgba(241,246,250,1))`,
             );
         } else {
             // Default hover/active logic for outlined/flat
             this.button.style.setProperty(
                 "--hover-background-color",
-                `var(${colorVars[color][4]}, rgba(215,219,222,1))`
+                `var(${colorVars[color][4]}, rgba(215,219,222,1))`,
             );
             this.button.style.setProperty(
                 "--hover-text-color",
-                `var(${colorVars[color][0]}, rgba(29,29,29,1))`
+                `var(${colorVars[color][0]}, rgba(29,29,29,1))`,
             );
             this.button.style.setProperty(
                 "--focus-background-color",
-                `var(${colorVars[color][5]}, rgba(188,192,195,1))`
+                `var(${colorVars[color][5]}, rgba(188,192,195,1))`,
             );
             this.button.style.setProperty(
                 "--focus-text-color",
-                `var(${colorVars[color][0]}, rgba(29,29,29,1))`
+                `var(${colorVars[color][0]}, rgba(29,29,29,1))`,
             );
             this.button.style.setProperty(
                 "--active-background-color",
-                `var(${colorVars[color][0]}, rgba(29,29,29,1))`
+                `var(${colorVars[color][0]}, rgba(29,29,29,1))`,
             );
             this.button.style.setProperty(
                 "--active-text-color",
-                `var(${colorVars[color][3]}, rgba(241,246,250,1))`
+                `var(${colorVars[color][3]}, rgba(241,246,250,1))`,
             );
         }
 
         const [contentPadding, buttonPadding] =
             sizeVars[size] || sizeVars.medium;
         this.button.style.setProperty(
-            "--content-padding",
-            `var(${contentPadding}, 4px)`
+            "--button-padding",
+            `var(${buttonPadding}, var(--component-button-padding-medium))`,
         );
         this.button.style.setProperty(
-            "--button-padding",
-            `var(${buttonPadding}, 8px)`
+            "--button-gap",
+            `var(${contentPadding}, var(--component-button-padding-medium))`,
         );
-        this.button.style.setProperty("--gap", `var(${buttonPadding}, 16px)`);
 
         const minSizeMapping = {
-            small: "27px",
-            medium: "35px",
-            large: "51px",
+            small: "25px",
+            medium: "32px",
+            large: "48px",
         };
         this.button.style.setProperty(
             "--button-min-height",
-            minSizeMapping[size] || "40px"
+            minSizeMapping[size] || "40px",
         );
         this.button.style.setProperty(
             "--button-min-width",
-            minSizeMapping[size] || "40px"
+            minSizeMapping[size] || "40px",
         );
     }
 
@@ -415,7 +424,7 @@ export class YumeButton extends HTMLElement {
                 detail,
                 bubbles: true,
                 composed: true,
-            })
+            }),
         );
     }
 
@@ -463,7 +472,7 @@ export class YumeButton extends HTMLElement {
         if (this.hasAttribute("multiple")) {
             if (typeof newVal === "string") {
                 this.selectedValues = new Set(
-                    newVal.split(",").map((s) => s.trim())
+                    newVal.split(",").map((s) => s.trim()),
                 );
             } else if (Array.isArray(newVal)) {
                 this.selectedValues = new Set(newVal);

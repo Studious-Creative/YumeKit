@@ -55,7 +55,7 @@ export class YumeTag extends HTMLElement {
                         new CustomEvent("remove", {
                             bubbles: true,
                             composed: true,
-                        })
+                        }),
                     );
                 });
         }
@@ -104,20 +104,20 @@ export class YumeTag extends HTMLElement {
 
         const borderRadius =
             shape === "round"
-                ? "var(--radii-full)"
-                : "var(--component-button-border-radius-outer)";
+                ? "var(--component-tag-border-radius-circle)"
+                : "var(--component-tag-border-radius-square)";
 
         const baseStyle = `
             :host {
                 display: inline-block;
                 font-family: var(--font-family-body, sans-serif);
-                font-size: 0.875em;
+                font-size: var(--font-size-label, 0.83em);
             }
             .tag {
                 display: inline-flex;
                 align-items: center;
                 gap: var(--spacing-2x-small);
-                padding: 0 var(--spacing-2x-small);
+                padding: 0 var(--component-tag-padding-medium, var(--spacing-x-small));
                 border: 1px solid transparent;
                 transition: background-color 0.2s, color 0.2s;
                 border-radius: ${borderRadius};

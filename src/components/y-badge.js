@@ -41,39 +41,46 @@ export class YumeBadge extends HTMLElement {
 
     getBadgeColor(color) {
         const colorMap = {
-            primary: "var(--primary--, rgba(0, 123, 255, 1))",
-            secondary: "var(--secondary--, rgba(108, 117, 125, 1))",
-            base: "var(--base-text, rgba(33, 37, 41, 1))",
-            success: "var(--success, rgba(40, 167, 69, 1))",
-            warning: "var(--warning, rgba(255, 193, 7, 1))",
-            error: "var(--error, rgba(220, 53, 69, 1))",
+            primary: "var(--primary-content--)",
+            secondary: "var(--secondary-content--)",
+            base: "var(--base-content--)",
+            success: "var(--success-content--)",
+            warning: "var(--warning-content--)",
+            error: "var(--error-content--)",
+            help: "var(--help-content--)",
         };
         return colorMap[color] || color;
     }
 
     getBadgePosition(position, alignment) {
-        const vertical = position === "top" ? "top: -10px;" : "bottom: -10px;";
+        const offset = "var(--spacing-small, 6px)";
+        const vertical =
+            position === "top"
+                ? `top: calc(${offset} * -1);`
+                : `bottom: calc(${offset} * -1);`;
         const horizontal =
-            alignment === "right" ? "right: -10px;" : "left: -10px;";
+            alignment === "right"
+                ? `right: calc(${offset} * -1);`
+                : `left: calc(${offset} * -1);`;
         return `${vertical} ${horizontal}`;
     }
 
     getSizeAttributes(size) {
         const sizeMap = {
             small: {
-                fontSize: "var(--size-p, 16px)",
-                padding: "var(--spacing-2x-small, 2px)",
-                minSize: "15px",
+                fontSize: "var(--font-size-small, 0.8em)",
+                padding: "var(--component-badge-padding-small)",
+                minSize: "var(--component-badge-size-small)",
             },
             medium: {
-                fontSize: "var(--size-h5, 18px)",
-                padding: "var(--spacing-small, 2px)",
-                minSize: "18px",
+                fontSize: "var(--font-size-label, 0.83em)",
+                padding: "var(--component-badge-padding-medium)",
+                minSize: "var(--component-badge-size-medium)",
             },
             large: {
-                fontSize: "var(--size-h4, 20px)",
-                padding: "var(--spacing-small, 2px)",
-                minSize: "22px",
+                fontSize: "var(--font-size-paragraph, 1em)",
+                padding: "var(--component-badge-padding-large)",
+                minSize: "var(--component-badge-size-large)",
             },
         };
         return sizeMap[size] || sizeMap.small;
@@ -82,11 +89,11 @@ export class YumeBadge extends HTMLElement {
     render() {
         const badgeColor = this.getBadgeColor(this.color);
         const { fontSize, padding, minSize } = this.getSizeAttributes(
-            this.size
+            this.size,
         );
         const positionStyles = this.getBadgePosition(
             this.position,
-            this.alignment
+            this.alignment,
         );
 
         this.shadowRoot.innerHTML = `
@@ -99,15 +106,15 @@ export class YumeBadge extends HTMLElement {
                     position: absolute;
                     ${positionStyles}
                     background: ${badgeColor};
-                    color: var(--base-text, rgba(33, 37, 41, 1));
+                    color: var(--base-background-component, #fff);
                     font-size: ${fontSize};
                     font-weight: bold;
                     padding: ${padding};
-                    border-radius: var(--radii-full, 9999px);
+                    border-radius: var(--component-badge-border-radius-circle, 9999px);
                     display: flex;
                     align-items: center;
                     justify-content: center;
-                    font-family: var(--font-family-mono, monospace);
+                    font-family: var(--font-family-body, sans-serif);
                     min-width: ${minSize};
                     height: ${minSize};
                     z-index: 20;
