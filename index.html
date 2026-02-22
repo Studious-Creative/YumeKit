@@ -51,6 +51,49 @@
                     </template> -->
                 </y-menu>
                 <y-button id="open-dialog" color="base" style-type="filled">Open Dialog</y-button>
+                <y-button id="open-drawer-left" color="secondary" style-type="filled">Drawer Left</y-button>
+                <y-button id="open-drawer-right" color="success" style-type="filled">Drawer Right</y-button>
+                <y-button id="open-drawer-top" color="warning" style-type="filled">Drawer Top</y-button>
+                <y-button id="open-drawer-bottom" color="error" style-type="filled">Drawer Bottom</y-button>
+
+                <!-- Drawers -->
+                <y-drawer anchor="open-drawer-left" position="left" resizable>
+                    <div slot="header"><h3>Left Drawer</h3></div>
+                    <div slot="body">
+                        <p>This drawer slides in from the left.</p>
+                        <p>Great for navigation menus.</p>
+                        <p>Drag the edge to resize.</p>
+                    </div>
+                    <div slot="footer">
+                        <y-button color="secondary" style-type="filled" class="close-drawer">Close</y-button>
+                    </div>
+                </y-drawer>
+
+                <y-drawer anchor="open-drawer-right" position="right" resizable>
+                    <div slot="header"><h3>Right Drawer</h3></div>
+                    <div slot="body">
+                        <p>This drawer slides in from the right.</p>
+                        <p>Useful for detail panels or settings.</p>
+                        <p>Drag the edge to resize.</p>
+                    </div>
+                    <div slot="footer">
+                        <y-button color="success" style-type="filled" class="close-drawer">Close</y-button>
+                    </div>
+                </y-drawer>
+
+                <y-drawer anchor="open-drawer-top" position="top" style="--drawer-height: 200px;">
+                    <div slot="header"><h3>Top Drawer</h3></div>
+                    <div slot="body">
+                        <p>This drawer drops down from the top.</p>
+                    </div>
+                </y-drawer>
+
+                <y-drawer anchor="open-drawer-bottom" position="bottom" style="--drawer-height: 200px;">
+                    <div slot="header"><h3>Bottom Drawer</h3></div>
+                    <div slot="body">
+                        <p>This drawer slides up from the bottom.</p>
+                    </div>
+                </y-drawer>
 
                 <!-- Your dialog -->
                 <y-dialog anchor="open-dialog" id="my-dialog">
@@ -267,10 +310,10 @@
                             </y-card>
                               <div style="display: flex; flex-direction: column; gap: 16px; width: 200px;">
                                 <y-progress value="75" color="primary">Upload Progress</y-progress>
-                                <y-progress value="40" color="success" size="small">Storage Used</y-progress>
-                                <y-progress value="90" color="error" size="large" label-format="value" max="100">Disk Space</y-progress>
+                                <!-- <y-progress value="40" color="success" size="small">Storage Used</y-progress> -->
+                                <!-- <y-progress value="90" color="error" size="large" label-format="value" max="100">Disk Space</y-progress> -->
                                 <y-progress value="3" min="0" max="10" step="1" color="secondary" label-format="fraction">Steps Completed</y-progress>
-                                <y-progress indeterminate color="help">Loading...</y-progress>
+                                <!-- <y-progress indeterminate color="help">Loading...</y-progress> -->
                                 <y-progress value="50" color="warning" disabled>Disabled</y-progress>
                             </div>
                         </div>
@@ -379,6 +422,12 @@
                 .addEventListener("click", () => {
                     document.getElementById("my-dialog").visible = false;
                 });
+
+            document.querySelectorAll(".close-drawer").forEach((btn) => {
+                btn.addEventListener("click", () => {
+                    btn.closest("y-drawer").visible = false;
+                });
+            });
         </script>
     </body>
 </html>

@@ -1,0 +1,467 @@
+class YumeDrawer extends HTMLElement {
+    static get observedAttributes() {
+        return ["visible", "anchor", "position", "resizable"];
+    }
+
+    constructor() {
+        super();
+        this.attachShadow({ mode: "open" });
+        this._onAnchorClick = this._onAnchorClick.bind(this);
+        this._onKeyDown = this._onKeyDown.bind(this);
+        this._onResizePointerDown = this._onResizePointerDown.bind(this);
+        this._onResizePointerMove = this._onResizePointerMove.bind(this);
+        this._onResizePointerUp = this._onResizePointerUp.bind(this);
+    }
+
+    connectedCallback() {
+        this.render();
+        this._setupAnchor();
+        if (this.visible) this._show();
+    }
+
+    disconnectedCallback() {
+        this._teardownAnchor();
+        document.removeEventListener("keydown", this._onKeyDown);
+        this._cleanupResize();
+    }
+
+    attributeChangedCallback(name, oldVal, newVal) {
+        if (oldVal === newVal) return;
+        if (name === "visible") {
+            this.visible ? this._show() : this._hide();
+        }
+        if (name === "anchor") {
+            this._teardownAnchor();
+            this._setupAnchor();
+        }
+        if (name === "position") {
+            this._applyPosition();
+        }
+        if (name === "resizable") {
+            this._applyResizable();
+        }
+    }
+
+    get visible() {
+        return this.hasAttribute("visible");
+    }
+    set visible(val) {
+        if (val) this.setAttribute("visible", "");
+        else this.removeAttribute("visible");
+    }
+
+    get anchor() {
+        return this.getAttribute("anchor");
+    }
+    set anchor(id) {
+        this.setAttribute("anchor", id);
+    }
+
+    /**
+     * Which edge the drawer slides in from.
+     * Accepted values: "left" | "right" | "top" | "bottom" (default "left").
+     */
+    get position() {
+        return this.getAttribute("position") || "left";
+    }
+    set position(val) {
+        this.setAttribute("position", val);
+    }
+
+    get resizable() {
+        return this.hasAttribute("resizable");
+    }
+    set resizable(val) {
+        if (val) this.setAttribute("resizable", "");
+        else this.removeAttribute("resizable");
+    }
+
+    /* ------------------------------------------------------------------ */
+    /*  Anchor wiring (same pattern as y-menu / y-dialog)                 */
+    /* ------------------------------------------------------------------ */
+
+    _setupAnchor() {
+        const id = this.anchor;
+        if (id) {
+            const el = document.getElementById(id);
+            if (el) {
+                this._anchorEl = el;
+                this._anchorEl.addEventListener("click", this._onAnchorClick);
+            }
+        }
+    }
+
+    _teardownAnchor() {
+        if (this._anchorEl) {
+            this._anchorEl.removeEventListener("click", this._onAnchorClick);
+            this._anchorEl = null;
+        }
+    }
+
+    _onAnchorClick() {
+        this.visible = !this.visible;
+    }
+
+    /* ------------------------------------------------------------------ */
+    /*  Show / hide helpers                                               */
+    /* ------------------------------------------------------------------ */
+
+    _show() {
+        // Make the host visible first so transitions can play
+        this.style.display = "block";
+        // Force a reflow so the browser registers the initial state
+        this.offsetHeight; // eslint-disable-line no-unused-expressions
+
+        const overlay = this.shadowRoot.querySelector(".overlay");
+        const panel = this.shadowRoot.querySelector(".drawer-panel");
+
+        if (overlay) overlay.classList.add("open");
+        if (panel) {
+            panel.classList.add("open");
+            panel.focus();
+        }
+
+        document.addEventListener("keydown", this._onKeyDown);
+    }
+
+    _hide() {
+        const overlay = this.shadowRoot.querySelector(".overlay");
+        const panel = this.shadowRoot.querySelector(".drawer-panel");
+
+        if (overlay) overlay.classList.remove("open");
+        if (panel) panel.classList.remove("open");
+
+        document.removeEventListener("keydown", this._onKeyDown);
+
+        // Wait for the transition to finish before hiding the host
+        const duration = this._getTransitionDuration(panel);
+        if (duration > 0) {
+            clearTimeout(this._hideTimer);
+            this._hideTimer = setTimeout(() => {
+                if (!this.visible) this.style.display = "none";
+            }, duration);
+        } else {
+            this.style.display = "none";
+        }
+    }
+
+    _getTransitionDuration(el) {
+        if (!el) return 0;
+        const style = getComputedStyle(el);
+        const raw = style.transitionDuration || "0s";
+        const seconds = parseFloat(raw);
+        return isNaN(seconds) ? 0 : seconds * 1000;
+    }
+
+    _onKeyDown(e) {
+        if (e.key === "Escape" && this.visible) {
+            this.visible = false;
+        }
+    }
+
+    _onOverlayClick() {
+        this.visible = false;
+    }
+
+    /* ------------------------------------------------------------------ */
+    /*  Position helpers                                                   */
+    /* ------------------------------------------------------------------ */
+
+    _applyPosition() {
+        const panel = this.shadowRoot.querySelector(".drawer-panel");
+        if (!panel) return;
+        panel.setAttribute("data-position", this.position);
+    }
+
+    /* ------------------------------------------------------------------ */
+    /*  Resizable drag handle                                              */
+    /* ------------------------------------------------------------------ */
+
+    _applyResizable() {
+        const handle = this.shadowRoot.querySelector(".resize-handle");
+        if (!handle) return;
+        handle.style.display = this.resizable ? "flex" : "none";
+    }
+
+    _isHorizontal() {
+        return this.position === "left" || this.position === "right";
+    }
+
+    _onResizePointerDown(e) {
+        e.preventDefault();
+        this._resizing = true;
+        this._startPointer = this._isHorizontal() ? e.clientX : e.clientY;
+        const panel = this.shadowRoot.querySelector(".drawer-panel");
+        this._startSize = this._isHorizontal()
+            ? panel.offsetWidth
+            : panel.offsetHeight;
+
+        // Disable panel transitions while dragging
+        panel.style.transition = "none";
+        document.addEventListener("pointermove", this._onResizePointerMove);
+        document.addEventListener("pointerup", this._onResizePointerUp);
+    }
+
+    _onResizePointerMove(e) {
+        if (!this._resizing) return;
+        const panel = this.shadowRoot.querySelector(".drawer-panel");
+        const current = this._isHorizontal() ? e.clientX : e.clientY;
+        const delta = current - this._startPointer;
+        let newSize;
+
+        if (this.position === "left") newSize = this._startSize + delta;
+        else if (this.position === "right") newSize = this._startSize - delta;
+        else if (this.position === "top") newSize = this._startSize + delta;
+        else newSize = this._startSize - delta; // bottom
+
+        const minSize = 100;
+        newSize = Math.max(minSize, newSize);
+
+        if (this._isHorizontal()) {
+            panel.style.width = `${newSize}px`;
+        } else {
+            panel.style.height = `${newSize}px`;
+        }
+    }
+
+    _onResizePointerUp() {
+        this._resizing = false;
+        const panel = this.shadowRoot.querySelector(".drawer-panel");
+        if (panel) panel.style.transition = "";
+        document.removeEventListener("pointermove", this._onResizePointerMove);
+        document.removeEventListener("pointerup", this._onResizePointerUp);
+    }
+
+    _cleanupResize() {
+        document.removeEventListener("pointermove", this._onResizePointerMove);
+        document.removeEventListener("pointerup", this._onResizePointerUp);
+    }
+
+    /* ------------------------------------------------------------------ */
+    /*  Grip SVG icon                                                      */
+    /* ------------------------------------------------------------------ */
+
+    _gripSVG() {
+        const horiz = this._isHorizontal();
+        // 3-dot grip pattern – vertical for left/right, horizontal for top/bottom
+        return `<svg xmlns="http://www.w3.org/2000/svg" width="${horiz ? 4 : 20}" height="${horiz ? 20 : 4}" viewBox="0 0 ${horiz ? 4 : 20} ${horiz ? 20 : 4}" fill="currentColor">
+            ${
+                horiz
+                    ? `<circle cx="2" cy="4"  r="1.5"/>
+                   <circle cx="2" cy="10" r="1.5"/>
+                   <circle cx="2" cy="16" r="1.5"/>`
+                    : `<circle cx="4"  cy="2" r="1.5"/>
+                   <circle cx="10" cy="2" r="1.5"/>
+                   <circle cx="16" cy="2" r="1.5"/>`
+            }
+        </svg>`;
+    }
+
+    /* ------------------------------------------------------------------ */
+    /*  Render                                                             */
+    /* ------------------------------------------------------------------ */
+
+    render() {
+        this.shadowRoot.innerHTML = "";
+
+        const style = document.createElement("style");
+        style.textContent = `
+            :host {
+                position: fixed;
+                top: 0; left: 0; right: 0; bottom: 0;
+                display: none;
+                z-index: 1000;
+            }
+            :host([visible]) {
+                display: block;
+            }
+
+            /* ---------- Overlay ---------- */
+            .overlay {
+                position: absolute;
+                top: 0; left: 0; right: 0; bottom: 0;
+                background: rgba(0, 0, 0, 0);
+                transition: background var(--drawer-transition-duration, 0.3s) ease;
+            }
+            .overlay.open {
+                background: rgba(0, 0, 0, 0.4);
+            }
+
+            /* ---------- Panel base ---------- */
+            .drawer-panel {
+                position: absolute;
+                background: var(--base-background-component, #fff);
+                color: var(--base-content--, #000);
+                box-shadow: 0 2px 10px rgba(0, 0, 0, 0.3);
+                overflow: auto;
+                outline: none;
+                display: flex;
+                flex-direction: column;
+                border: none;
+                border-radius: var(--component-drawer-border-radius, 0);
+                transition: transform var(--drawer-transition-duration, 0.3s) ease;
+            }
+
+            /* --- Horizontal drawers (left / right) --- */
+            .drawer-panel[data-position="left"],
+            .drawer-panel[data-position="right"] {
+                top: 0;
+                bottom: 0;
+                width: var(--drawer-width, 300px);
+            }
+            .drawer-panel[data-position="left"] {
+                left: 0;
+                transform: translateX(-100%);
+                border-right: var(--component-drawer-border-width, 2px) solid var(--base-background-border, #ccc);
+            }
+            .drawer-panel[data-position="right"] {
+                right: 0;
+                transform: translateX(100%);
+                border-left: var(--component-drawer-border-width, 2px) solid var(--base-background-border, #ccc);
+            }
+
+            /* --- Vertical drawers (top / bottom) --- */
+            .drawer-panel[data-position="top"],
+            .drawer-panel[data-position="bottom"] {
+                left: 0;
+                right: 0;
+                height: var(--drawer-height, 300px);
+            }
+            .drawer-panel[data-position="top"] {
+                top: 0;
+                transform: translateY(-100%);
+                border-bottom: var(--component-drawer-border-width, 2px) solid var(--base-background-border, #ccc);
+            }
+            .drawer-panel[data-position="bottom"] {
+                bottom: 0;
+                transform: translateY(100%);
+                border-top: var(--component-drawer-border-width, 2px) solid var(--base-background-border, #ccc);
+            }
+
+            /* Open state – slide to origin */
+            .drawer-panel.open { transform: translate(0, 0); }
+
+            /* ---------- Content sections ---------- */
+            .drawer-header {
+                padding: var(--component-drawer-padding, 1rem);
+                font-weight: bold;
+                border-bottom: var(--component-drawer-border-width, 2px) solid var(--base-background-border, #ccc);
+            }
+            .drawer-body {
+                padding: var(--component-drawer-padding, 1rem);
+                flex: 1;
+                overflow: auto;
+            }
+            .drawer-footer {
+                padding: var(--component-drawer-padding, 1rem);
+                border-top: var(--component-drawer-border-width, 2px) solid var(--base-background-border, #ccc);
+            }
+
+            ::slotted(*) {
+                margin: 0;
+            }
+
+            /* ---------- Resize handle ---------- */
+            .resize-handle {
+                display: none;              /* hidden until resizable attr */
+                flex-shrink: 0;
+                align-items: center;
+                justify-content: center;
+                color: var(--base-content--, #999);
+                opacity: 0.6;
+                touch-action: none;         /* needed for pointer events */
+                user-select: none;
+                transition: opacity 0.15s, background 0.15s;
+            }
+            .resize-handle:hover,
+            .resize-handle:active {
+                opacity: 1;
+                background: var(--base-background-hover, rgba(128,128,128,0.15));
+            }
+
+            /* Left / right drawers → vertical strip inside the open edge */
+            .drawer-panel[data-position="left"] > .resize-handle,
+            .drawer-panel[data-position="right"] > .resize-handle {
+                position: absolute;
+                top: 0;
+                bottom: 0;
+                width: var(--component-drawer-handle-width, 6px);
+                padding: var(--component-drawer-handle-padding, 4px);
+                cursor: ew-resize;
+            }
+            .drawer-panel[data-position="left"] > .resize-handle {
+                right: 0;
+            }
+            .drawer-panel[data-position="right"] > .resize-handle {
+                left: 0;
+            }
+
+            /* Top / bottom drawers → horizontal strip inside the open edge */
+            .drawer-panel[data-position="top"] > .resize-handle,
+            .drawer-panel[data-position="bottom"] > .resize-handle {
+                position: absolute;
+                left: 0;
+                right: 0;
+                height: var(--component-drawer-handle-width, 6px);
+                padding: var(--component-drawer-handle-padding, 4px);
+                cursor: ns-resize;
+            }
+            .drawer-panel[data-position="top"] > .resize-handle {
+                bottom: 0;
+            }
+            .drawer-panel[data-position="bottom"] > .resize-handle {
+                top: 0;
+            }
+        `;
+        this.shadowRoot.appendChild(style);
+
+        const overlay = document.createElement("div");
+        overlay.className = "overlay";
+        overlay.addEventListener("click", () => this._onOverlayClick());
+        this.shadowRoot.appendChild(overlay);
+
+        const panel = document.createElement("div");
+        panel.className = "drawer-panel";
+        panel.setAttribute("role", "dialog");
+        panel.setAttribute("aria-modal", "true");
+        panel.setAttribute("tabindex", "-1");
+        panel.setAttribute("data-position", this.position);
+
+        // Resize handle
+        const handle = document.createElement("div");
+        handle.className = "resize-handle";
+        handle.innerHTML = this._gripSVG();
+        handle.style.display = this.resizable ? "flex" : "none";
+        handle.addEventListener("pointerdown", this._onResizePointerDown);
+        panel.appendChild(handle);
+
+        const header = document.createElement("div");
+        header.className = "drawer-header";
+        header.innerHTML = `<slot name="header"></slot>`;
+
+        const body = document.createElement("div");
+        body.className = "drawer-body";
+        body.innerHTML = `<slot name="body"></slot>`;
+
+        const footer = document.createElement("div");
+        footer.className = "drawer-footer";
+        footer.innerHTML = `<slot name="footer"></slot>`;
+
+        panel.appendChild(header);
+        panel.appendChild(body);
+        panel.appendChild(footer);
+        this.shadowRoot.appendChild(panel);
+
+        // If already visible when first rendered, apply open class
+        if (this.visible) {
+            requestAnimationFrame(() => {
+                overlay.classList.add("open");
+                panel.classList.add("open");
+            });
+        }
+    }
+}
+
+if (!customElements.get("y-drawer")) {
+    customElements.define("y-drawer", YumeDrawer);
+}

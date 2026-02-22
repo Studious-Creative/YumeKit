@@ -149,4 +149,9 @@
     --component-tag-size-large: var(--sizing-large);
     --component-button-border-width-2: var(--border-thin);
     --component-button-border-width-2: var(--border-thin);
+    --component-drawer-border-width: var(--border-thin);
+    --component-drawer-border-radius: var(--radii-small);
+    --component-drawer-padding: var(--spacing-medium);
+    --component-drawer-handle-width: var(--spacing-small);
+    --component-drawer-handle-padding: var(--spacing-x-small);
 }
