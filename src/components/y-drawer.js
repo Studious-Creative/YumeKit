@@ -293,7 +293,7 @@ class YumeDrawer extends HTMLElement {
                 background: var(--base-background-component, #fff);
                 color: var(--base-content--, #000);
                 box-shadow: 0 2px 10px rgba(0, 0, 0, 0.3);
-                overflow: auto;
+                overflow: hidden;
                 outline: none;
                 display: flex;
                 flex-direction: column;
@@ -308,6 +308,7 @@ class YumeDrawer extends HTMLElement {
                 top: 0;
                 bottom: 0;
                 width: var(--drawer-width, 300px);
+                flex-direction: row;
             }
             .drawer-panel[data-position="left"] {
                 left: 0;
@@ -345,7 +346,6 @@ class YumeDrawer extends HTMLElement {
             .drawer-header {
                 padding: var(--component-drawer-padding, 1rem);
                 font-weight: bold;
-                border-bottom: var(--component-drawer-border-width, 2px) solid var(--base-background-border, #ccc);
             }
             .drawer-body {
                 padding: var(--component-drawer-padding, 1rem);
@@ -354,7 +354,16 @@ class YumeDrawer extends HTMLElement {
             }
             .drawer-footer {
                 padding: var(--component-drawer-padding, 1rem);
-                border-top: var(--component-drawer-border-width, 2px) solid var(--base-background-border, #ccc);
+            }
+
+            /* Wrapper so header/body/footer stack vertically inside a row layout */
+            .drawer-content {
+                display: flex;
+                flex-direction: column;
+                flex: 1;
+                min-width: 0;
+                min-height: 0;
+                overflow: hidden;
             }
 
             ::slotted(*) {
@@ -372,6 +381,7 @@ class YumeDrawer extends HTMLElement {
                 touch-action: none;         /* needed for pointer events */
                 user-select: none;
                 transition: opacity 0.15s, background 0.15s;
+                box-sizing: border-box;
             }
             .resize-handle:hover,
             .resize-handle:active {
@@ -379,38 +389,36 @@ class YumeDrawer extends HTMLElement {
                 background: var(--base-background-hover, rgba(128,128,128,0.15));
             }
 
-            /* Left / right drawers → vertical strip inside the open edge */
+            /* Left / right drawers → vertical strip on the open edge */
             .drawer-panel[data-position="left"] > .resize-handle,
             .drawer-panel[data-position="right"] > .resize-handle {
-                position: absolute;
-                top: 0;
-                bottom: 0;
                 width: var(--component-drawer-handle-width, 6px);
                 padding: var(--component-drawer-handle-padding, 4px);
                 cursor: ew-resize;
             }
             .drawer-panel[data-position="left"] > .resize-handle {
-                right: 0;
+                order: 99;
+                border-left: var(--component-drawer-border-width, 2px) solid var(--base-background-border, #ccc);
             }
             .drawer-panel[data-position="right"] > .resize-handle {
-                left: 0;
+                order: -1;
+                border-right: var(--component-drawer-border-width, 2px) solid var(--base-background-border, #ccc);
             }
 
-            /* Top / bottom drawers → horizontal strip inside the open edge */
+            /* Top / bottom drawers → horizontal strip on the open edge */
             .drawer-panel[data-position="top"] > .resize-handle,
             .drawer-panel[data-position="bottom"] > .resize-handle {
-                position: absolute;
-                left: 0;
-                right: 0;
                 height: var(--component-drawer-handle-width, 6px);
                 padding: var(--component-drawer-handle-padding, 4px);
                 cursor: ns-resize;
             }
             .drawer-panel[data-position="top"] > .resize-handle {
-                bottom: 0;
+                order: 99;
+                border-top: var(--component-drawer-border-width, 2px) solid var(--base-background-border, #ccc);
             }
             .drawer-panel[data-position="bottom"] > .resize-handle {
-                top: 0;
+                order: -1;
+                border-bottom: var(--component-drawer-border-width, 2px) solid var(--base-background-border, #ccc);
             }
         `;
         this.shadowRoot.appendChild(style);
@@ -435,6 +443,9 @@ class YumeDrawer extends HTMLElement {
         handle.addEventListener("pointerdown", this._onResizePointerDown);
         panel.appendChild(handle);
 
+        const content = document.createElement("div");
+        content.className = "drawer-content";
+
         const header = document.createElement("div");
         header.className = "drawer-header";
         header.innerHTML = `<slot name="header"></slot>`;
@@ -447,9 +458,10 @@ class YumeDrawer extends HTMLElement {
         footer.className = "drawer-footer";
         footer.innerHTML = `<slot name="footer"></slot>`;
 
-        panel.appendChild(header);
-        panel.appendChild(body);
-        panel.appendChild(footer);
+        content.appendChild(header);
+        content.appendChild(body);
+        content.appendChild(footer);
+        panel.appendChild(content);
         this.shadowRoot.appendChild(panel);
 
         // If already visible when first rendered, apply open class

@@ -100,7 +100,7 @@ describe("YumeSlider", () => {
             html`<y-slider value="50" color="success"></y-slider>`,
         );
         const style = el.shadowRoot.querySelector("style").textContent;
-        expect(style).to.include("var(--success-background-component)");
+        expect(style).to.include("var(--success-background-hover)");
     });
 
     it("applies thumb color from content variable", async () => {

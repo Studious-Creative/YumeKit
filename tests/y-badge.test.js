@@ -4,7 +4,7 @@ import "../src/components/y-badge.js"; // adjust path as needed
 describe("YumeBadge", () => {
     it("renders with default attributes", async () => {
         const el = await fixture(
-            html`<y-badge value="5"><div>Item</div></y-badge>`
+            html`<y-badge value="5"><div>Item</div></y-badge>`,
         );
         const badge = el.shadowRoot.querySelector(".badge");
 
@@ -21,17 +21,21 @@ describe("YumeBadge", () => {
         const el = await fixture(
             html`<y-badge value="1" position="bottom" alignment="left"
                 ><div>Box</div></y-badge
-            >`
+            >`,
         );
         const style = el.shadowRoot.querySelector("style").textContent;
 
-        expect(style).to.include("bottom: -10px;");
-        expect(style).to.include("left: -10px;");
+        expect(style).to.include(
+            "bottom: calc(var(--spacing-small, 6px) * -1);",
+        );
+        expect(style).to.include("left: calc(var(--spacing-small, 6px) * -1);");
     });
 
     it("applies color from colorMap", async () => {
         const el = await fixture(
-            html`<y-badge value="!" color="success"><div>Target</div></y-badge>`
+            html`<y-badge value="!" color="success"
+                ><div>Target</div></y-badge
+            >`,
         );
         const style = el.shadowRoot.querySelector("style").textContent;
         expect(style).to.include("background: var(--success");
@@ -39,7 +43,9 @@ describe("YumeBadge", () => {
 
     it("uses fallback color if unknown color is provided", async () => {
         const el = await fixture(
-            html`<y-badge value="!" color="#ff00ff"><div>Target</div></y-badge>`
+            html`<y-badge value="!" color="#ff00ff"
+                ><div>Target</div></y-badge
+            >`,
         );
         const style = el.shadowRoot.querySelector("style").textContent;
         expect(style).to.include("background: #ff00ff");
@@ -47,10 +53,12 @@ describe("YumeBadge", () => {
 
     it("adjusts size correctly for small", async () => {
         const el = await fixture(
-            html`<y-badge value="1" size="small"><div>Size</div></y-badge>`
+            html`<y-badge value="1" size="small"><div>Size</div></y-badge>`,
         );
         const style = el.shadowRoot.querySelector("style").textContent;
-        expect(style).to.include("min-width: 15px");
+        expect(style).to.include(
+            "min-width: var(--component-badge-size-small)",
+        );
     });
 
     it("updates when attribute changes", async () => {

@@ -12,10 +12,10 @@
         "@open-wc/testing": "^3.0.0-next.5",
         "@web/test-runner": "^0.20.0",
         "@web/test-runner-playwright": "^0.11.0",
-        "eslint": "^9.22.0",
+        "eslint": "^10.0.1",
         "eslint-plugin-prettier": "^5.2.3",
         "playwright": "^1.51.1",
         "prettier": "^3.5.3",
-        "sinon": "^20.0.0"
+        "sinon": "^21.0.1"
     }
 }
