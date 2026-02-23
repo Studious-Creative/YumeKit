@@ -1,3 +1,4 @@
+export * from "./components/y-appbar.js";
 export * from "./components/y-avatar.js";
 export * from "./components/y-badge.js";
 export * from "./components/y-button.js";
@@ -14,6 +15,7 @@ export * from "./components/y-radio.js";
 export * from "./components/y-select.js";
 export * from "./components/y-slider.js";
 export * from "./components/y-switch.js";
+export * from "./components/y-table.js";
 export * from "./components/y-tag.js";
 export * from "./components/y-tabs.js";
 export * from "./components/y-theme.js";

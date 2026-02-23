@@ -15,13 +15,20 @@
     </head>
     <body>
         <main>
-            <y-theme theme-path="/styles/orange-dark.css" style="color: var(--base-content--)">
-                <y-button
-                    color="primary"
-                    id="menu-trigger"
-                    style-type="filled"
-                >Menu</y-button>
-                <y-badge value="3" position="bottom" alignment="right" color="error" size="small">
+            <y-theme
+                theme-path="/styles/orange-dark.css"
+                style="color: var(--base-content--)"
+            >
+                <y-button color="primary" id="menu-trigger" style-type="filled"
+                    >Menu</y-button
+                >
+                <y-badge
+                    value="3"
+                    position="bottom"
+                    alignment="right"
+                    color="error"
+                    size="small"
+                >
                     <y-avatar alt="John Doe"></y-avatar>
                 </y-badge>
 
@@ -50,11 +57,162 @@
                         ❓ Help &amp; Support
                     </template> -->
                 </y-menu>
-                <y-button id="open-dialog" color="base" style-type="filled">Open Dialog</y-button>
-                <y-button id="open-drawer-left" color="secondary" style-type="filled">Drawer Left</y-button>
-                <y-button id="open-drawer-right" color="success" style-type="filled">Drawer Right</y-button>
-                <y-button id="open-drawer-top" color="warning" style-type="filled">Drawer Top</y-button>
-                <y-button id="open-drawer-bottom" color="error" style-type="filled">Drawer Bottom</y-button>
+                <y-button id="open-dialog" color="base" style-type="filled"
+                    >Open Dialog</y-button
+                >
+                <y-button
+                    id="open-drawer-left"
+                    color="secondary"
+                    style-type="filled"
+                    >Drawer Left</y-button
+                >
+                <y-button
+                    id="open-drawer-right"
+                    color="success"
+                    style-type="filled"
+                    >Drawer Right</y-button
+                >
+                <y-button
+                    id="open-drawer-top"
+                    color="warning"
+                    style-type="filled"
+                    >Drawer Top</y-button
+                >
+                <y-button
+                    id="open-drawer-bottom"
+                    color="error"
+                    style-type="filled"
+                    >Drawer Bottom</y-button
+                >
+
+                <!-- Table -->
+                <section style="display: flex; gap: 24px">
+                    <!-- AppBar expanded -->
+                    <y-appbar style="height: 600px">
+                        <div slot="header">
+                            <y-button color="primary" style-type="flat">
+                                <i class="fas fa-cloud" slot="left-icon"></i>
+                                Logo
+                            </y-button>
+                        </div>
+
+                        <y-button color="base" style-type="flat">
+                            <i class="fas fa-smile" slot="left-icon"></i>
+                            Item 1
+                        </y-button>
+                        <y-button color="base" style-type="flat">
+                            <i class="fas fa-smile" slot="left-icon"></i>
+                            Item 1
+                        </y-button>
+
+                        <y-button
+                            id="appbar-menu-trigger-expanded"
+                            color="base"
+                            style-type="flat"
+                        >
+                            <i class="fas fa-bars" slot="left-icon"></i>
+                            Menu
+                        </y-button>
+
+                        <div
+                            slot="footer"
+                            style="display: flex; align-items: center; gap: 8px"
+                        >
+                            <y-badge
+                                value="AU"
+                                color="primary"
+                                shape="circle"
+                                size="small"
+                            >
+                            </y-badge>
+                            <span>Anonymous User</span>
+                        </div>
+                    </y-appbar>
+
+                    <!-- AppBar collapsed -->
+                    <y-appbar collapsed style="height: 600px">
+                        <div slot="header">
+                            <y-button color="primary" style-type="flat">
+                                <i class="fas fa-cloud" slot="left-icon"></i>
+                            </y-button>
+                        </div>
+
+                        <y-button color="base" style-type="flat">
+                            <i class="fas fa-smile" slot="left-icon"></i>
+                        </y-button>
+                        <y-button color="base" style-type="flat">
+                            <i class="fas fa-smile" slot="left-icon"></i>
+                        </y-button>
+
+                        <y-button
+                            id="appbar-menu-trigger-collapsed"
+                            color="base"
+                            style-type="flat"
+                        >
+                            <i class="fas fa-bars" slot="left-icon"></i>
+                        </y-button>
+
+                        <div slot="footer">
+                            <y-badge
+                                value="AU"
+                                color="primary"
+                                shape="circle"
+                                size="small"
+                            ></y-badge>
+                        </div>
+                    </y-appbar>
+
+                    <y-menu
+                        id="appbar-menu-expanded"
+                        anchor="appbar-menu-trigger-expanded"
+                        items='[
+                            { "text": "Dashboard", "url": "https://example.com/dashboard" },
+                            { "text": "Projects", "children": [
+                                { "text": "Project A" },
+                                { "text": "Project B" }
+                            ]},
+                            { "text": "Settings" }
+                        ]'
+                    ></y-menu>
+
+                    <y-menu
+                        id="appbar-menu-collapsed"
+                        anchor="appbar-menu-trigger-collapsed"
+                        items='[
+                            { "text": "Notifications" },
+                            { "text": "Profile" },
+                            { "text": "Sign Out" }
+                        ]'
+                    ></y-menu>
+                </section>
+
+                <!-- Table -->
+                <section>
+                    <h3>Table</h3>
+                    <y-table
+                        columns='[
+                            { "field": "name",       "header": "Column Header" },
+                            { "field": "email",      "header": "Column Header" },
+                            { "field": "role",       "header": "Column Header" },
+                            { "field": "status",     "header": "Column Header" },
+                            { "field": "department", "header": "Column Header" },
+                            { "field": "location",   "header": "Column Header" },
+                            { "field": "joined",     "header": "Column Header" }
+                        ]'
+                        data='[
+                            { "name": "Row Header", "email": "Cell", "role": "Cell", "status": "Cell", "department": "Cell", "location": "Cell", "joined": "Cell" },
+                            { "name": "Row Header", "email": "Cell", "role": "Cell", "status": "Cell", "department": "Cell", "location": "Cell", "joined": "Cell" },
+                            { "name": "Row Header", "email": "Cell", "role": "Cell", "status": "Cell", "department": "Cell", "location": "Cell", "joined": "Cell" },
+                            { "name": "Row Header", "email": "Cell", "role": "Cell", "status": "Cell", "department": "Cell", "location": "Cell", "joined": "Cell" },
+                            { "name": "Row Header", "email": "Cell", "role": "Cell", "status": "Cell", "department": "Cell", "location": "Cell", "joined": "Cell" },
+                            { "name": "Row Header", "email": "Cell", "role": "Cell", "status": "Cell", "department": "Cell", "location": "Cell", "joined": "Cell" },
+                            { "name": "Row Header", "email": "Cell", "role": "Cell", "status": "Cell", "department": "Cell", "location": "Cell", "joined": "Cell" },
+                            { "name": "Row Header", "email": "Cell", "role": "Cell", "status": "Cell", "department": "Cell", "location": "Cell", "joined": "Cell" },
+                            { "name": "Row Header", "email": "Cell", "role": "Cell", "status": "Cell", "department": "Cell", "location": "Cell", "joined": "Cell" },
+                            { "name": "Row Header", "email": "Cell", "role": "Cell", "status": "Cell", "department": "Cell", "location": "Cell", "joined": "Cell" }
+                        ]'
+                    ></y-table>
+                </section>
 
                 <!-- Drawers -->
                 <y-drawer anchor="open-drawer-left" position="left" resizable>
@@ -65,7 +223,12 @@
                         <p>Drag the edge to resize.</p>
                     </div>
                     <div slot="footer">
-                        <y-button color="secondary" style-type="filled" class="close-drawer">Close</y-button>
+                        <y-button
+                            color="secondary"
+                            style-type="filled"
+                            class="close-drawer"
+                            >Close</y-button
+                        >
                     </div>
                 </y-drawer>
 
@@ -77,18 +240,31 @@
                         <p>Drag the edge to resize.</p>
                     </div>
                     <div slot="footer">
-                        <y-button color="success" style-type="filled" class="close-drawer">Close</y-button>
+                        <y-button
+                            color="success"
+                            style-type="filled"
+                            class="close-drawer"
+                            >Close</y-button
+                        >
                     </div>
                 </y-drawer>
 
-                <y-drawer anchor="open-drawer-top" position="top" style="--drawer-height: 200px;">
+                <y-drawer
+                    anchor="open-drawer-top"
+                    position="top"
+                    style="--drawer-height: 200px"
+                >
                     <div slot="header"><h3>Top Drawer</h3></div>
                     <div slot="body">
                         <p>This drawer drops down from the top.</p>
                     </div>
                 </y-drawer>
 
-                <y-drawer anchor="open-drawer-bottom" position="bottom" style="--drawer-height: 200px;">
+                <y-drawer
+                    anchor="open-drawer-bottom"
+                    position="bottom"
+                    style="--drawer-height: 200px"
+                >
                     <div slot="header"><h3>Bottom Drawer</h3></div>
                     <div slot="body">
                         <p>This drawer slides up from the bottom.</p>
@@ -105,7 +281,7 @@
                         <p>It scrolls if the content grows too large.</p>
                     </div>
                     <div slot="footer">
-                        <y-button id="close-btn">Close</button>
+                        <y-button id="close-btn">Close</y-button>
                     </div>
                 </y-dialog>
                 <section>
@@ -150,12 +326,18 @@
                         { "id": "settings", "label": "Settings", "slot": "settings-slot" }
                     ]'
                         style="height: 100%; width: 100%"
+                        n
                     >
-                        <div slot="home-slot" style="display: flex; gap: 12px;">
+                        <div slot="home-slot" style="display: flex; gap: 12px">
                             <y-card class="form-card" raised>
                                 <h3 slot="header">Form</h3>
                                 <form id="form">
-                                    <div style="display: flex; align-items: flex-end;">
+                                    <div
+                                        style="
+                                            display: flex;
+                                            align-items: flex-end;
+                                        "
+                                    >
                                         <y-input
                                             name="email"
                                             type="email"
@@ -166,17 +348,25 @@
                                         </y-input>
                                         <y-button
                                             slot="append"
-                                            style-type="filled">
+                                            style-type="filled"
+                                        >
                                             <i
-                                            class="fas fa-check"
-                                            slot="left-icon"
-                                        ></i>
+                                                class="fas fa-check"
+                                                slot="left-icon"
+                                            ></i>
+                                        </y-button>
+                                        <y-button
+                                            slot="append"
+                                            style-type="filled"
+                                        >
+                                            <i
+                                                class="fas fa-check"
+                                                slot="left-icon"
+                                            ></i>
                                             Verify
                                         </y-button>
                                     </div>
-                                   
-                
-                                    
+
                                     <y-input
                                         name="password"
                                         type="password"
@@ -263,7 +453,10 @@
                                         >
                                         <!-- No on-label or off-label provided: defaults should show "On" and "Off" in both toggle and track -->
                                     </y-switch>
-                                    <y-switch label-position="right" toggle-label="true">
+                                    <y-switch
+                                        label-position="right"
+                                        toggle-label="true"
+                                    >
                                         <span slot="label"
                                             >Default Example</span
                                         >
@@ -281,9 +474,30 @@
                                         <span slot="on-label">🔥</span>
                                     </y-switch> -->
 
-                                    <y-slider name="volume" value="60" color="primary">Volume</y-slider>
-                                    <y-slider name="brightness" value="80" color="secondary" step="10" label-format="percent">Brightness</y-slider>
-                                    <y-slider name="rating" value="3" min="0" max="5" step="1" color="success" size="small">Rating</y-slider>
+                                    <y-slider
+                                        name="volume"
+                                        value="60"
+                                        color="primary"
+                                        >Volume</y-slider
+                                    >
+                                    <y-slider
+                                        name="brightness"
+                                        value="80"
+                                        color="secondary"
+                                        step="10"
+                                        label-format="percent"
+                                        >Brightness</y-slider
+                                    >
+                                    <y-slider
+                                        name="rating"
+                                        value="3"
+                                        min="0"
+                                        max="5"
+                                        step="1"
+                                        color="success"
+                                        size="small"
+                                        >Rating</y-slider
+                                    >
                                 </form>
                             </y-card>
                             <y-card class="form-card">
@@ -292,10 +506,14 @@
                                         <span slot="label">Account</span>
                                         <div slot="children">
                                             <y-panel href="/profile">
-                                                <span slot="label">Profile</span>
+                                                <span slot="label"
+                                                    >Profile</span
+                                                >
                                             </y-panel>
                                             <y-panel href="/settings">
-                                                <span slot="label">Settings</span>
+                                                <span slot="label"
+                                                    >Settings</span
+                                                >
                                             </y-panel>
                                         </div>
                                     </y-panel>
@@ -308,13 +526,32 @@
                                     </y-panel>
                                 </y-panelbar>
                             </y-card>
-                              <div style="display: flex; flex-direction: column; gap: 16px; width: 200px;">
-                                <y-progress value="75" color="primary">Upload Progress</y-progress>
+                            <div
+                                style="
+                                    display: flex;
+                                    flex-direction: column;
+                                    gap: 16px;
+                                    width: 200px;
+                                "
+                            >
+                                <y-progress value="75" color="primary"
+                                    >Upload Progress</y-progress
+                                >
                                 <!-- <y-progress value="40" color="success" size="small">Storage Used</y-progress> -->
                                 <!-- <y-progress value="90" color="error" size="large" label-format="value" max="100">Disk Space</y-progress> -->
-                                <y-progress value="3" min="0" max="10" step="1" color="secondary" label-format="fraction">Steps Completed</y-progress>
+                                <y-progress
+                                    value="3"
+                                    min="0"
+                                    max="10"
+                                    step="1"
+                                    color="secondary"
+                                    label-format="fraction"
+                                    >Steps Completed</y-progress
+                                >
                                 <!-- <y-progress indeterminate color="help">Loading...</y-progress> -->
-                                <y-progress value="50" color="warning" disabled>Disabled</y-progress>
+                                <y-progress value="50" color="warning" disabled
+                                    >Disabled</y-progress
+                                >
                             </div>
                         </div>
                         <div slot="search-slot">

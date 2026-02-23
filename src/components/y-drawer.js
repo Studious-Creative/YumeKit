@@ -381,7 +381,6 @@ class YumeDrawer extends HTMLElement {
                 touch-action: none;         /* needed for pointer events */
                 user-select: none;
                 transition: opacity 0.15s, background 0.15s;
-                box-sizing: border-box;
             }
             .resize-handle:hover,
             .resize-handle:active {
@@ -398,11 +397,9 @@ class YumeDrawer extends HTMLElement {
             }
             .drawer-panel[data-position="left"] > .resize-handle {
                 order: 99;
-                border-left: var(--component-drawer-border-width, 2px) solid var(--base-background-border, #ccc);
             }
             .drawer-panel[data-position="right"] > .resize-handle {
                 order: -1;
-                border-right: var(--component-drawer-border-width, 2px) solid var(--base-background-border, #ccc);
             }
 
             /* Top / bottom drawers → horizontal strip on the open edge */
@@ -414,11 +411,9 @@ class YumeDrawer extends HTMLElement {
             }
             .drawer-panel[data-position="top"] > .resize-handle {
                 order: 99;
-                border-top: var(--component-drawer-border-width, 2px) solid var(--base-background-border, #ccc);
             }
             .drawer-panel[data-position="bottom"] > .resize-handle {
                 order: -1;
-                border-bottom: var(--component-drawer-border-width, 2px) solid var(--base-background-border, #ccc);
             }
         `;
         this.shadowRoot.appendChild(style);

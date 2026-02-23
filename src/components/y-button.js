@@ -166,8 +166,8 @@ export class YumeButton extends HTMLElement {
         .button {
             box-sizing: border-box;
             display: inline-flex;
-            min-height: var(--button-min-height, 32px);
-            min-width: var(--button-min-width, 32px);
+            min-height: var(--button-min-height, var(--sizing-medium, 40px));
+            min-width: var(--button-min-width, var(--sizing-medium, 40px));
             padding: var(--button-padding, var(--component-button-padding-medium));
             gap: var(--button-gap, var(--component-button-padding-medium));
             justify-content: center;
@@ -209,11 +209,13 @@ export class YumeButton extends HTMLElement {
         .icon {
             display: flex;
             min-width: 16px;
+            min-height: 1em;
             justify-content: center;
+            align-items: center;
         }
         .label {
             line-height: inherit;
-            min-height: 20px;
+            min-height: 1em;
             align-items: center;
         }
       `;
@@ -386,9 +388,9 @@ export class YumeButton extends HTMLElement {
         );
 
         const minSizeMapping = {
-            small: "25px",
-            medium: "32px",
-            large: "48px",
+            small: "var(--sizing-small, 32px)",
+            medium: "var(--sizing-medium, 40px)",
+            large: "var(--sizing-large, 56px)",
         };
         this.button.style.setProperty(
             "--button-min-height",
@@ -444,7 +446,15 @@ export class YumeButton extends HTMLElement {
         const container = this.shadowRoot.querySelector(selector);
 
         const updateVisibility = () => {
-            const hasContent = slot.assignedNodes().length > 0;
+            const hasContent = slot
+                .assignedNodes({ flatten: true })
+                .some(
+                    (n) =>
+                        !(
+                            n.nodeType === Node.TEXT_NODE &&
+                            n.textContent.trim() === ""
+                        ),
+                );
             container.style.display = hasContent ? "inline-flex" : "none";
         };
 

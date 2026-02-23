@@ -121,7 +121,7 @@
     --component-slider-padding: var(--spacing-x-small);
     --component-slider-thumb-border-radius: var(--radii-x-small);
     --component-sidebar-border-width: var(--border-thin);
-    --component-sidebar-padding: var(--spacing-medium);
+    --component-appbar-padding: var(--spacing-medium);
     --component-switch-border-radius: var(--radii-full);
     --component-switch-border-width: var(--border-thin);
     --component-switch-padding: var(--spacing-2x-small);
@@ -136,6 +136,7 @@
     --component-tab-gap-large: var(--spacing-large);
     --component-table-border-width: var(--border-thin);
     --component-table-border-width-header: var(--border-thin);
+    --component-table-border-radius: var(--radii-small);
     --component-table-padding-small: var(--spacing-small);
     --component-table-padding-medium: var(--spacing-medium);
     --component-table-padding-large: var(--spacing-large);
@@ -154,4 +155,6 @@
     --component-drawer-padding: var(--spacing-medium);
     --component-drawer-handle-width: var(--spacing-x-small);
     --component-drawer-handle-padding: var(--spacing-x-small);
+    --component-appbar-width: 240px;
+    --component-appbar-collapsed-width: 56px;
 }

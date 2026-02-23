@@ -86,6 +86,16 @@ export class YumeBadge extends HTMLElement {
         return sizeMap[size] || sizeMap.small;
     }
 
+    hasTargetContent() {
+        return Array.from(this.childNodes).some((node) => {
+            if (node.nodeType === Node.ELEMENT_NODE) return true;
+            if (node.nodeType === Node.TEXT_NODE) {
+                return node.textContent.trim() !== "";
+            }
+            return false;
+        });
+    }
+
     render() {
         const badgeColor = this.getBadgeColor(this.color);
         const { fontSize, padding, minSize } = this.getSizeAttributes(
@@ -95,16 +105,18 @@ export class YumeBadge extends HTMLElement {
             this.position,
             this.alignment,
         );
+        const hasTarget = this.hasTargetContent();
 
         this.shadowRoot.innerHTML = `
             <style>
                 :host {
-                    position: relative;
-                    display: inline-block;
+                    position: ${hasTarget ? "relative" : "static"};
+                    display: inline-flex;
+                    align-items: center;
                 }
                 .badge {
-                    position: absolute;
-                    ${positionStyles}
+                    position: ${hasTarget ? "absolute" : "static"};
+                    ${hasTarget ? positionStyles : ""}
                     background: ${badgeColor};
                     color: var(--base-background-component, #fff);
                     font-size: ${fontSize};
@@ -124,7 +136,7 @@ export class YumeBadge extends HTMLElement {
                     display: inline-block;
                 }
             </style>
-            <slot></slot>
+            ${hasTarget ? "<slot></slot>" : ""}
             <div class="badge" part="badge">${this.value}</div>
         `;
     }

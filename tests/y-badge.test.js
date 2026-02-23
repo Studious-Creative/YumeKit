@@ -68,4 +68,14 @@ describe("YumeBadge", () => {
         const badge = el.shadowRoot.querySelector(".badge");
         expect(badge.textContent.trim()).to.equal("99");
     });
+
+    it("renders inline when no slotted target content exists", async () => {
+        const el = await fixture(html`<y-badge value="AU"></y-badge>`);
+        const badge = el.shadowRoot.querySelector(".badge");
+        const style = el.shadowRoot.querySelector("style").textContent;
+
+        expect(badge).to.exist;
+        expect(style).to.include("position: static;");
+        expect(el.shadowRoot.querySelector("slot")).to.not.exist;
+    });
 });
