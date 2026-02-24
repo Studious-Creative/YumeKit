@@ -195,16 +195,19 @@ export class YumeButton extends HTMLElement {
         .button:hover:not(:disabled) .button-content {
             background: var(--hover-background-color);
             color: var(--hover-text-color);
+            border-color: var(--hover-border-color);
         }
         .button:focus:not(:disabled),
         .button:focus:not(:disabled) .button-content {
             background: var(--focus-background-color);
             color: var(--focus-text-color);
+            border-color: var(--focus-border-color);
         }
         .button:active:not(:disabled),
         .button:active:not(:disabled) .button-content {
             background: var(--active-background-color);
             color: var(--active-text-color);
+            border-color: var(--active-border-color);
         }
         .icon {
             display: flex;
@@ -334,12 +337,20 @@ export class YumeButton extends HTMLElement {
                 `var(${colorVars[color][3]}, rgba(241,246,250,1))`,
             );
             this.button.style.setProperty(
+                "--hover-border-color",
+                `var(${colorVars[color][1]}, rgba(215,219,222,1))`,
+            );
+            this.button.style.setProperty(
                 "--focus-background-color",
                 `var(${colorVars[color][2]}, rgba(188,192,195,1))`,
             );
             this.button.style.setProperty(
                 "--focus-text-color",
                 `var(${colorVars[color][3]}, rgba(241,246,250,1))`,
+            );
+            this.button.style.setProperty(
+                "--focus-border-color",
+                `var(${colorVars[color][2]}, rgba(188,192,195,1))`,
             );
             this.button.style.setProperty(
                 "--active-background-color",
@@ -349,7 +360,13 @@ export class YumeButton extends HTMLElement {
                 "--active-text-color",
                 `var(${colorVars[color][3]}, rgba(241,246,250,1))`,
             );
+            this.button.style.setProperty(
+                "--active-border-color",
+                `var(${colorVars[color][0]}, rgba(29,29,29,1))`,
+            );
         } else {
+            const borderColor = `var(${colorVars[color][0]}, rgba(29,29,29,1))`;
+
             this.button.style.setProperty(
                 "--hover-background-color",
                 `var(${colorVars[color][4]}, rgba(215,219,222,1))`,
@@ -374,6 +391,36 @@ export class YumeButton extends HTMLElement {
                 "--active-text-color",
                 `var(${colorVars[color][3]}, rgba(241,246,250,1))`,
             );
+
+            if (styleType === "outlined") {
+                // Outlined buttons keep their border color across all states
+                this.button.style.setProperty(
+                    "--hover-border-color",
+                    borderColor,
+                );
+                this.button.style.setProperty(
+                    "--focus-border-color",
+                    borderColor,
+                );
+                this.button.style.setProperty(
+                    "--active-border-color",
+                    borderColor,
+                );
+            } else {
+                // Flat buttons match border to background
+                this.button.style.setProperty(
+                    "--hover-border-color",
+                    `var(${colorVars[color][4]}, rgba(215,219,222,1))`,
+                );
+                this.button.style.setProperty(
+                    "--focus-border-color",
+                    `var(${colorVars[color][5]}, rgba(188,192,195,1))`,
+                );
+                this.button.style.setProperty(
+                    "--active-border-color",
+                    `var(${colorVars[color][0]}, rgba(29,29,29,1))`,
+                );
+            }
         }
 
         const [contentPadding, buttonPadding] =

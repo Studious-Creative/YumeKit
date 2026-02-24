@@ -78,7 +78,8 @@ export class YumeAppbar extends HTMLElement {
                 transition: width 0.2s ease;
             }
             .appbar.vertical.collapsed {
-                width: var(--component-appbar-collapsed-width, 56px);
+                width: var(--component-appbar-collapsed-width, 48px);
+                padding: calc(var(--component-appbar-padding, var(--component-sidebar-padding, 8px)) / 2);
             }
 
             /* --- Horizontal layout --- */

@@ -18,4 +18,6 @@ export * from "./components/y-switch.js";
 export * from "./components/y-table.js";
 export * from "./components/y-tag.js";
 export * from "./components/y-tabs.js";
+export * from "./components/y-toast.js";
+export * from "./components/y-tooltip.js";
 export * from "./components/y-theme.js";

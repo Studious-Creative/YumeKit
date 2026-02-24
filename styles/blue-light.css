@@ -157,4 +157,12 @@
     --component-drawer-handle-padding: var(--spacing-x-small);
     --component-appbar-width: 240px;
     --component-appbar-collapsed-width: 56px;
+    --component-tooltip-padding: var(--spacing-x-small);
+    --component-tooltip-padding-h: var(--spacing-medium);
+    --component-tooltip-border-radius: var(--radii-small);
+    --component-toast-padding: var(--spacing-medium);
+    --component-toast-padding-h: var(--spacing-x-large);
+    --component-toast-border-radius: var(--radii-small);
+    --component-toast-border-width: var(--border-thin);
+    --component-toast-offset: var(--spacing-x-large);
 }

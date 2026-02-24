@@ -11,7 +11,7 @@
     --base-content-lightest: var(--neutral-light-5);
     --base-shadow: 0 2px 6px var(--neutral-black-translucent);
     --primary-background-app: var(--orange-dark-1);
-    --primary-background-component: var(--orange-dark-0);
+    --primary-background-component: var(--orange-light-0);
     --primary-background-hover: var(--orange-dark-2);
     --primary-background-active: var(--orange-dark-3);
     --primary-background-border: var(--orange-dark-4);
@@ -19,7 +19,7 @@
     --primary-content-hover: var(--orange-light-7);
     --primary-content-active: var(--orange-light-6);
     --secondary-background-app: var(--amber-dark-1);
-    --secondary-background-component: var(--amber-dark-0);
+    --secondary-background-component: var(--amber-light-0);
     --secondary-background-hover: var(--amber-dark-2);
     --secondary-background-border: var(--amber-dark-3);
     --secondary-background-active: var(--amber-dark-4);
@@ -43,7 +43,7 @@
     --warning-content-hover: var(--yellow-light-7);
     --warning-content-active: var(--yellow-light-6);
     --error-background-app: var(--red-dark-1);
-    --error-background-component: var(--red-dark-0);
+    --error-background-component: var(--red-light-0);
     --error-background-hover: var(--red-dark-2);
     --error-background-border: var(--red-dark-3);
     --error-background-active: var(--red-dark-4);
@@ -51,7 +51,7 @@
     --error-content-hover: var(--red-light-7);
     --error-content-active: var(--red-light-6);
     --help-background-app: var(--indigo-dark-1);
-    --help-background-component: var(--indigo-dark-0);
+    --help-background-component: var(--indigo-light-0);
     --help-background-hover: var(--indigo-dark-2);
     --help-background-active: var(--indigo-dark-3);
     --help-background-border: var(--indigo-dark-4);
@@ -156,5 +156,13 @@
     --component-drawer-handle-width: var(--spacing-x-small);
     --component-drawer-handle-padding: var(--spacing-x-small);
     --component-appbar-width: 240px;
-    --component-appbar-collapsed-width: 56px;
+    --component-appbar-collapsed-width: 48px;
+    --component-tooltip-padding: var(--spacing-x-small);
+    --component-tooltip-padding-h: var(--spacing-medium);
+    --component-tooltip-border-radius: var(--radii-small);
+    --component-toast-padding: var(--spacing-medium);
+    --component-toast-padding-h: var(--spacing-x-large);
+    --component-toast-border-radius: var(--radii-small);
+    --component-toast-border-width: var(--border-thin);
+    --component-toast-offset: var(--spacing-x-large);
 }

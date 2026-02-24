@@ -19,652 +19,217 @@
                 theme-path="/styles/orange-dark.css"
                 style="color: var(--base-content--)"
             >
-                <y-button color="primary" id="menu-trigger" style-type="filled"
-                    >Menu</y-button
+                <!-- ============ Tooltip Examples ============ -->
+                <h3>Tooltips</h3>
+                <section
+                    style="
+                        display: flex;
+                        gap: 24px;
+                        flex-wrap: wrap;
+                        align-items: center;
+                        padding: 40px 0;
+                    "
                 >
-                <y-badge
-                    value="3"
-                    position="bottom"
-                    alignment="right"
-                    color="error"
-                    size="small"
-                >
-                    <y-avatar alt="John Doe"></y-avatar>
-                </y-badge>
-
-                <y-menu
-                    id="main-menu"
-                    anchor="menu-trigger"
-                    items='[
-                        { "text": "Dashboard", "url": "https://example.com/dashboard" },
-                        { "text": "Settings", "children": [
-                            { "text": "Profile", "url": "https://example.com/settings/profile" },
-                            { "text": "Security" }
-                        ]},
-                        { "text": "Help", "value": "help" }
-                    ]'
-                >
-                    <!-- <template slot="icon-dashboard">
-                        <i class="fas fa-tachometer-alt"></i>
-                    </template>
-                    <template slot="template-settings">
-                        <strong>⚙️ Settings</strong>
-                    </template>
-                    <template slot="template-security">
-                        🔒 Security Center
-                    </template>
-                    <template slot="template-help">
-                        ❓ Help &amp; Support
-                    </template> -->
-                </y-menu>
-                <y-button id="open-dialog" color="base" style-type="filled"
-                    >Open Dialog</y-button
-                >
-                <y-button
-                    id="open-drawer-left"
-                    color="secondary"
-                    style-type="filled"
-                    >Drawer Left</y-button
-                >
-                <y-button
-                    id="open-drawer-right"
-                    color="success"
-                    style-type="filled"
-                    >Drawer Right</y-button
-                >
-                <y-button
-                    id="open-drawer-top"
-                    color="warning"
-                    style-type="filled"
-                    >Drawer Top</y-button
-                >
-                <y-button
-                    id="open-drawer-bottom"
-                    color="error"
-                    style-type="filled"
-                    >Drawer Bottom</y-button
-                >
-
-                <!-- Table -->
-                <section style="display: flex; gap: 24px">
-                    <!-- AppBar expanded -->
-                    <y-appbar style="height: 600px">
-                        <div slot="header">
-                            <y-button color="primary" style-type="flat">
-                                <i class="fas fa-cloud" slot="left-icon"></i>
-                                Logo
-                            </y-button>
-                        </div>
-
-                        <y-button color="base" style-type="flat">
-                            <i class="fas fa-smile" slot="left-icon"></i>
-                            Item 1
-                        </y-button>
-                        <y-button color="base" style-type="flat">
-                            <i class="fas fa-smile" slot="left-icon"></i>
-                            Item 1
-                        </y-button>
-
-                        <y-button
-                            id="appbar-menu-trigger-expanded"
-                            color="base"
-                            style-type="flat"
+                    <y-tooltip text="Default top tooltip">
+                        <y-button color="base" style-type="filled"
+                            >Top (default)</y-button
                         >
-                            <i class="fas fa-bars" slot="left-icon"></i>
-                            Menu
-                        </y-button>
+                    </y-tooltip>
 
-                        <div
-                            slot="footer"
-                            style="display: flex; align-items: center; gap: 8px"
+                    <y-tooltip text="Bottom tooltip" position="bottom">
+                        <y-button color="primary" style-type="filled"
+                            >Bottom</y-button
                         >
-                            <y-badge
-                                value="AU"
-                                color="primary"
-                                shape="circle"
-                                size="small"
-                            >
-                            </y-badge>
-                            <span>Anonymous User</span>
-                        </div>
-                    </y-appbar>
+                    </y-tooltip>
 
-                    <!-- AppBar collapsed -->
-                    <y-appbar collapsed style="height: 600px">
-                        <div slot="header">
-                            <y-button color="primary" style-type="flat">
-                                <i class="fas fa-cloud" slot="left-icon"></i>
-                            </y-button>
-                        </div>
-
-                        <y-button color="base" style-type="flat">
-                            <i class="fas fa-smile" slot="left-icon"></i>
-                        </y-button>
-                        <y-button color="base" style-type="flat">
-                            <i class="fas fa-smile" slot="left-icon"></i>
-                        </y-button>
-
-                        <y-button
-                            id="appbar-menu-trigger-collapsed"
-                            color="base"
-                            style-type="flat"
+                    <y-tooltip text="Left tooltip" position="left">
+                        <y-button color="secondary" style-type="filled"
+                            >Left</y-button
                         >
-                            <i class="fas fa-bars" slot="left-icon"></i>
-                        </y-button>
+                    </y-tooltip>
 
-                        <div slot="footer">
-                            <y-badge
-                                value="AU"
-                                color="primary"
-                                shape="circle"
-                                size="small"
-                            ></y-badge>
-                        </div>
-                    </y-appbar>
-
-                    <y-menu
-                        id="appbar-menu-expanded"
-                        anchor="appbar-menu-trigger-expanded"
-                        items='[
-                            { "text": "Dashboard", "url": "https://example.com/dashboard" },
-                            { "text": "Projects", "children": [
-                                { "text": "Project A" },
-                                { "text": "Project B" }
-                            ]},
-                            { "text": "Settings" }
-                        ]'
-                    ></y-menu>
-
-                    <y-menu
-                        id="appbar-menu-collapsed"
-                        anchor="appbar-menu-trigger-collapsed"
-                        items='[
-                            { "text": "Notifications" },
-                            { "text": "Profile" },
-                            { "text": "Sign Out" }
-                        ]'
-                    ></y-menu>
-                </section>
-
-                <!-- Table -->
-                <section>
-                    <h3>Table</h3>
-                    <y-table
-                        columns='[
-                            { "field": "name",       "header": "Column Header" },
-                            { "field": "email",      "header": "Column Header" },
-                            { "field": "role",       "header": "Column Header" },
-                            { "field": "status",     "header": "Column Header" },
-                            { "field": "department", "header": "Column Header" },
-                            { "field": "location",   "header": "Column Header" },
-                            { "field": "joined",     "header": "Column Header" }
-                        ]'
-                        data='[
-                            { "name": "Row Header", "email": "Cell", "role": "Cell", "status": "Cell", "department": "Cell", "location": "Cell", "joined": "Cell" },
-                            { "name": "Row Header", "email": "Cell", "role": "Cell", "status": "Cell", "department": "Cell", "location": "Cell", "joined": "Cell" },
-                            { "name": "Row Header", "email": "Cell", "role": "Cell", "status": "Cell", "department": "Cell", "location": "Cell", "joined": "Cell" },
-                            { "name": "Row Header", "email": "Cell", "role": "Cell", "status": "Cell", "department": "Cell", "location": "Cell", "joined": "Cell" },
-                            { "name": "Row Header", "email": "Cell", "role": "Cell", "status": "Cell", "department": "Cell", "location": "Cell", "joined": "Cell" },
-                            { "name": "Row Header", "email": "Cell", "role": "Cell", "status": "Cell", "department": "Cell", "location": "Cell", "joined": "Cell" },
-                            { "name": "Row Header", "email": "Cell", "role": "Cell", "status": "Cell", "department": "Cell", "location": "Cell", "joined": "Cell" },
-                            { "name": "Row Header", "email": "Cell", "role": "Cell", "status": "Cell", "department": "Cell", "location": "Cell", "joined": "Cell" },
-                            { "name": "Row Header", "email": "Cell", "role": "Cell", "status": "Cell", "department": "Cell", "location": "Cell", "joined": "Cell" },
-                            { "name": "Row Header", "email": "Cell", "role": "Cell", "status": "Cell", "department": "Cell", "location": "Cell", "joined": "Cell" }
-                        ]'
-                    ></y-table>
-                </section>
-
-                <!-- Drawers -->
-                <y-drawer anchor="open-drawer-left" position="left" resizable>
-                    <div slot="header"><h3>Left Drawer</h3></div>
-                    <div slot="body">
-                        <p>This drawer slides in from the left.</p>
-                        <p>Great for navigation menus.</p>
-                        <p>Drag the edge to resize.</p>
-                    </div>
-                    <div slot="footer">
-                        <y-button
-                            color="secondary"
-                            style-type="filled"
-                            class="close-drawer"
-                            >Close</y-button
+                    <y-tooltip text="Right tooltip" position="right">
+                        <y-button color="success" style-type="filled"
+                            >Right</y-button
                         >
-                    </div>
-                </y-drawer>
+                    </y-tooltip>
 
-                <y-drawer anchor="open-drawer-right" position="right" resizable>
-                    <div slot="header"><h3>Right Drawer</h3></div>
-                    <div slot="body">
-                        <p>This drawer slides in from the right.</p>
-                        <p>Useful for detail panels or settings.</p>
-                        <p>Drag the edge to resize.</p>
-                    </div>
-                    <div slot="footer">
-                        <y-button
-                            color="success"
-                            style-type="filled"
-                            class="close-drawer"
-                            >Close</y-button
+                    <y-tooltip text="Error color tooltip" color="error">
+                        <y-button color="error" style-type="filled"
+                            >Error Color</y-button
                         >
-                    </div>
-                </y-drawer>
+                    </y-tooltip>
 
-                <y-drawer
-                    anchor="open-drawer-top"
-                    position="top"
-                    style="--drawer-height: 200px"
-                >
-                    <div slot="header"><h3>Top Drawer</h3></div>
-                    <div slot="body">
-                        <p>This drawer drops down from the top.</p>
-                    </div>
-                </y-drawer>
+                    <y-tooltip
+                        text="Warning color tooltip"
+                        color="warning"
+                        position="bottom"
+                    >
+                        <y-button color="warning" style-type="filled"
+                            >Warning Color</y-button
+                        >
+                    </y-tooltip>
 
-                <y-drawer
-                    anchor="open-drawer-bottom"
-                    position="bottom"
-                    style="--drawer-height: 200px"
-                >
-                    <div slot="header"><h3>Bottom Drawer</h3></div>
-                    <div slot="body">
-                        <p>This drawer slides up from the bottom.</p>
-                    </div>
-                </y-drawer>
-
-                <!-- Your dialog -->
-                <y-dialog anchor="open-dialog" id="my-dialog">
-                    <div slot="header">
-                        <h3>Notification</h3>
-                    </div>
-                    <div slot="body">
-                        <p>This is the body of the dialog.</p>
-                        <p>It scrolls if the content grows too large.</p>
-                    </div>
-                    <div slot="footer">
-                        <y-button id="close-btn">Close</y-button>
-                    </div>
-                </y-dialog>
-                <section>
-                    <y-tabs
+                    <y-tooltip
+                        text="Helpful info here"
+                        color="help"
                         position="right"
-                        options='[
-                      {"id":"profile",       "label":"Profile",       "slot":"profile-slot"},
-                      {"id":"settings",      "label":"Settings",      "slot":"settings-slot"},
-                      {"id":"notifications", "label":"Notifications", "slot":"notifications-slot", "disabled": true}
-                    ]'
                     >
-                        <!-- icon in the left-icon-profile slot -->
-                        <i slot="left-icon-profile" class="fas fa-user"></i>
-                        <div slot="profile-slot">
-                            <h2>Welcome, User!</h2>
-                            <p>This is your profile overview.</p>
-                        </div>
-
-                        <!-- icon in the right-icon-settings slot -->
-                        <i slot="right-icon-settings" class="fas fa-cog"></i>
-                        <div slot="settings-slot">
-                            <h2>Settings</h2>
-                            <p>Adjust your preferences here.</p>
-                        </div>
-
-                        <!-- icon in the left-icon-notifications slot (but tab is disabled) -->
                         <i
-                            slot="left-icon-notifications"
-                            class="fas fa-bell"
+                            class="fas fa-circle-info"
+                            style="font-size: 1.5em; cursor: help"
                         ></i>
-                        <div slot="notifications-slot">
-                            <h2>Notifications</h2>
-                            <p>You have no new alerts.</p>
-                        </div>
-                    </y-tabs>
+                    </y-tooltip>
+
+                    <y-tooltip text="Slow tooltip (500ms delay)" delay="500">
+                        <y-button color="base" style-type="outlined"
+                            >Slow Delay</y-button
+                        >
+                    </y-tooltip>
+
+                    <y-tooltip text="Instant tooltip" delay="0">
+                        <y-button color="base" style-type="outlined"
+                            >No Delay</y-button
+                        >
+                    </y-tooltip>
                 </section>
-                <section>
-                    <y-tabs
-                        options='[
-                        { "id": "home", "label": "Home", "slot": "home-slot" },
-                        { "id": "search", "label": "Search", "slot": "search-slot" },
-                        { "id": "settings", "label": "Settings", "slot": "settings-slot" }
-                    ]'
-                        style="height: 100%; width: 100%"
-                        n
+
+                <!-- ============ Toast Examples ============ -->
+                <h3>Toasts</h3>
+                <section style="display: flex; gap: 12px; flex-wrap: wrap">
+                    <y-button id="toast-base" color="base" style-type="filled"
+                        >Base Toast</y-button
                     >
-                        <div slot="home-slot" style="display: flex; gap: 12px">
-                            <y-card class="form-card" raised>
-                                <h3 slot="header">Form</h3>
-                                <form id="form">
-                                    <div
-                                        style="
-                                            display: flex;
-                                            align-items: flex-end;
-                                        "
-                                    >
-                                        <y-input
-                                            name="email"
-                                            type="email"
-                                            size="medium"
-                                            value="me@example.com"
-                                        >
-                                            <span slot="label">Email</span>
-                                        </y-input>
-                                        <y-button
-                                            slot="append"
-                                            style-type="filled"
-                                        >
-                                            <i
-                                                class="fas fa-check"
-                                                slot="left-icon"
-                                            ></i>
-                                        </y-button>
-                                        <y-button
-                                            slot="append"
-                                            style-type="filled"
-                                        >
-                                            <i
-                                                class="fas fa-check"
-                                                slot="left-icon"
-                                            ></i>
-                                            Verify
-                                        </y-button>
-                                    </div>
-
-                                    <y-input
-                                        name="password"
-                                        type="password"
-                                        size="medium"
-                                        value="password"
-                                    >
-                                        <span slot="label">Password</span>
-                                    </y-input>
-                                    <y-input
-                                        type="text"
-                                        size="medium"
-                                        value="username"
-                                        name="username"
-                                    >
-                                        <span slot="label">Username</span>
-                                    </y-input>
-                                    <y-select
-                                        name="flavor"
-                                        display-mode="tag"
-                                        multiple
-                                        placeholder="Choose a flavor"
-                                        options='[
-                                            {"label": "Vanilla", "value": "vanilla"},
-                                            {"label": "Chocolate", "value": "chocolate"},
-                                            {"label": "Strawberry", "value": "strawberry"}
-                                        ]'
-                                    >
-                                        <span slot="label"
-                                            >Favorite Flavor</span
-                                        >
-                                    </y-select>
-
-                                    <y-checkbox
-                                        name="subscribe"
-                                        value="yes"
-                                        checked
-                                    >
-                                        Subscribe to newsletter
-                                    </y-checkbox>
-
-                                    <y-checkbox
-                                        label-position="left"
-                                        indeterminate
-                                    >
-                                        Agree to Terms (Pending)
-                                    </y-checkbox>
-
-                                    <y-checkbox disabled>
-                                        Disabled Option
-                                    </y-checkbox>
-
-                                    <y-button
-                                        color="primary"
-                                        style-type="filled"
-                                        type="submit"
-                                    >
-                                        <i
-                                            class="fas fa-check"
-                                            slot="left-icon"
-                                        ></i>
-                                        Submit
-                                    </y-button>
-                                    <y-radio
-                                        name="fruits"
-                                        options='[
-                                            { "label": "Apple", "value": "apple" },
-                                            { "label": "Banana", "value": "banana" },
-                                            { "label": "Cherry", "value": "cherry" }
-                                        ]'
-                                    >
-                                    </y-radio>
-                                    <!-- <y-switch
-                                        label-position="right"
-                                        size="large"
-                                    >
-                                        <span slot="label">Dark Mode</span>
-                                        <span slot="on-label">🌙</span>
-                                        <span slot="off-label">☀️</span>
-                                    </y-switch> -->
-
-                                    <y-switch label-position="right">
-                                        <span slot="label"
-                                            >Default Example</span
-                                        >
-                                        <!-- No on-label or off-label provided: defaults should show "On" and "Off" in both toggle and track -->
-                                    </y-switch>
-                                    <y-switch
-                                        label-position="right"
-                                        toggle-label="true"
-                                    >
-                                        <span slot="label"
-                                            >Default Example</span
-                                        >
-                                        <!-- No on-label or off-label provided: defaults should show "On" and "Off" in both toggle and track -->
-                                    </y-switch>
-
-                                    <!-- <y-switch
-                                        label-position="right"
-                                        size="small"
-                                        disabled
-                                    >
-                                        <span slot="label"
-                                            >Single Slot Provided</span
-                                        >
-                                        <span slot="on-label">🔥</span>
-                                    </y-switch> -->
-
-                                    <y-slider
-                                        name="volume"
-                                        value="60"
-                                        color="primary"
-                                        >Volume</y-slider
-                                    >
-                                    <y-slider
-                                        name="brightness"
-                                        value="80"
-                                        color="secondary"
-                                        step="10"
-                                        label-format="percent"
-                                        >Brightness</y-slider
-                                    >
-                                    <y-slider
-                                        name="rating"
-                                        value="3"
-                                        min="0"
-                                        max="5"
-                                        step="1"
-                                        color="success"
-                                        size="small"
-                                        >Rating</y-slider
-                                    >
-                                </form>
-                            </y-card>
-                            <y-card class="form-card">
-                                <y-panelbar exclusive>
-                                    <y-panel expanded>
-                                        <span slot="label">Account</span>
-                                        <div slot="children">
-                                            <y-panel href="/profile">
-                                                <span slot="label"
-                                                    >Profile</span
-                                                >
-                                            </y-panel>
-                                            <y-panel href="/settings">
-                                                <span slot="label"
-                                                    >Settings</span
-                                                >
-                                            </y-panel>
-                                        </div>
-                                    </y-panel>
-
-                                    <y-panel href="/friends">
-                                        <span slot="label">Friends</span>
-                                    </y-panel>
-                                    <y-panel href="/other">
-                                        <span slot="label">Other</span>
-                                    </y-panel>
-                                </y-panelbar>
-                            </y-card>
-                            <div
-                                style="
-                                    display: flex;
-                                    flex-direction: column;
-                                    gap: 16px;
-                                    width: 200px;
-                                "
-                            >
-                                <y-progress value="75" color="primary"
-                                    >Upload Progress</y-progress
-                                >
-                                <!-- <y-progress value="40" color="success" size="small">Storage Used</y-progress> -->
-                                <!-- <y-progress value="90" color="error" size="large" label-format="value" max="100">Disk Space</y-progress> -->
-                                <y-progress
-                                    value="3"
-                                    min="0"
-                                    max="10"
-                                    step="1"
-                                    color="secondary"
-                                    label-format="fraction"
-                                    >Steps Completed</y-progress
-                                >
-                                <!-- <y-progress indeterminate color="help">Loading...</y-progress> -->
-                                <y-progress value="50" color="warning" disabled
-                                    >Disabled</y-progress
-                                >
-                            </div>
-                        </div>
-                        <div slot="search-slot">
-                            <y-card raised>
-                                <y-button color="primary" style-type="filled">
-                                    <i
-                                        class="fas fa-smile"
-                                        slot="left-icon"
-                                    ></i>
-                                    Log In
-                                    <i
-                                        class="fas fa-smile"
-                                        slot="right-icon"
-                                    ></i>
-                                </y-button>
-                                <y-button color="secondary" style-type="filled">
-                                    <i
-                                        class="fas fa-smile"
-                                        slot="left-icon"
-                                    ></i>
-                                    Log In
-                                    <i
-                                        class="fas fa-smile"
-                                        slot="right-icon"
-                                    ></i>
-                                </y-button>
-                                <y-button color="base" style-type="filled">
-                                    <i
-                                        class="fas fa-smile"
-                                        slot="left-icon"
-                                    ></i>
-                                    Log In
-                                    <i
-                                        class="fas fa-smile"
-                                        slot="right-icon"
-                                    ></i>
-                                </y-button>
-                                <y-button color="success" style-type="filled">
-                                    <i
-                                        class="fas fa-smile"
-                                        slot="left-icon"
-                                    ></i>
-                                    Log In
-                                    <i
-                                        class="fas fa-smile"
-                                        slot="right-icon"
-                                    ></i>
-                                </y-button>
-                                <y-button color="warning" style-type="filled">
-                                    <i
-                                        class="fas fa-smile"
-                                        slot="left-icon"
-                                    ></i>
-                                    Log In
-                                    <i
-                                        class="fas fa-smile"
-                                        slot="right-icon"
-                                    ></i>
-                                </y-button>
-                                <y-button color="error" style-type="filled">
-                                    <i
-                                        class="fas fa-smile"
-                                        slot="left-icon"
-                                    ></i>
-                                    Log In
-                                    <i
-                                        class="fas fa-smile"
-                                        slot="right-icon"
-                                    ></i>
-                                </y-button>
-                                <y-button color="help" style-type="filled">
-                                    <i
-                                        class="fas fa-smile"
-                                        slot="left-icon"
-                                    ></i>
-                                    Log In
-                                    <i
-                                        class="fas fa-smile"
-                                        slot="right-icon"
-                                    ></i>
-                                </y-button>
-                            </y-card>
-                        </div>
-                        <div slot="settings-slot">
-                            <div>
-                                <p>Notifications Content Here</p>
-                            </div>
-                        </div>
-                    </y-tabs>
+                    <y-button
+                        id="toast-success"
+                        color="success"
+                        style-type="filled"
+                    >
+                        <i class="fas fa-check" slot="left-icon"></i>
+                        Success
+                    </y-button>
+                    <y-button
+                        id="toast-error"
+                        color="error"
+                        style-type="filled"
+                    >
+                        <i class="fas fa-xmark" slot="left-icon"></i>
+                        Error
+                    </y-button>
+                    <y-button
+                        id="toast-warning"
+                        color="warning"
+                        style-type="filled"
+                    >
+                        <i
+                            class="fas fa-triangle-exclamation"
+                            slot="left-icon"
+                        ></i>
+                        Warning
+                    </y-button>
+                    <y-button
+                        id="toast-primary"
+                        color="primary"
+                        style-type="filled"
+                    >
+                        <i class="fas fa-info" slot="left-icon"></i>
+                        Info
+                    </y-button>
+                    <y-button
+                        id="toast-persistent"
+                        color="help"
+                        style-type="filled"
+                        >Persistent (no auto-dismiss)</y-button
+                    >
+                    <y-button
+                        id="toast-no-close"
+                        color="secondary"
+                        style-type="filled"
+                        >No Close Button</y-button
+                    >
+                    <y-button
+                        id="toast-clear"
+                        color="base"
+                        style-type="outlined"
+                        >Clear All</y-button
+                    >
                 </section>
+
+                <y-toast id="toaster" position="bottom-right"></y-toast>
             </y-theme>
         </main>
         <script type="module" src="./src/index.js"></script>
         <script type="module">
-            const form = document.getElementById("form");
-
-            form.addEventListener("submit", (e) => {
-                e.preventDefault();
-                const formData = new FormData(form);
-                console.log(Object.fromEntries(formData.entries()));
-            });
+            const toaster = document.getElementById("toaster");
 
             document
-                .getElementById("close-btn")
+                .getElementById("toast-base")
                 .addEventListener("click", () => {
-                    document.getElementById("my-dialog").visible = false;
+                    toaster.show({
+                        message: "This is a base toast notification.",
+                    });
                 });
-
-            document.querySelectorAll(".close-drawer").forEach((btn) => {
-                btn.addEventListener("click", () => {
-                    btn.closest("y-drawer").visible = false;
+            document
+                .getElementById("toast-success")
+                .addEventListener("click", () => {
+                    toaster.show({
+                        message: "Operation completed successfully!",
+                        color: "success",
+                        icon: "fas fa-check-circle",
+                    });
                 });
-            });
+            document
+                .getElementById("toast-error")
+                .addEventListener("click", () => {
+                    toaster.show({
+                        message: "Something went wrong. Please try again.",
+                        color: "error",
+                        icon: "fas fa-circle-xmark",
+                    });
+                });
+            document
+                .getElementById("toast-warning")
+                .addEventListener("click", () => {
+                    toaster.show({
+                        message: "Careful — this action cannot be undone.",
+                        color: "warning",
+                        icon: "fas fa-triangle-exclamation",
+                    });
+                });
+            document
+                .getElementById("toast-primary")
+                .addEventListener("click", () => {
+                    toaster.show({
+                        message: "New update available. Refresh to apply.",
+                        color: "primary",
+                        icon: "fas fa-circle-info",
+                    });
+                });
+            document
+                .getElementById("toast-persistent")
+                .addEventListener("click", () => {
+                    toaster.show({
+                        message: "This toast stays until you dismiss it.",
+                        color: "help",
+                        icon: "fas fa-thumbtack",
+                        duration: 0,
+                    });
+                });
+            document
+                .getElementById("toast-no-close")
+                .addEventListener("click", () => {
+                    toaster.show({
+                        message:
+                            "Auto-dismisses in 4 seconds, no close button.",
+                        color: "secondary",
+                        dismissible: false,
+                    });
+                });
+            document
+                .getElementById("toast-clear")
+                .addEventListener("click", () => {
+                    toaster.clear();
+                });
         </script>
     </body>
 </html>
