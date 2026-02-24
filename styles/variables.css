@@ -1,4 +1,4 @@
-/* Colors - Mode 1 */
+/* Colors */
 :root {
     --neutral--: #7f8286ff;
     --neutral-white: #ffffffff;
@@ -239,7 +239,7 @@
     --brown-translucent: #ab642e1f;
 }
 
-/* Numerics - Mode 1 */
+/* Numerics */
 :root {
     --border-none: 0px;
     --border-x-thin: 1px;
@@ -283,4 +283,114 @@
     --sizing-small: 32px;
     --sizing-medium: 40px;
     --sizing-large: 56px;
+}
+
+/* Components */
+
+:root {
+    --component-appbar-collapsed-width: 48px;
+    --component-appbar-padding: var(--spacing-medium);
+    --component-appbar-width: 240px;
+    --component-avatar-border-radius-circle: var(--radii-full);
+    --component-avatar-border-radius-square: var(--radii-small);
+    --component-avatar-size-large: var(--sizing-large);
+    --component-avatar-size-medium: var(--sizing-medium);
+    --component-avatar-size-small: var(--sizing-small);
+    --component-badge-border-radius-circle: var(--radii-full);
+    --component-badge-border-radius-square: var(--radii-small);
+    --component-badge-padding-large: var(--spacing-small);
+    --component-badge-padding-medium: var(--spacing-x-small);
+    --component-badge-padding-small: var(--spacing-2x-small);
+    --component-badge-size-large: var(--sizing-medium);
+    --component-badge-size-medium: var(--sizing-small);
+    --component-badge-size-small: var(--sizing-2x-small);
+    --component-button-border-radius-inner: var(--radii-x-small);
+    --component-button-border-radius-outer: var(--radii-small);
+    --component-button-border-width: var(--border-thin);
+    --component-button-border-width-2: var(--border-thin);
+    --component-button-border-width-2: var(--border-thin);
+    --component-button-padding-large: var(--spacing-x-large);
+    --component-button-padding-medium: var(--spacing-medium);
+    --component-button-padding-small: var(--spacing-x-small);
+    --component-card-border-radius-inner: var(--radii-x-small);
+    --component-card-border-radius-outer: var(--radii-small);
+    --component-card-border-width: var(--border-thin);
+    --component-card-padding-inner: var(--spacing-medium);
+    --component-card-padding-outer: var(--spacing-x-large);
+    --component-checkbox-icon-size: var(--sizing-2x-small);
+    --component-checkbox-size: var(--sizing-x-small);
+    --component-dialog-border-radius-inner: var(--radii-x-small);
+    --component-dialog-border-radius-outer: var(--radii-small);
+    --component-dialog-border-width: var(--border-thin);
+    --component-dialog-padding: var(--spacing-medium);
+    --component-drawer-border-radius: var(--radii-small);
+    --component-drawer-border-width: var(--border-thin);
+    --component-drawer-handle-padding: var(--spacing-x-small);
+    --component-drawer-handle-width: var(--spacing-x-small);
+    --component-drawer-padding: var(--spacing-medium);
+    --component-inputs-border-radius-inner: var(--radii-x-small);
+    --component-inputs-border-radius-outer: var(--radii-small);
+    --component-inputs-border-width: var(--border-thin);
+    --component-inputs-padding-large: var(--spacing-x-large);
+    --component-inputs-padding-medium: var(--spacing-medium);
+    --component-inputs-padding-small: var(--spacing-x-small);
+    --component-menu-border-radius: var(--radii-x-small);
+    --component-menu-border-width: var(--border-thin);
+    --component-menu-padding-horizontal: var(--spacing-small);
+    --component-menu-padding-vertical: var(--spacing-x-small);
+    --component-panelbar-border-radius: var(--radii-x-small);
+    --component-panelbar-border-width: var(--border-thin);
+    --component-panelbar-border-width: var(--border-thin);
+    --component-panelbar-padding: var(--spacing-medium);
+    --component-progress-border-radius-inner: var(--radii-small);
+    --component-progress-border-radius-outer: calc(var(--radii-small) + 4px);
+    --component-progress-border-width: var(--border-thin);
+    --component-progress-padding: var(--spacing-x-small);
+    --component-progress-size-large: var(--sizing-large);
+    --component-progress-size-medium: var(--sizing-medium);
+    --component-progress-size-small: var(--sizing-small);
+    --component-radio-dot-offset: var(--spacing-2x-small);
+    --component-radio-dot-size: var(--spacing-medium);
+    --component-radio-size: var(--sizing-2x-small);
+    --component-sidebar-border-radius: var(--radii-small);
+    --component-sidebar-border-width: var(--border-thin);
+    --component-slider-border-radius-inner: var(--radii-small);
+    --component-slider-border-radius-outer: calc(var(--radii-small) + 4px);
+    --component-slider-border-width: var(--border-thin);
+    --component-slider-padding: var(--spacing-x-small);
+    --component-slider-thumb-border-radius: var(--radii-x-small);
+    --component-switch-border-radius: var(--radii-full);
+    --component-switch-border-width: var(--border-thin);
+    --component-switch-padding: var(--spacing-2x-small);
+    --component-tab-border-radius-inner: var(--radii-x-small);
+    --component-tab-border-radius-outer: var(--radii-small);
+    --component-tab-border-width: var(--border-thin);
+    --component-tab-gap-large: var(--spacing-large);
+    --component-tab-gap-medium: var(--spacing-small);
+    --component-tab-gap-small: var(--spacing-2x-small);
+    --component-tab-padding-large: var(--spacing-2x-large);
+    --component-tab-padding-medium: var(--spacing-large);
+    --component-tab-padding-small: var(--spacing-small);
+    --component-table-border-radius: var(--radii-small);
+    --component-table-border-width: var(--border-thin);
+    --component-table-border-width-header: var(--border-thin);
+    --component-table-padding-large: var(--spacing-large);
+    --component-table-padding-medium: var(--spacing-medium);
+    --component-table-padding-small: var(--spacing-small);
+    --component-tag-border-radius-circle: var(--radii-full);
+    --component-tag-border-radius-square: var(--radii-small);
+    --component-tag-padding-large: var(--spacing-small);
+    --component-tag-padding-medium: var(--spacing-x-small);
+    --component-tag-padding-small: var(--spacing-2x-small);
+    --component-tag-size-large: var(--sizing-large);
+    --component-tag-size-medium: var(--sizing-medium);
+    --component-tag-size-small: var(--sizing-small);
+    --component-toast-border-radius: var(--radii-small);
+    --component-toast-border-width: var(--border-thin);
+    --component-toast-offset: var(--spacing-x-large);
+    --component-toast-padding: var(--spacing-medium);
+    --component-toast-padding-h: var(--spacing-x-large);
+    --component-tooltip-border-radius: var(--radii-small);
+    --component-tooltip-padding: var(--spacing-x-small);
+    --component-tooltip-padding-h: var(--spacing-medium);
 }
