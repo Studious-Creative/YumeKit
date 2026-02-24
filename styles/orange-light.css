@@ -27,7 +27,7 @@
     --secondary-content-hover: var(--amber-dark-7);
     --secondary-content-active: var(--amber-dark-6);
     --success-background-app: var(--green-light-1);
-    --success-background-component: var(--green-dark-0);
+    --success-background-component: var(--green-light-0);
     --success-background-hover: var(--green-light-2);
     --success-background-border: var(--green-light-3);
     --success-background-active: var(--green-light-4);
@@ -35,7 +35,7 @@
     --success-content-hover: var(--green-dark-7);
     --success-content-active: var(--green-dark-6);
     --warning-background-app: var(--yellow-light-1);
-    --warning-background-component: var(--yellow-dark-0);
+    --warning-background-component: var(--yellow-light-0);
     --warning-background-hover: var(--yellow-light-2);
     --warning-background-border: var(--yellow-light-3);
     --warning-background-active: var(--yellow-light-4);

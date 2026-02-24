@@ -51,7 +51,7 @@
     --error-content-hover: var(--red-light-7);
     --error-content-active: var(--red-light-6);
     --help-background-app: var(--indigo-dark-1);
-    --help-background-component: var(--indigo-dark-0);
+    --help-background-component: var(--indigo-light-0);
     --help-background-hover: var(--indigo-dark-2);
     --help-background-active: var(--indigo-dark-3);
     --help-background-border: var(--indigo-dark-4);
