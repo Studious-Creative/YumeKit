@@ -69,7 +69,7 @@ class YumeDialog extends HTMLElement {
             .header {
                 padding: var(--component-dialog-padding, var(--spacing-medium));
                 font-weight: bold;
-                border-bottom: var(--component-dialog-border-width, 1px) solid var(--base-background-border);
+                border-bottom: var(--component-dialog-inner-border-width, 1px) solid var(--base-background-border);
             }
             .body {
                 padding: var(--component-dialog-padding, var(--spacing-medium));
@@ -78,7 +78,7 @@ class YumeDialog extends HTMLElement {
             }
             .footer {
                 padding: var(--component-dialog-padding, var(--spacing-medium));
-                border-top: var(--component-dialog-border-width, 1px) solid var(--base-background-border);
+                border-top: var(--component-dialog-inner-border-width, 1px) solid var(--base-background-border);
                 text-align: right;
             }
 

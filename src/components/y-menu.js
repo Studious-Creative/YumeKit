@@ -146,7 +146,10 @@ class YumeMenu extends HTMLElement {
     _setupAnchor() {
         const id = this.anchor;
         if (id) {
-            const el = document.getElementById(id);
+            const root = this.getRootNode();
+            const el = root?.getElementById
+                ? root.getElementById(id)
+                : document.getElementById(id);
             if (el) {
                 this._anchorEl = el;
                 this._anchorEl.addEventListener("click", this._onAnchorClick);

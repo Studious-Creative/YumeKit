@@ -112,7 +112,7 @@ export class YumeCard extends HTMLElement {
 
             .header {
                 padding: var(--component-card-padding-outer);
-                border-bottom: var(--card-border-width, var(--component-card-border-width)) solid var(--card-border-color, var(--base-background-border));
+                border-bottom: var(--component-card-inner-border-width) solid var(--card-border-color, var(--base-background-border));
             }
 
             .body {
@@ -121,7 +121,7 @@ export class YumeCard extends HTMLElement {
 
             .footer {
                 padding: var(--component-card-padding-inner) var(--component-card-padding-outer);
-                border-top: var(--component-card-border-width) solid var(--card-border-color, var(--base-background-border));
+                border-top: var(--component-card-inner-border-width) solid var(--card-border-color, var(--base-background-border));
             }
 
             ::slotted(*) {

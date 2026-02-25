@@ -18,7 +18,10 @@
             <y-theme
                 id="app-theme"
                 theme-path="/styles/blue-light.css"
-                style="color: var(--base-content--)"
+                style="
+                    color: var(--base-content--);
+                    padding: var(--spacing-medium);
+                "
             >
                 <!-- ═══════════════════════════════════════════════════════ -->
                 <!--  LAYOUT: sidebar + content                             -->
@@ -26,66 +29,8 @@
                 <div style="display: flex; flex: 1; overflow: hidden">
                     <!-- Sidebar -->
                     <y-appbar id="sidebar" orientation="vertical">
-                        <div
-                            slot="header"
-                            style="
-                                display: flex;
-                                align-items: center;
-                                gap: var(--spacing-medium);
-                                padding: var(--spacing-small);
-                            "
-                        >
-                            <y-avatar alt="YK" size="small"></y-avatar>
-                            <strong class="appbar-label">YumeKit</strong>
-                        </div>
-
-                        <y-panelbar>
-                            <y-panel selected>
-                                <i slot="icon" class="fas fa-house"></i>
-                                <span slot="label">Dashboard</span>
-                            </y-panel>
-                            <y-panel>
-                                <i slot="icon" class="fas fa-list-check"></i>
-                                <span slot="label">Tasks</span>
-                            </y-panel>
-                            <y-panel>
-                                <i slot="icon" class="fas fa-users"></i>
-                                <span slot="label">Team</span>
-                                <y-panel slot="children">
-                                    <span slot="label">Members</span>
-                                </y-panel>
-                                <y-panel slot="children">
-                                    <span slot="label">Roles</span>
-                                </y-panel>
-                            </y-panel>
-                            <y-panel>
-                                <i slot="icon" class="fas fa-chart-bar"></i>
-                                <span slot="label">Reports</span>
-                            </y-panel>
-                            <y-panel>
-                                <i slot="icon" class="fas fa-gear"></i>
-                                <span slot="label">Settings</span>
-                            </y-panel>
-                        </y-panelbar>
-
-                        <div
-                            slot="footer"
-                            style="padding: var(--spacing-small)"
-                        >
-                            <y-button
-                                id="toggle-sidebar"
-                                color="base"
-                                style-type="flat"
-                                size="small"
-                                style="width: 100%"
-                            >
-                                <i
-                                    class="fas fa-angles-left"
-                                    slot="left-icon"
-                                ></i>
-                                <span class="appbar-label">Collapse</span>
-                            </y-button>
-                        </div>
+                        <y-avatar slot="logo" alt="YK" size="small"></y-avatar>
+                        <span slot="title">YumeKit</span>
                     </y-appbar>
 
                     <!-- Main content -->
@@ -178,7 +123,7 @@
                             </y-card>
 
                             <y-card color="success">
-                                <span slot="header">Completed</span>
+                                <h4 slot="header">Completed</h4>
                                 <div class="stat-card-body">
                                     <span class="stat-number">142</span>
                                     <y-tag
@@ -259,7 +204,6 @@
                                 <div class="table-toolbar">
                                     <y-input
                                         id="search-input"
-                                        size="small"
                                         type="text"
                                         style="max-width: 260px"
                                     >
@@ -279,7 +223,6 @@
                                             id="add-task-btn"
                                             color="primary"
                                             style-type="filled"
-                                            size="small"
                                         >
                                             <i
                                                 class="fas fa-plus"
@@ -291,7 +234,6 @@
                                             id="filter-menu-btn"
                                             color="base"
                                             style-type="outlined"
-                                            size="small"
                                         >
                                             <i
                                                 class="fas fa-filter"
@@ -714,10 +656,37 @@
                 $("app-theme").setAttribute("theme-path", e.detail.value);
             });
 
-            // ── Sidebar toggle ───────────────────────────────────────
-            $("toggle-sidebar").addEventListener("click", () => {
-                $("sidebar").toggle();
-            });
+            // ── Sidebar items ────────────────────────────────────────
+            $("sidebar").items = [
+                {
+                    text: "Dashboard",
+                    icon: '<i class="fas fa-house"></i>',
+                    href: "#",
+                },
+                {
+                    text: "Tasks",
+                    icon: '<i class="fas fa-list-check"></i>',
+                    href: "#",
+                },
+                {
+                    text: "Team",
+                    icon: '<i class="fas fa-users"></i>',
+                    children: [
+                        { text: "Members", href: "#" },
+                        { text: "Roles", href: "#" },
+                    ],
+                },
+                {
+                    text: "Reports",
+                    icon: '<i class="fas fa-chart-bar"></i>',
+                    href: "#",
+                },
+                {
+                    text: "Settings",
+                    icon: '<i class="fas fa-gear"></i>',
+                    href: "#",
+                },
+            ];
 
             // ── Tabs ─────────────────────────────────────────────────
             $("main-tabs").setAttribute(
