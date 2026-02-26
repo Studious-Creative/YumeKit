@@ -122,13 +122,42 @@ export class YumeSelect extends HTMLElement {
 
     toggleDropdown() {
         const isOpen = this.dropdown.classList.contains("open");
-        this.dropdown.classList.toggle("open", !isOpen);
-        this.selectContainer.classList.toggle("open", !isOpen);
+        if (isOpen) {
+            this.closeDropdown();
+        } else {
+            this.dropdown.classList.add("open");
+            this.selectContainer.classList.add("open");
+            this._positionDropdown();
+            this._onScrollOrResize = this._positionDropdown.bind(this);
+            window.addEventListener("scroll", this._onScrollOrResize, true);
+            window.addEventListener("resize", this._onScrollOrResize);
+        }
     }
 
     closeDropdown() {
         this.dropdown.classList.remove("open");
         this.selectContainer.classList.remove("open");
+        if (this._onScrollOrResize) {
+            window.removeEventListener("scroll", this._onScrollOrResize, true);
+            window.removeEventListener("resize", this._onScrollOrResize);
+        }
+    }
+
+    _positionDropdown() {
+        const rect = this.selectContainer.getBoundingClientRect();
+        const gap = 4;
+        this.dropdown.style.left = `${rect.left}px`;
+        this.dropdown.style.width = `${rect.width}px`;
+
+        const spaceBelow = window.innerHeight - rect.bottom - gap;
+        const maxH = 200;
+        if (spaceBelow >= maxH || spaceBelow >= rect.top) {
+            this.dropdown.style.top = `${rect.bottom + gap}px`;
+            this.dropdown.style.bottom = "auto";
+        } else {
+            this.dropdown.style.bottom = `${window.innerHeight - rect.top + gap}px`;
+            this.dropdown.style.top = "auto";
+        }
     }
 
     queryRefs() {
@@ -342,16 +371,12 @@ export class YumeSelect extends HTMLElement {
             }
 
             .dropdown {
-                position: absolute;
-                top: 100%;
-                left: 0;
-                right: 0;
-                z-index: 10;
+                position: fixed;
+                z-index: 9999;
                 background: var(--base-background-app);
                 border: var(--component-inputs-border-width) solid var(--base-background-border);
                 border-radius: var(--component-inputs-border-radius-outer);
                 box-shadow: var(--base-shadow, 0 2px 8px rgba(0,0,0,0.1));
-                margin-top: var(--spacing-2x-small, 4px);
                 max-height: 200px;
                 overflow-y: auto;
                 display: none;

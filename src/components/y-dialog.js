@@ -1,6 +1,6 @@
 class YumeDialog extends HTMLElement {
     static get observedAttributes() {
-        return ["visible", "anchor"];
+        return ["visible", "anchor", "closable"];
     }
 
     constructor() {
@@ -24,6 +24,9 @@ class YumeDialog extends HTMLElement {
         if (name === "anchor") {
             this.setupAnchor();
         }
+        if (name === "closable") {
+            this.render();
+        }
     }
 
     get visible() {
@@ -41,6 +44,14 @@ class YumeDialog extends HTMLElement {
 
     set anchor(id) {
         this.setAttribute("anchor", id);
+    }
+
+    get closable() {
+        return this.hasAttribute("closable");
+    }
+    set closable(val) {
+        if (val) this.setAttribute("closable", "");
+        else this.removeAttribute("closable");
     }
 
     show() {
@@ -110,6 +121,33 @@ class YumeDialog extends HTMLElement {
                 padding: var(--component-dialog-padding, var(--spacing-medium));
                 font-weight: bold;
                 border-bottom: var(--component-dialog-inner-border-width, 1px) solid var(--base-background-border);
+                display: flex;
+                align-items: center;
+                justify-content: space-between;
+                gap: var(--spacing-small, 8px);
+            }
+            .header-content {
+                flex: 1;
+            }
+            .close-btn {
+                background: none;
+                border: none;
+                cursor: pointer;
+                padding: var(--spacing-x-small, 4px);
+                color: var(--base-content--, #000);
+                font-size: 1.25em;
+                line-height: 1;
+                border-radius: var(--component-button-border-radius-outer, 4px);
+                display: flex;
+                align-items: center;
+                justify-content: center;
+            }
+            .close-btn:hover {
+                background: var(--base-background-hover, #eee);
+            }
+            .close-btn:focus-visible {
+                outline: 2px solid var(--primary-content--);
+                outline-offset: -1px;
             }
             .body {
                 padding: var(--component-dialog-padding, var(--spacing-medium));
@@ -138,7 +176,22 @@ class YumeDialog extends HTMLElement {
 
         const header = document.createElement("div");
         header.className = "header";
-        header.innerHTML = `<slot name="header"></slot>`;
+
+        const headerContent = document.createElement("div");
+        headerContent.className = "header-content";
+        headerContent.innerHTML = `<slot name="header"></slot>`;
+        header.appendChild(headerContent);
+
+        if (this.closable) {
+            const closeBtn = document.createElement("button");
+            closeBtn.className = "close-btn";
+            closeBtn.setAttribute("aria-label", "Close");
+            closeBtn.innerHTML = "&#10005;";
+            closeBtn.addEventListener("click", () => {
+                this.visible = false;
+            });
+            header.appendChild(closeBtn);
+        }
 
         const body = document.createElement("div");
         body.className = "body";
