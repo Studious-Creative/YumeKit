@@ -49,7 +49,7 @@ describe("YumeMenu", () => {
         const el = await fixture(html`<y-menu .items=${testItems}></y-menu>`);
         const items = el.shadowRoot.querySelectorAll("li.menuitem");
         const hasSubmenu = Array.from(items).some((item) =>
-            item.querySelector("ul.submenu")
+            item.querySelector("ul.submenu"),
         );
 
         expect(hasSubmenu).to.be.true;
@@ -64,7 +64,7 @@ describe("YumeMenu", () => {
 
     it("hides menu when visible is toggled off", async () => {
         const el = await fixture(
-            html`<y-menu .items="\${testItems}"></y-menu>`
+            html`<y-menu .items="\${testItems}"></y-menu>`,
         );
         // Mock an anchor element so positioning logic can set display
         el._anchorEl = el;
@@ -78,5 +78,23 @@ describe("YumeMenu", () => {
         el.visible = false;
         await new Promise((r) => setTimeout(r, 0));
         expect(el.style.display).to.equal("none");
+    });
+
+    it("defaults direction to 'down'", async () => {
+        const el = await fixture(html`<y-menu .items=${testItems}></y-menu>`);
+        expect(el.direction).to.equal("down");
+    });
+
+    it("accepts direction attribute 'right'", async () => {
+        const el = await fixture(
+            html`<y-menu direction="right" .items=${testItems}></y-menu>`,
+        );
+        expect(el.direction).to.equal("right");
+    });
+
+    it("sets direction via property setter", async () => {
+        const el = await fixture(html`<y-menu .items=${testItems}></y-menu>`);
+        el.direction = "right";
+        expect(el.getAttribute("direction")).to.equal("right");
     });
 });

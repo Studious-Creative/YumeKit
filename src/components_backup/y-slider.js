@@ -42,6 +42,7 @@ export class YumeSlider extends HTMLElement {
                 );
             }
 
+            // Value-only changes: update visuals without a full re-render
             if (
                 name === "value" &&
                 this.shadowRoot.querySelector(".slider-track")
@@ -53,6 +54,8 @@ export class YumeSlider extends HTMLElement {
             }
         }
     }
+
+    // --- Properties ---
 
     get value() {
         const val = parseFloat(this.getAttribute("value"));
@@ -127,6 +130,8 @@ export class YumeSlider extends HTMLElement {
         this.setAttribute("orientation", val);
     }
 
+    // --- Computed helpers ---
+
     get percentage() {
         const range = this.max - this.min;
         if (range <= 0) return 0;
@@ -183,6 +188,8 @@ export class YumeSlider extends HTMLElement {
         };
         return map[size] || map.medium;
     }
+
+    // --- Events ---
 
     _bindEvents() {
         const track = this.shadowRoot.querySelector(".slider-track");
@@ -264,6 +271,8 @@ export class YumeSlider extends HTMLElement {
             new Event("input", { bubbles: true, composed: true }),
         );
     }
+
+    // --- Rendering ---
 
     /** Fast path: update only the dynamic parts (fill, thumb, label, aria) */
     _updateVisuals() {

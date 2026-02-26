@@ -2,13 +2,13 @@ export class YumeTheme extends HTMLElement {
     static defaultVariablesLoaded = false;
     static defaultVariablesCSS = "";
 
-    static get observedAttributes() {
-        return ["theme-path"];
-    }
-
     constructor() {
         super();
         this.attachShadow({ mode: "open" });
+    }
+
+    static get observedAttributes() {
+        return ["theme-path"];
     }
 
     connectedCallback() {
@@ -29,7 +29,7 @@ export class YumeTheme extends HTMLElement {
             try {
                 const variablesUrl = new URL(
                     "styles/variables.css",
-                    document.baseURI,
+                    document.baseURI
                 );
                 const response = await fetch(variablesUrl.href);
                 YumeTheme.defaultVariablesCSS = await response.text();
@@ -37,7 +37,7 @@ export class YumeTheme extends HTMLElement {
             } catch (e) {
                 console.error(
                     "Failed to load default variables from styles/variables.css:",
-                    e,
+                    e
                 );
             }
         }

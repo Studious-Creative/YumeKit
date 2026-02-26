@@ -1,12 +1,12 @@
 export class YumeAvatar extends HTMLElement {
-    static get observedAttributes() {
-        return ["src", "alt", "size", "shape"];
-    }
-
     constructor() {
         super();
         this.attachShadow({ mode: "open" });
         this.render();
+    }
+
+    static get observedAttributes() {
+        return ["src", "alt", "size", "shape"];
     }
 
     attributeChangedCallback(name, oldValue, newValue) {

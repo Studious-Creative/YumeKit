@@ -21,7 +21,7 @@ export class YumeSelect extends HTMLElement {
         super();
         this._internals = this.attachInternals();
         this.attachShadow({ mode: "open" });
-        this.selectedValues = new Set();
+        this.selectedValues = new Set(); // For multi-select mode
         this.render();
     }
 
@@ -86,188 +86,7 @@ export class YumeSelect extends HTMLElement {
         this.updateSelectedStyles();
     }
 
-    getOptions() {
-        try {
-            return JSON.parse(this.getAttribute("options") || "[]");
-        } catch (e) {
-            return [];
-        }
-    }
-
-    getDisplayText() {
-        const options = this.getOptions();
-        const isMulti = this.hasAttribute("multiple");
-        const isTagMode = this.getAttribute("display-mode") === "tag";
-
-        if (isMulti && isTagMode) {
-            return "";
-        }
-
-        if (isMulti) {
-            const count = options.filter((opt) =>
-                this.selectedValues.has(opt.value),
-            ).length;
-            return count > 0
-                ? `${count} Selected`
-                : this.getAttribute("placeholder") || "Select...";
-        } else {
-            const selected = options.find((opt) => opt.value === this.value);
-            return (
-                selected?.label ||
-                this.getAttribute("placeholder") ||
-                "Select..."
-            );
-        }
-    }
-
-    toggleDropdown() {
-        const isOpen = this.dropdown.classList.contains("open");
-        this.dropdown.classList.toggle("open", !isOpen);
-        this.selectContainer.classList.toggle("open", !isOpen);
-    }
-
-    closeDropdown() {
-        this.dropdown.classList.remove("open");
-        this.selectContainer.classList.remove("open");
-    }
-
-    queryRefs() {
-        this.selectContainer =
-            this.shadowRoot.querySelector(".select-container");
-        this.dropdown = this.shadowRoot.querySelector(".dropdown");
-        this.labelWrapper = this.shadowRoot.querySelector(".label-wrapper");
-        this.displayElement = this.shadowRoot.querySelector(".value-display");
-    }
-
-    attachEventListeners() {
-        this.selectContainer.addEventListener("click", () =>
-            this.toggleDropdown(),
-        );
-
-        this.dropdown.querySelectorAll(".dropdown-item").forEach((item) => {
-            item.addEventListener("click", () => {
-                const val = item.getAttribute("data-value");
-                const isRequired = this.hasAttribute("required");
-                const isMulti = this.hasAttribute("multiple");
-
-                if (isMulti) {
-                    if (this.selectedValues.has(val)) {
-                        if (!isRequired || this.selectedValues.size > 1) {
-                            this.selectedValues.delete(val);
-                        }
-                    } else {
-                        this.selectedValues.add(val);
-                    }
-
-                    this.setAttribute(
-                        "value",
-                        Array.from(this.selectedValues).join(","),
-                    );
-                } else {
-                    const isSelected = val === this.value;
-                    if (isSelected && !isRequired) {
-                        this.value = "";
-                    } else {
-                        this.value = val;
-                    }
-                }
-
-                this.dispatchEvent(
-                    new CustomEvent("change", {
-                        detail: { value: this.value },
-                        bubbles: true,
-                        composed: true,
-                    }),
-                );
-
-                this.updateValidation();
-                this.closeDropdown();
-            });
-        });
-    }
-
-    renderTags() {
-        const isMulti = this.hasAttribute("multiple");
-        const isTagMode = this.getAttribute("display-mode") === "tag";
-        if (!isMulti || !isTagMode || !this.displayElement) return;
-
-        const options = this.getOptions();
-        this.displayElement.innerHTML = "";
-
-        const selected = options.filter((opt) =>
-            this.selectedValues.has(opt.value),
-        );
-
-        selected.forEach((opt) => {
-            const tag = document.createElement("y-tag");
-            tag.setAttribute("removable", "");
-            tag.setAttribute("color", "primary");
-            tag.setAttribute("style-type", "filled");
-            tag.textContent = opt.label;
-            tag.dataset.value = opt.value;
-
-            tag.addEventListener("remove", () => {
-                this.selectedValues.delete(opt.value);
-                this.setAttribute(
-                    "value",
-                    Array.from(this.selectedValues).join(","),
-                );
-                this.renderTags();
-                this.updateSelectedStyles();
-                this.updateValidation();
-
-                this.dispatchEvent(
-                    new CustomEvent("change", {
-                        detail: { value: this.value },
-                        bubbles: true,
-                        composed: true,
-                    }),
-                );
-            });
-
-            this.displayElement.appendChild(tag);
-        });
-    }
-
-    updateDisplay() {
-        const isTagMode = this.getAttribute("display-mode") === "tag";
-
-        if (isTagMode) {
-            this.renderTags();
-        } else if (this.displayElement) {
-            this.displayElement.textContent = this.getDisplayText();
-        }
-    }
-
-    updateSelectedStyles() {
-        const isMulti = this.hasAttribute("multiple");
-        const valueSet = isMulti ? this.selectedValues : new Set([this.value]);
-
-        this.dropdown?.querySelectorAll(".dropdown-item").forEach((item) => {
-            const val = item.getAttribute("data-value");
-            item.classList.toggle("selected", valueSet.has(val));
-        });
-    }
-
-    updateValidation() {
-        const required = this.hasAttribute("required");
-        const isMulti = this.hasAttribute("multiple");
-        const isValid = isMulti
-            ? this.selectedValues.size > 0
-            : this.value && this.value !== "";
-
-        if (required && !isValid) {
-            this.setAttribute("invalid", "");
-        } else {
-            this.removeAttribute("invalid");
-        }
-    }
-
-    updateValidationState() {
-        const isInvalid = this.hasAttribute("invalid");
-        this.selectContainer?.classList.toggle("is-invalid", isInvalid);
-        this.labelWrapper?.classList.toggle("is-invalid", isInvalid);
-    }
+    /** Render and Setup **/
 
     render() {
         this.applyStyles();
@@ -439,6 +258,190 @@ export class YumeSelect extends HTMLElement {
                 </div>
             </div>
         `;
+    }
+
+    getDisplayText() {
+        const options = this.getOptions();
+        const isMulti = this.hasAttribute("multiple");
+        const isTagMode = this.getAttribute("display-mode") === "tag";
+
+        if (isMulti && isTagMode) {
+            // Tags will be rendered manually in renderTags()
+            return "";
+        }
+
+        if (isMulti) {
+            const count = options.filter((opt) =>
+                this.selectedValues.has(opt.value),
+            ).length;
+            return count > 0
+                ? `${count} Selected`
+                : this.getAttribute("placeholder") || "Select...";
+        } else {
+            const selected = options.find((opt) => opt.value === this.value);
+            return (
+                selected?.label ||
+                this.getAttribute("placeholder") ||
+                "Select..."
+            );
+        }
+    }
+
+    attachEventListeners() {
+        this.selectContainer.addEventListener("click", () =>
+            this.toggleDropdown(),
+        );
+
+        this.dropdown.querySelectorAll(".dropdown-item").forEach((item) => {
+            item.addEventListener("click", () => {
+                const val = item.getAttribute("data-value");
+                const isRequired = this.hasAttribute("required");
+                const isMulti = this.hasAttribute("multiple");
+
+                if (isMulti) {
+                    if (this.selectedValues.has(val)) {
+                        if (!isRequired || this.selectedValues.size > 1) {
+                            this.selectedValues.delete(val);
+                        }
+                    } else {
+                        this.selectedValues.add(val);
+                    }
+
+                    this.setAttribute(
+                        "value",
+                        Array.from(this.selectedValues).join(","),
+                    );
+                } else {
+                    const isSelected = val === this.value;
+                    if (isSelected && !isRequired) {
+                        this.value = "";
+                    } else {
+                        this.value = val;
+                    }
+                }
+
+                this.dispatchEvent(
+                    new CustomEvent("change", {
+                        detail: { value: this.value },
+                        bubbles: true,
+                        composed: true,
+                    }),
+                );
+
+                this.updateValidation();
+                this.closeDropdown();
+            });
+        });
+    }
+
+    toggleDropdown() {
+        const isOpen = this.dropdown.classList.contains("open");
+        this.dropdown.classList.toggle("open", !isOpen);
+        this.selectContainer.classList.toggle("open", !isOpen);
+    }
+
+    closeDropdown() {
+        this.dropdown.classList.remove("open");
+        this.selectContainer.classList.remove("open");
+    }
+
+    queryRefs() {
+        this.selectContainer =
+            this.shadowRoot.querySelector(".select-container");
+        this.dropdown = this.shadowRoot.querySelector(".dropdown");
+        this.labelWrapper = this.shadowRoot.querySelector(".label-wrapper");
+        this.displayElement = this.shadowRoot.querySelector(".value-display");
+    }
+
+    getOptions() {
+        try {
+            return JSON.parse(this.getAttribute("options") || "[]");
+        } catch (e) {
+            return [];
+        }
+    }
+
+    renderTags() {
+        const isMulti = this.hasAttribute("multiple");
+        const isTagMode = this.getAttribute("display-mode") === "tag";
+        if (!isMulti || !isTagMode || !this.displayElement) return;
+
+        const options = this.getOptions();
+        this.displayElement.innerHTML = "";
+
+        const selected = options.filter((opt) =>
+            this.selectedValues.has(opt.value),
+        );
+
+        selected.forEach((opt) => {
+            const tag = document.createElement("y-tag");
+            tag.setAttribute("removable", "");
+            tag.setAttribute("color", "primary");
+            tag.setAttribute("style-type", "filled");
+            tag.textContent = opt.label;
+            tag.dataset.value = opt.value;
+
+            tag.addEventListener("remove", () => {
+                this.selectedValues.delete(opt.value);
+                this.setAttribute(
+                    "value",
+                    Array.from(this.selectedValues).join(","),
+                );
+                this.renderTags();
+                this.updateSelectedStyles();
+                this.updateValidation();
+
+                this.dispatchEvent(
+                    new CustomEvent("change", {
+                        detail: { value: this.value },
+                        bubbles: true,
+                        composed: true,
+                    }),
+                );
+            });
+
+            this.displayElement.appendChild(tag);
+        });
+    }
+
+    updateDisplay() {
+        const isTagMode = this.getAttribute("display-mode") === "tag";
+
+        if (isTagMode) {
+            this.renderTags();
+        } else if (this.displayElement) {
+            this.displayElement.textContent = this.getDisplayText();
+        }
+    }
+
+    updateSelectedStyles() {
+        const isMulti = this.hasAttribute("multiple");
+        const valueSet = isMulti ? this.selectedValues : new Set([this.value]);
+
+        this.dropdown?.querySelectorAll(".dropdown-item").forEach((item) => {
+            const val = item.getAttribute("data-value");
+            item.classList.toggle("selected", valueSet.has(val));
+        });
+    }
+
+    updateValidation() {
+        const required = this.hasAttribute("required");
+        const isMulti = this.hasAttribute("multiple");
+        const isValid = isMulti
+            ? this.selectedValues.size > 0
+            : this.value && this.value !== "";
+
+        if (required && !isValid) {
+            this.setAttribute("invalid", "");
+        } else {
+            this.removeAttribute("invalid");
+        }
+    }
+
+    updateValidationState() {
+        const isInvalid = this.hasAttribute("invalid");
+        this.selectContainer?.classList.toggle("is-invalid", isInvalid);
+        this.labelWrapper?.classList.toggle("is-invalid", isInvalid);
     }
 }
 

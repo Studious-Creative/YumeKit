@@ -9,14 +9,14 @@ export class YumeBadge extends HTMLElement {
         this.render();
     }
 
-    connectedCallback() {
-        this.render();
-    }
-
     attributeChangedCallback(name, oldValue, newValue) {
         if (oldValue !== newValue) {
             this.render();
         }
+    }
+
+    connectedCallback() {
+        this.render();
     }
 
     get alignment() {

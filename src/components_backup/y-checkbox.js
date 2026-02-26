@@ -32,22 +32,6 @@ export class YumeCheckbox extends HTMLElement {
         this._internals.setFormValue(this.checked ? this.value : null);
     }
 
-    attributeChangedCallback(name) {
-        if (name === "checked" || name === "value") {
-            this._internals.setFormValue(this.checked ? this.value : null);
-        }
-
-        if (name === "indeterminate") {
-            this.updateIcon();
-        }
-
-        if (name === "label-position") {
-            this.render();
-        }
-
-        this.updateState();
-    }
-
     get checked() {
         return this.hasAttribute("checked");
     }
@@ -85,6 +69,22 @@ export class YumeCheckbox extends HTMLElement {
 
     get name() {
         return this.getAttribute("name");
+    }
+
+    attributeChangedCallback(name) {
+        if (name === "checked" || name === "value") {
+            this._internals.setFormValue(this.checked ? this.value : null);
+        }
+
+        if (name === "indeterminate") {
+            this.updateIcon();
+        }
+
+        if (name === "label-position") {
+            this.render();
+        }
+
+        this.updateState();
     }
 
     toggle() {

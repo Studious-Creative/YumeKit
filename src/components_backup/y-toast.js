@@ -20,6 +20,14 @@ export class YumeToast extends HTMLElement {
         this.render();
     }
 
+    /* ------------------------------------------------------------------ */
+    /*  Properties                                                         */
+    /* ------------------------------------------------------------------ */
+
+    /**
+     * Position of the toast container on the viewport.
+     * One of: top-right, top-left, top-center, bottom-right, bottom-left, bottom-center
+     */
     get position() {
         return this.getAttribute("position") || "bottom-right";
     }
@@ -27,6 +35,7 @@ export class YumeToast extends HTMLElement {
         this.setAttribute("position", val);
     }
 
+    /** Default auto-dismiss duration in ms (0 = no auto-dismiss). Default 4000. */
     get duration() {
         return parseInt(this.getAttribute("duration") ?? "4000", 10);
     }
@@ -34,12 +43,17 @@ export class YumeToast extends HTMLElement {
         this.setAttribute("duration", String(val));
     }
 
+    /** Maximum visible toasts (default 5). Older ones are removed first. */
     get max() {
         return parseInt(this.getAttribute("max") ?? "5", 10);
     }
     set max(val) {
         this.setAttribute("max", String(val));
     }
+
+    /* ------------------------------------------------------------------ */
+    /*  Public API                                                         */
+    /* ------------------------------------------------------------------ */
 
     /**
      * Show a toast notification.
@@ -63,6 +77,7 @@ export class YumeToast extends HTMLElement {
         const container = this.shadowRoot.querySelector(".toast-container");
         if (!container) return null;
 
+        // Enforce max
         const existing = container.querySelectorAll(".toast");
         if (existing.length >= this.max) {
             this._removeToast(existing[0]);
@@ -73,23 +88,27 @@ export class YumeToast extends HTMLElement {
         toast.setAttribute("role", "alert");
         toast.setAttribute("aria-live", "assertive");
 
+        // Resolve background color and compute contrasting text
         const bgVar = this._getColorBg(color);
         const resolvedBg = resolveCSSColor(bgVar, this);
         const textColor = contrastTextColor(resolvedBg);
         toast.style.backgroundColor = bgVar;
         toast.style.color = textColor;
 
+        // Icon
         if (icon) {
             const iconEl = document.createElement("i");
             iconEl.className = `toast-icon ${icon}`;
             toast.appendChild(iconEl);
         }
 
+        // Message
         const msg = document.createElement("span");
         msg.className = "toast-message";
         msg.textContent = message;
         toast.appendChild(msg);
 
+        // Close button
         if (dismissible) {
             const btn = document.createElement("button");
             btn.className = "toast-close";
@@ -106,6 +125,7 @@ export class YumeToast extends HTMLElement {
             toast.classList.add("visible");
         });
 
+        // Auto-dismiss
         if (duration > 0) {
             toast._timeout = setTimeout(
                 () => this._removeToast(toast),
@@ -123,6 +143,7 @@ export class YumeToast extends HTMLElement {
         return toast;
     }
 
+    /** Remove all visible toasts. */
     clear() {
         const container = this.shadowRoot.querySelector(".toast-container");
         if (!container) return;
@@ -130,6 +151,10 @@ export class YumeToast extends HTMLElement {
             .querySelectorAll(".toast")
             .forEach((t) => this._removeToast(t));
     }
+
+    /* ------------------------------------------------------------------ */
+    /*  Internal                                                           */
+    /* ------------------------------------------------------------------ */
 
     _removeToast(toast) {
         if (!toast || toast._removing) return;
@@ -172,7 +197,10 @@ export class YumeToast extends HTMLElement {
         return map[pos] || map["bottom-right"];
     }
 
-    // "base" inverts the page: light content on dark, dark on light.
+    /**
+     * Return the CSS background value for a toast color.
+     * "base" inverts the page: light content on dark page, dark on light.
+     */
     _getColorBg(color) {
         const map = {
             base: "var(--base-content--, #fff)",
@@ -185,6 +213,10 @@ export class YumeToast extends HTMLElement {
         };
         return map[color] || map.base;
     }
+
+    /* ------------------------------------------------------------------ */
+    /*  Render                                                             */
+    /* ------------------------------------------------------------------ */
 
     render() {
         this.shadowRoot.innerHTML = `

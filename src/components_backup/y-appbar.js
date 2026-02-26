@@ -30,6 +30,11 @@ export class YumeAppbar extends HTMLElement {
         this.render();
     }
 
+    /* ------------------------------------------------------------------ */
+    /*  Properties                                                         */
+    /* ------------------------------------------------------------------ */
+
+    /** "vertical" (default) or "horizontal" */
     get orientation() {
         return this.getAttribute("orientation") || "vertical";
     }
@@ -37,6 +42,7 @@ export class YumeAppbar extends HTMLElement {
         this.setAttribute("orientation", val);
     }
 
+    /** When true the vertical bar shows only icons (collapsed). Ignored for horizontal. */
     get collapsed() {
         return this.hasAttribute("collapsed");
     }
@@ -75,9 +81,14 @@ export class YumeAppbar extends HTMLElement {
         else this.removeAttribute("menu-direction");
     }
 
+    /** Toggle collapsed state programmatically. */
     toggle() {
         this.collapsed = !this.collapsed;
     }
+
+    /* ------------------------------------------------------------------ */
+    /*  Internal helpers                                                    */
+    /* ------------------------------------------------------------------ */
 
     _onCollapseClick() {
         this.toggle();
@@ -86,6 +97,10 @@ export class YumeAppbar extends HTMLElement {
     _uid(prefix) {
         return `${prefix}-${this._idCounter++}`;
     }
+
+    /* ------------------------------------------------------------------ */
+    /*  Render                                                             */
+    /* ------------------------------------------------------------------ */
 
     render() {
         const isVertical = this.orientation === "vertical";
@@ -136,6 +151,7 @@ export class YumeAppbar extends HTMLElement {
                 box-sizing: border-box;
             }
 
+            /* --- Vertical layout --- */
             .appbar.vertical {
                 flex-direction: column;
                 width: var(--component-appbar-width, 240px);
@@ -146,6 +162,7 @@ export class YumeAppbar extends HTMLElement {
                 width: var(--_appbar-collapsed-width);
             }
 
+            /* --- Horizontal layout --- */
             .appbar.horizontal {
                 flex-direction: row;
                 width: 100%;
@@ -153,6 +170,7 @@ export class YumeAppbar extends HTMLElement {
                 align-items: center;
             }
 
+            /* ---------- Sections ---------- */
             .appbar-header,
             .appbar-body,
             .appbar-footer {
@@ -177,6 +195,7 @@ export class YumeAppbar extends HTMLElement {
                 align-items: center;
             }
 
+            /* ---------- Section dividers ---------- */
             .appbar.vertical .appbar-header {
                 border-bottom: var(--component-appbar-inner-border-width, var(--component-sidebar-border-width, 2px)) solid var(--base-background-border, #333);
                 padding-bottom: var(--_appbar-padding);
@@ -199,6 +218,7 @@ export class YumeAppbar extends HTMLElement {
                 margin-left: var(--_appbar-padding);
             }
 
+            /* ---------- Header content ---------- */
             .header-content {
                 display: flex;
                 align-items: center;
@@ -228,6 +248,7 @@ export class YumeAppbar extends HTMLElement {
                 display: none;
             }
 
+            /* ---------- Nav button wrappers ---------- */
             .nav-item {
                 display: flex;
                 align-items: center;
@@ -257,6 +278,7 @@ export class YumeAppbar extends HTMLElement {
                 flex-shrink: 0;
             }
 
+            /* Collapsed: icon-only buttons */
             .appbar.vertical.collapsed .nav-item y-button::part(button),
             .appbar.vertical.collapsed .appbar-footer y-button::part(button) {
                 min-width: 0;
@@ -270,6 +292,7 @@ export class YumeAppbar extends HTMLElement {
                 display: none;
             }
 
+            /* ---------- Footer ---------- */
             .appbar-footer {
                 display: flex;
                 flex-direction: column;
@@ -284,12 +307,14 @@ export class YumeAppbar extends HTMLElement {
                 width: 100%;
             }
 
+            /* Center icons when collapsed */
             .appbar.vertical.collapsed .appbar-header,
             .appbar.vertical.collapsed .appbar-body,
             .appbar.vertical.collapsed .appbar-footer {
                 align-items: center;
             }
 
+            /* Slotted items */
             ::slotted(*) {
                 display: block;
             }
@@ -354,6 +379,7 @@ export class YumeAppbar extends HTMLElement {
             btn.setAttribute("style-type", "flat");
             btn.setAttribute("size", cfg.buttonSize);
 
+            // Icon
             if (item.icon) {
                 const iconEl = document.createElement("span");
                 iconEl.slot = "left-icon";
@@ -361,11 +387,13 @@ export class YumeAppbar extends HTMLElement {
                 btn.appendChild(iconEl);
             }
 
+            // Label (hidden when collapsed via CSS on the host)
             if (item.text && !isCollapsed) {
                 const label = document.createTextNode(item.text);
                 btn.appendChild(label);
             }
 
+            // Arrow indicator for items with children
             if (hasChildren && !isCollapsed) {
                 const arrow = document.createElement("span");
                 arrow.slot = "right-icon";
@@ -373,6 +401,7 @@ export class YumeAppbar extends HTMLElement {
                 btn.appendChild(arrow);
             }
 
+            // If it's a simple link, navigate on click
             if (item.href && !hasChildren) {
                 btn.addEventListener("click", () => {
                     window.location.href = item.href;
@@ -381,6 +410,7 @@ export class YumeAppbar extends HTMLElement {
 
             wrapper.appendChild(btn);
 
+            // Attach a y-menu for items with children
             if (hasChildren) {
                 const menu = document.createElement("y-menu");
                 menu.setAttribute("anchor", btnId);

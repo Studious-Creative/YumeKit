@@ -42,6 +42,11 @@ export class YumeTooltip extends HTMLElement {
         this.render();
     }
 
+    /* ------------------------------------------------------------------ */
+    /*  Properties                                                         */
+    /* ------------------------------------------------------------------ */
+
+    /** The tooltip text to display. */
     get text() {
         return this.getAttribute("text") || "";
     }
@@ -49,6 +54,7 @@ export class YumeTooltip extends HTMLElement {
         this.setAttribute("text", val);
     }
 
+    /** Position: top (default), bottom, left, right. */
     get position() {
         return this.getAttribute("position") || "top";
     }
@@ -56,6 +62,7 @@ export class YumeTooltip extends HTMLElement {
         this.setAttribute("position", val);
     }
 
+    /** Delay in ms before showing (default 200). */
     get delay() {
         return parseInt(this.getAttribute("delay") ?? "200", 10);
     }
@@ -63,6 +70,7 @@ export class YumeTooltip extends HTMLElement {
         this.setAttribute("delay", String(val));
     }
 
+    /** Color: base (default), primary, secondary, success, warning, error, help. */
     get color() {
         return this.getAttribute("color") || "base";
     }
@@ -70,12 +78,17 @@ export class YumeTooltip extends HTMLElement {
         this.setAttribute("color", val);
     }
 
+    /* ------------------------------------------------------------------ */
+    /*  Show / Hide                                                        */
+    /* ------------------------------------------------------------------ */
+
     show() {
         clearTimeout(this._hideTimeout);
         this._showTimeout = setTimeout(() => {
             this._visible = true;
             const tip = this.shadowRoot.querySelector(".tooltip");
             if (tip) {
+                // Recompute contrast text color now that theme CSS is loaded
                 const bg = this._getBg();
                 const resolvedBg = resolveCSSColor(bg, this);
                 tip.style.color = contrastTextColor(resolvedBg);
@@ -109,6 +122,10 @@ export class YumeTooltip extends HTMLElement {
         }
     }
 
+    /* ------------------------------------------------------------------ */
+    /*  Color helpers                                                       */
+    /* ------------------------------------------------------------------ */
+
     _getBg() {
         const map = {
             base: "var(--base-content--, #555)",
@@ -121,6 +138,10 @@ export class YumeTooltip extends HTMLElement {
         };
         return map[this.color] || map.base;
     }
+
+    /* ------------------------------------------------------------------ */
+    /*  Render                                                             */
+    /* ------------------------------------------------------------------ */
 
     render() {
         const pos = this.position;
@@ -161,12 +182,14 @@ export class YumeTooltip extends HTMLElement {
                     transform: scale(1);
                 }
 
+                /* Arrow */
                 .tooltip::after {
                     content: "";
                     position: absolute;
                     border: 5px solid transparent;
                 }
 
+                /* --- Positions --- */
                 .tooltip.top {
                     bottom: 100%;
                     left: 50%;

@@ -78,6 +78,10 @@ class YumeDrawer extends HTMLElement {
         else this.removeAttribute("resizable");
     }
 
+    /* ------------------------------------------------------------------ */
+    /*  Anchor wiring (same pattern as y-menu / y-dialog)                 */
+    /* ------------------------------------------------------------------ */
+
     _setupAnchor() {
         const id = this.anchor;
         if (id) {
@@ -100,7 +104,12 @@ class YumeDrawer extends HTMLElement {
         this.visible = !this.visible;
     }
 
+    /* ------------------------------------------------------------------ */
+    /*  Show / hide helpers                                               */
+    /* ------------------------------------------------------------------ */
+
     _show() {
+        // Make the host visible first so transitions can play
         this.style.display = "block";
         // Force a reflow so the browser registers the initial state
         this.offsetHeight; // eslint-disable-line no-unused-expressions
@@ -126,6 +135,7 @@ class YumeDrawer extends HTMLElement {
 
         document.removeEventListener("keydown", this._onKeyDown);
 
+        // Wait for the transition to finish before hiding the host
         const duration = this._getTransitionDuration(panel);
         if (duration > 0) {
             clearTimeout(this._hideTimer);
@@ -155,11 +165,19 @@ class YumeDrawer extends HTMLElement {
         this.visible = false;
     }
 
+    /* ------------------------------------------------------------------ */
+    /*  Position helpers                                                   */
+    /* ------------------------------------------------------------------ */
+
     _applyPosition() {
         const panel = this.shadowRoot.querySelector(".drawer-panel");
         if (!panel) return;
         panel.setAttribute("data-position", this.position);
     }
+
+    /* ------------------------------------------------------------------ */
+    /*  Resizable drag handle                                              */
+    /* ------------------------------------------------------------------ */
 
     _applyResizable() {
         const handle = this.shadowRoot.querySelector(".resize-handle");
@@ -180,6 +198,7 @@ class YumeDrawer extends HTMLElement {
             ? panel.offsetWidth
             : panel.offsetHeight;
 
+        // Disable panel transitions while dragging
         panel.style.transition = "none";
         document.addEventListener("pointermove", this._onResizePointerMove);
         document.addEventListener("pointerup", this._onResizePointerUp);
@@ -195,7 +214,7 @@ class YumeDrawer extends HTMLElement {
         if (this.position === "left") newSize = this._startSize + delta;
         else if (this.position === "right") newSize = this._startSize - delta;
         else if (this.position === "top") newSize = this._startSize + delta;
-        else newSize = this._startSize - delta;
+        else newSize = this._startSize - delta; // bottom
 
         const minSize = 100;
         newSize = Math.max(minSize, newSize);
@@ -220,9 +239,17 @@ class YumeDrawer extends HTMLElement {
         document.removeEventListener("pointerup", this._onResizePointerUp);
     }
 
+    /* ------------------------------------------------------------------ */
+    /*  Grip SVG icon                                                      */
+    /* ------------------------------------------------------------------ */
+
     _gripSVG() {
         return gripDots(this._isHorizontal());
     }
+
+    /* ------------------------------------------------------------------ */
+    /*  Render                                                             */
+    /* ------------------------------------------------------------------ */
 
     render() {
         this.shadowRoot.innerHTML = "";
@@ -239,6 +266,7 @@ class YumeDrawer extends HTMLElement {
                 display: block;
             }
 
+            /* ---------- Overlay ---------- */
             .overlay {
                 position: absolute;
                 top: 0; left: 0; right: 0; bottom: 0;
@@ -249,6 +277,7 @@ class YumeDrawer extends HTMLElement {
                 background: rgba(0, 0, 0, 0.4);
             }
 
+            /* ---------- Panel base ---------- */
             .drawer-panel {
                 position: absolute;
                 background: var(--base-background-component, #fff);
@@ -263,6 +292,7 @@ class YumeDrawer extends HTMLElement {
                 transition: transform var(--drawer-transition-duration, 0.3s) ease;
             }
 
+            /* --- Horizontal drawers (left / right) --- */
             .drawer-panel[data-position="left"],
             .drawer-panel[data-position="right"] {
                 top: 0;
@@ -281,6 +311,7 @@ class YumeDrawer extends HTMLElement {
                 border-left: var(--component-drawer-border-width, 2px) solid var(--base-background-border, #ccc);
             }
 
+            /* --- Vertical drawers (top / bottom) --- */
             .drawer-panel[data-position="top"],
             .drawer-panel[data-position="bottom"] {
                 left: 0;
@@ -298,8 +329,10 @@ class YumeDrawer extends HTMLElement {
                 border-top: var(--component-drawer-border-width, 2px) solid var(--base-background-border, #ccc);
             }
 
+            /* Open state – slide to origin */
             .drawer-panel.open { transform: translate(0, 0); }
 
+            /* ---------- Content sections ---------- */
             .drawer-header {
                 padding: var(--component-drawer-padding, 1rem);
                 font-weight: bold;
@@ -327,6 +360,7 @@ class YumeDrawer extends HTMLElement {
                 margin: 0;
             }
 
+            /* ---------- Resize handle ---------- */
             .resize-handle {
                 display: none;              /* hidden until resizable attr */
                 flex-shrink: 0;
@@ -344,6 +378,7 @@ class YumeDrawer extends HTMLElement {
                 background: var(--base-background-hover, rgba(128,128,128,0.15));
             }
 
+            /* Left / right drawers → vertical strip on the open edge */
             .drawer-panel[data-position="left"] > .resize-handle,
             .drawer-panel[data-position="right"] > .resize-handle {
                 width: var(--component-drawer-handle-width, 6px);
@@ -357,6 +392,7 @@ class YumeDrawer extends HTMLElement {
                 order: -1;
             }
 
+            /* Top / bottom drawers → horizontal strip on the open edge */
             .drawer-panel[data-position="top"] > .resize-handle,
             .drawer-panel[data-position="bottom"] > .resize-handle {
                 height: var(--component-drawer-handle-width, 6px);
@@ -384,6 +420,7 @@ class YumeDrawer extends HTMLElement {
         panel.setAttribute("tabindex", "-1");
         panel.setAttribute("data-position", this.position);
 
+        // Resize handle
         const handle = document.createElement("div");
         handle.className = "resize-handle";
         handle.innerHTML = this._gripSVG();
@@ -412,6 +449,7 @@ class YumeDrawer extends HTMLElement {
         panel.appendChild(content);
         this.shadowRoot.appendChild(panel);
 
+        // If already visible when first rendered, apply open class
         if (this.visible) {
             requestAnimationFrame(() => {
                 overlay.classList.add("open");

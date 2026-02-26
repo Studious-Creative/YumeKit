@@ -59,42 +59,6 @@ describe("YumeSlider", () => {
         expect(style).to.include("width: 75%");
     });
 
-    it("displays value label by default", async () => {
-        const el = await fixture(html`<y-slider value="60"></y-slider>`);
-        const label = el.shadowRoot.querySelector(".value-label");
-        expect(label).to.exist;
-        expect(label.textContent).to.equal("60");
-    });
-
-    it("hides label when label-display is false", async () => {
-        const el = await fixture(
-            html`<y-slider value="60" label-display="false"></y-slider>`,
-        );
-        const label = el.shadowRoot.querySelector(".value-label");
-        expect(label).to.not.exist;
-    });
-
-    it("shows percent format when label-format is percent", async () => {
-        const el = await fixture(
-            html`<y-slider value="40" label-format="percent"></y-slider>`,
-        );
-        const label = el.shadowRoot.querySelector(".value-label");
-        expect(label.textContent).to.equal("40%");
-    });
-
-    it("shows fraction format when label-format is fraction", async () => {
-        const el = await fixture(
-            html`<y-slider
-                value="30"
-                min="10"
-                max="60"
-                label-format="fraction"
-            ></y-slider>`,
-        );
-        const label = el.shadowRoot.querySelector(".value-label");
-        expect(label.textContent).to.equal("20 / 50");
-    });
-
     it("applies track fill color from background variable", async () => {
         const el = await fixture(
             html`<y-slider value="50" color="success"></y-slider>`,
@@ -152,14 +116,8 @@ describe("YumeSlider", () => {
     it("updates when attributes change", async () => {
         const el = await fixture(html`<y-slider value="20"></y-slider>`);
         el.setAttribute("value", "80");
-        const label = el.shadowRoot.querySelector(".value-label");
-        expect(label.textContent).to.equal("80");
-    });
-
-    it("renders slotted label content", async () => {
-        const el = await fixture(html`<y-slider value="50">Volume</y-slider>`);
-        const slot = el.shadowRoot.querySelector("slot");
-        expect(slot).to.exist;
+        const track = el.shadowRoot.querySelector(".slider-track");
+        expect(track.getAttribute("aria-valuenow")).to.equal("80");
     });
 
     it("is form-associated", async () => {

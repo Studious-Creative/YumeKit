@@ -1,19 +1,14 @@
 import { hideEmptySlotContainers } from "../modules/helpers.js";
 
 export class YumeCard extends HTMLElement {
-    static get observedAttributes() {
-        return ["color", "raised"];
-    }
-
     constructor() {
         super();
         this.attachShadow({ mode: "open" });
         this.render();
     }
 
-    connectedCallback() {
-        this.updateColorStyles();
-        this.updateElevationStyles();
+    static get observedAttributes() {
+        return ["color", "raised"];
     }
 
     attributeChangedCallback(name, oldValue, newValue) {
@@ -26,6 +21,11 @@ export class YumeCard extends HTMLElement {
             }
             this.render();
         }
+    }
+
+    connectedCallback() {
+        this.updateColorStyles();
+        this.updateElevationStyles();
     }
 
     updateColorStyles() {

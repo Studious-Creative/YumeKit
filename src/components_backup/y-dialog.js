@@ -43,46 +43,6 @@ class YumeDialog extends HTMLElement {
         this.setAttribute("anchor", id);
     }
 
-    show() {
-        if (!this.shadowRoot.querySelector(".dialog")) {
-            this.render();
-        }
-
-        document.addEventListener("keydown", this.onKeyDown);
-
-        const dialog = this.shadowRoot.querySelector(".dialog");
-        if (dialog && typeof dialog.focus === "function") {
-            dialog.focus();
-        }
-    }
-
-    hide() {
-        document.removeEventListener("keydown", this.onKeyDown);
-    }
-
-    setupAnchor() {
-        if (this._anchorEl) {
-            this._anchorEl.removeEventListener("click", this.onAnchorClick);
-        }
-        if (this.anchor) {
-            const el = document.getElementById(this.anchor);
-            if (el) {
-                this._anchorEl = el;
-                this._anchorEl.addEventListener("click", this.onAnchorClick);
-            }
-        }
-    }
-
-    onAnchorClick() {
-        this.visible = !this.visible;
-    }
-
-    onKeyDown(e) {
-        if (e.key === "Escape" && this.visible) {
-            this.visible = false;
-        }
-    }
-
     render() {
         const style = document.createElement("style");
         style.textContent = `
@@ -152,6 +112,46 @@ class YumeDialog extends HTMLElement {
         dialog.appendChild(body);
         dialog.appendChild(footer);
         this.shadowRoot.appendChild(dialog);
+    }
+
+    setupAnchor() {
+        if (this._anchorEl) {
+            this._anchorEl.removeEventListener("click", this.onAnchorClick);
+        }
+        if (this.anchor) {
+            const el = document.getElementById(this.anchor);
+            if (el) {
+                this._anchorEl = el;
+                this._anchorEl.addEventListener("click", this.onAnchorClick);
+            }
+        }
+    }
+
+    onAnchorClick() {
+        this.visible = !this.visible;
+    }
+
+    show() {
+        if (!this.shadowRoot.querySelector(".dialog")) {
+            this.render();
+        }
+
+        document.addEventListener("keydown", this.onKeyDown);
+
+        const dialog = this.shadowRoot.querySelector(".dialog");
+        if (dialog && typeof dialog.focus === "function") {
+            dialog.focus();
+        }
+    }
+
+    hide() {
+        document.removeEventListener("keydown", this.onKeyDown);
+    }
+
+    onKeyDown(e) {
+        if (e.key === "Escape" && this.visible) {
+            this.visible = false;
+        }
     }
 }
 

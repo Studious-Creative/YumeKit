@@ -1,4 +1,10 @@
 export class YumeButton extends HTMLElement {
+    constructor() {
+        super();
+        this.attachShadow({ mode: "open" });
+        this.init();
+    }
+
     static get observedAttributes() {
         return [
             "left-icon",
@@ -23,18 +29,11 @@ export class YumeButton extends HTMLElement {
         ];
     }
 
-    constructor() {
-        super();
-        this.attachShadow({ mode: "open" });
-        this.init();
-    }
-
-    connectedCallback() {
-        if (!this.hasAttribute("size")) {
-            this.setAttribute("size", "medium");
-        }
-
-        this.init();
+    init() {
+        this.applyStyles();
+        this.render();
+        this.proxyNativeOnClick();
+        this.addEventListeners();
     }
 
     attributeChangedCallback(name, oldValue, newValue) {
@@ -55,84 +54,6 @@ export class YumeButton extends HTMLElement {
         }
     }
 
-    get value() {
-        if (this.hasAttribute("multiple")) {
-            return Array.from(this.selectedValues).join(",");
-        } else {
-            return this.selectedValues.size
-                ? Array.from(this.selectedValues)[0]
-                : "";
-        }
-    }
-
-    set value(newVal) {
-        if (this.hasAttribute("multiple")) {
-            if (typeof newVal === "string") {
-                this.selectedValues = new Set(
-                    newVal.split(",").map((s) => s.trim()),
-                );
-            } else if (Array.isArray(newVal)) {
-                this.selectedValues = new Set(newVal);
-            }
-        } else {
-            if (typeof newVal === "string") {
-                this.selectedValues = new Set([newVal.trim()]);
-            } else {
-                this.selectedValues = new Set();
-            }
-        }
-
-        this.setAttribute("value", newVal);
-    }
-
-    setOptions(options) {
-        this.setAttribute("options", JSON.stringify(options));
-    }
-
-    handleClick() {
-        const detail = {};
-        const eventType = this.getAttribute("data-event");
-
-        if (this.hasAttribute("disabled") || !eventType) return;
-
-        Array.from(this.attributes)
-            .filter((attr) => attr.name.startsWith("data-detail-"))
-            .forEach((attr) => {
-                const key = attr.name.replace("data-detail-", "");
-                detail[key] = attr.value;
-            });
-
-        this.dispatchEvent(
-            new CustomEvent(eventType, {
-                detail,
-                bubbles: true,
-                composed: true,
-            }),
-        );
-    }
-
-    init() {
-        this.applyStyles();
-        this.render();
-        this.proxyNativeOnClick();
-        this.addEventListeners();
-    }
-
-    proxyNativeOnClick() {
-        try {
-            Object.defineProperty(this, "onclick", {
-                get: () => this.button.onclick,
-                set: (value) => {
-                    this.button.onclick = value;
-                },
-                configurable: true,
-                enumerable: true,
-            });
-        } catch (e) {
-            console.warn("Could not redefine onclick:", e);
-        }
-    }
-
     updateButtonAttributes() {
         const attributes = YumeButton.observedAttributes;
 
@@ -145,27 +66,12 @@ export class YumeButton extends HTMLElement {
         });
     }
 
-    manageSlotVisibility(slotName, selector) {
-        const slot = slotName
-            ? this.shadowRoot.querySelector(`slot[name="${slotName}"]`)
-            : this.shadowRoot.querySelector("slot:not([name])");
-        const container = this.shadowRoot.querySelector(selector);
+    connectedCallback() {
+        if (!this.hasAttribute("size")) {
+            this.setAttribute("size", "medium");
+        }
 
-        const updateVisibility = () => {
-            const hasContent = slot
-                .assignedNodes({ flatten: true })
-                .some(
-                    (n) =>
-                        !(
-                            n.nodeType === Node.TEXT_NODE &&
-                            n.textContent.trim() === ""
-                        ),
-                );
-            container.style.display = hasContent ? "inline-flex" : "none";
-        };
-
-        updateVisibility();
-        slot.addEventListener("slotchange", updateVisibility);
+        this.init();
     }
 
     render() {
@@ -197,79 +103,6 @@ export class YumeButton extends HTMLElement {
         this.manageSlotVisibility("left-icon", ".left-icon");
         this.manageSlotVisibility("right-icon", ".right-icon");
         this.manageSlotVisibility("", ".label");
-    }
-
-    applyStyles() {
-        const style = document.createElement("style");
-        style.textContent = `
-        :host {
-          display: inline-block;
-        }
-
-        @font-face {
-            font-family: "Lexend";
-            font-display: swap;
-        }
-
-        .button {
-            box-sizing: border-box;
-            display: inline-flex;
-            min-height: var(--button-min-height, var(--sizing-medium, 40px));
-            min-width: var(--button-min-width, var(--sizing-medium, 40px));
-            padding: var(--button-padding, var(--component-button-padding-medium));
-            gap: var(--button-gap, var(--component-button-padding-medium));
-            justify-content: center;
-            align-items: center;
-            position: relative;
-            overflow: hidden;
-            border-radius: var(--component-button-border-radius-outer, 4px);
-            border: var(--component-button-border-width, 1px) solid var(--border-color, var(--base-content--, #1D1D1D));
-            background: var(--background-color, #F1F6FA);
-            transition: background-color 0.1s, color 0.1s, border-color 0.1s;
-            cursor: pointer;
-            color: var(--text-color);
-            font-family: var(--font-family-body, Lexend, sans-serif);
-            font-size: var(--font-size-button, 1em);
-            line-height: 1;
-        }
-
-        .button:disabled {
-            opacity: 0.5;
-            cursor: not-allowed;
-        }
-
-        .button:hover:not(:disabled),
-        .button:hover:not(:disabled) .button-content {
-            background: var(--hover-background-color);
-            color: var(--hover-text-color);
-            border-color: var(--hover-border-color);
-        }
-        .button:focus:not(:disabled),
-        .button:focus:not(:disabled) .button-content {
-            background: var(--focus-background-color);
-            color: var(--focus-text-color);
-            border-color: var(--focus-border-color);
-        }
-        .button:active:not(:disabled),
-        .button:active:not(:disabled) .button-content {
-            background: var(--active-background-color);
-            color: var(--active-text-color);
-            border-color: var(--active-border-color);
-        }
-        .icon {
-            display: flex;
-            min-width: 16px;
-            min-height: 1em;
-            justify-content: center;
-            align-items: center;
-        }
-        .label {
-            line-height: inherit;
-            min-height: 1em;
-            align-items: center;
-        }
-      `;
-        this.shadowRoot.appendChild(style);
     }
 
     addEventListeners() {
@@ -316,6 +149,80 @@ export class YumeButton extends HTMLElement {
                 }
             }
         });
+    }
+
+    applyStyles() {
+        const style = document.createElement("style");
+        style.textContent = `
+        :host {
+          display: inline-block;
+        }
+
+        @font-face {
+            font-family: "Lexend";
+            font-display: swap;
+        }
+
+        .button {
+            box-sizing: border-box;
+            display: inline-flex;
+            min-height: var(--button-min-height, var(--sizing-medium, 40px));
+            min-width: var(--button-min-width, var(--sizing-medium, 40px));
+            padding: var(--button-padding, var(--component-button-padding-medium));
+            gap: var(--button-gap, var(--component-button-padding-medium));
+            justify-content: center;
+            align-items: center;
+            position: relative;
+            overflow: hidden;
+            border-radius: var(--component-button-border-radius-outer, 4px);
+            border: var(--component-button-border-width, 1px) solid var(--border-color, var(--base-content--, #1D1D1D));
+            background: var(--background-color, #F1F6FA);
+            transition: background-color 0.1s, color 0.1s, border-color 0.1s;
+            cursor: pointer;
+            color: var(--text-color);
+            font-family: var(--font-family-body, Lexend, sans-serif);
+            font-size: var(--font-size-button, 1em);
+            line-height: 1;
+        }
+
+        .button:disabled {
+            opacity: 0.5;
+            cursor: not-allowed;
+        }
+
+
+        .button:hover:not(:disabled),
+        .button:hover:not(:disabled) .button-content {
+            background: var(--hover-background-color);
+            color: var(--hover-text-color);
+            border-color: var(--hover-border-color);
+        }
+        .button:focus:not(:disabled),
+        .button:focus:not(:disabled) .button-content {
+            background: var(--focus-background-color);
+            color: var(--focus-text-color);
+            border-color: var(--focus-border-color);
+        }
+        .button:active:not(:disabled),
+        .button:active:not(:disabled) .button-content {
+            background: var(--active-background-color);
+            color: var(--active-text-color);
+            border-color: var(--active-border-color);
+        }
+        .icon {
+            display: flex;
+            min-width: 16px;
+            min-height: 1em;
+            justify-content: center;
+            align-items: center;
+        }
+        .label {
+            line-height: inherit;
+            min-height: 1em;
+            align-items: center;
+        }
+      `;
+        this.shadowRoot.appendChild(style);
     }
 
     updateStyles() {
@@ -540,6 +447,100 @@ export class YumeButton extends HTMLElement {
             "--button-min-width",
             minSizeMapping[size] || "40px",
         );
+    }
+
+    handleClick() {
+        const detail = {};
+        const eventType = this.getAttribute("data-event");
+
+        if (this.hasAttribute("disabled") || !eventType) return;
+
+        Array.from(this.attributes)
+            .filter((attr) => attr.name.startsWith("data-detail-"))
+            .forEach((attr) => {
+                const key = attr.name.replace("data-detail-", "");
+                detail[key] = attr.value;
+            });
+
+        this.dispatchEvent(
+            new CustomEvent(eventType, {
+                detail,
+                bubbles: true,
+                composed: true,
+            }),
+        );
+    }
+
+    proxyNativeOnClick() {
+        try {
+            Object.defineProperty(this, "onclick", {
+                get: () => this.button.onclick,
+                set: (value) => {
+                    this.button.onclick = value;
+                },
+                configurable: true,
+                enumerable: true,
+            });
+        } catch (e) {
+            console.warn("Could not redefine onclick:", e);
+        }
+    }
+
+    manageSlotVisibility(slotName, selector) {
+        const slot = slotName
+            ? this.shadowRoot.querySelector(`slot[name="${slotName}"]`)
+            : this.shadowRoot.querySelector("slot:not([name])");
+        const container = this.shadowRoot.querySelector(selector);
+
+        const updateVisibility = () => {
+            const hasContent = slot
+                .assignedNodes({ flatten: true })
+                .some(
+                    (n) =>
+                        !(
+                            n.nodeType === Node.TEXT_NODE &&
+                            n.textContent.trim() === ""
+                        ),
+                );
+            container.style.display = hasContent ? "inline-flex" : "none";
+        };
+
+        updateVisibility();
+        slot.addEventListener("slotchange", updateVisibility);
+    }
+
+    get value() {
+        if (this.hasAttribute("multiple")) {
+            return Array.from(this.selectedValues).join(",");
+        } else {
+            return this.selectedValues.size
+                ? Array.from(this.selectedValues)[0]
+                : "";
+        }
+    }
+
+    set value(newVal) {
+        if (this.hasAttribute("multiple")) {
+            if (typeof newVal === "string") {
+                this.selectedValues = new Set(
+                    newVal.split(",").map((s) => s.trim()),
+                );
+            } else if (Array.isArray(newVal)) {
+                this.selectedValues = new Set(newVal);
+            }
+        } else {
+            if (typeof newVal === "string") {
+                this.selectedValues = new Set([newVal.trim()]);
+            } else {
+                this.selectedValues = new Set();
+            }
+        }
+
+        this.setAttribute("value", newVal);
+    }
+
+    setOptions(options) {
+        this.setAttribute("options", JSON.stringify(options));
     }
 }
 

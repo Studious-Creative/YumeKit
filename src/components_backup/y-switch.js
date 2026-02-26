@@ -74,6 +74,123 @@ class YumeSwitch extends HTMLElement {
         );
     }
 
+    render() {
+        this.shadowRoot.innerHTML = `
+            <style>
+                :host {
+                    display: inline-flex;
+                    flex-direction: var(--switch-dir, column);
+                    align-items: center;
+                    gap: var(--spacing-x-small);
+                    font-family: var(--font-family-body);
+                    --switch-padding: var(--component-switch-padding, 2px);
+                    --show-labels: flex;
+                    --show-toggle-label: none;
+                    --switch-width: max-content;
+                    --toggle-width: auto;
+                    --toggle-padding: 0 var(--spacing-small);
+                    --toggle-radius: var(--component-switch-border-radius);
+                }
+
+                .label {
+                    font-size: var(--font-size-label);
+                    color: var(--base-content--);
+                }
+
+                .switch {
+                    position: relative;
+                    display: inline-flex;
+                    align-items: center;
+                    background: var(--base-background-component);
+                    border: var(--component-switch-border-width) solid var(--base-background-border);
+                    border-radius: var(--component-switch-border-radius);
+                    cursor: pointer;
+                    height: var(--switch-height);
+                    font-size: var(--switch-font-size);
+                    box-sizing: border-box;
+                    padding: var(--switch-padding);
+                    width: var(--switch-width, max-content);
+                }
+
+                .track {
+                    display: flex;
+                    align-items: center;
+                    height: 100%;
+                    position: relative;
+                    z-index: 0;
+                }
+
+                .label-content {
+                    flex: 0 0 auto;
+                    align-items: center;
+                    justify-content: center;
+                    padding: 0 var(--spacing-small);
+                    white-space: nowrap;
+                    position: relative;
+                    z-index: 0;
+                    color: var(--base-content-light);
+                    display: var(--show-labels, flex);
+                }
+
+                .toggle {
+                    position: absolute;
+                    top: var(--switch-padding);
+                    bottom: var(--switch-padding);
+                    left: var(--switch-padding);
+                    height: calc(100% - (var(--switch-padding) + var(--switch-padding)));
+                    width: var(--toggle-width, auto);
+                    background: var(--toggle-bg, var(--base-content-light));
+                    color: var(--base-background-component);
+                    border-radius: var(--toggle-radius, var(--component-switch-border-radius));
+                    display: flex;
+                    align-items: center;
+                    justify-content: center;
+                    padding: var(--toggle-padding, 0 var(--spacing-small));
+                    font-weight: 500;
+                    z-index: 1;
+                    white-space: nowrap;
+                    transform: translateX(var(--toggle-x, 0));
+                    transition: var(--toggle-transition, transform 0.25s ease, background 0.25s ease);
+                }
+
+                .toggle .on,
+                .toggle .off {
+                    display: none;
+                }
+
+                :host([checked]) .toggle .on {
+                    display: var(--show-toggle-label, none);
+                }
+
+                :host(:not([checked])) .toggle .off {
+                    display: var(--show-toggle-label, none);
+                }
+
+
+                :host([animate="false"]) .toggle {
+                    transition: none !important;
+                }
+            </style>
+
+            ${this.labelTag("top")}
+
+            <div class="switch" part="switch" tabindex="0" role="switch" aria-checked="${this.checked}" aria-disabled="${this.disabled}">
+                <div class="track">
+                    <div class="label-content"><slot name="off-label">Off</slot></div>
+                    <div class="label-content"><slot name="on-label">On</slot></div>
+                </div>
+                <div class="toggle" part="toggle">
+                    <span class="off"></span>
+                    <span class="on"></span>
+                </div>
+            </div>
+
+            ${this.labelTag("bottom")}
+        `;
+
+        this.update();
+    }
+
     labelTag(pos) {
         const labelPos = this.getAttribute("label-position");
         const shouldRender =
@@ -88,7 +205,7 @@ class YumeSwitch extends HTMLElement {
             const toggle = this.shadowRoot?.querySelector(".toggle");
             if (!toggle) return;
 
-            toggle.innerHTML = "";
+            toggle.innerHTML = ""; // Clear old content
 
             const offSlot = this.querySelector('[slot="off-label"]');
             const onSlot = this.querySelector('[slot="on-label"]');
@@ -228,123 +345,6 @@ class YumeSwitch extends HTMLElement {
 
     updateFormValue() {
         this._internals.setFormValue(this.checked ? this.value : "");
-    }
-
-    render() {
-        this.shadowRoot.innerHTML = `
-            <style>
-                :host {
-                    display: inline-flex;
-                    flex-direction: var(--switch-dir, column);
-                    align-items: center;
-                    gap: var(--spacing-x-small);
-                    font-family: var(--font-family-body);
-                    --switch-padding: var(--component-switch-padding, 2px);
-                    --show-labels: flex;
-                    --show-toggle-label: none;
-                    --switch-width: max-content;
-                    --toggle-width: auto;
-                    --toggle-padding: 0 var(--spacing-small);
-                    --toggle-radius: var(--component-switch-border-radius);
-                }
-
-                .label {
-                    font-size: var(--font-size-label);
-                    color: var(--base-content--);
-                }
-
-                .switch {
-                    position: relative;
-                    display: inline-flex;
-                    align-items: center;
-                    background: var(--base-background-component);
-                    border: var(--component-switch-border-width) solid var(--base-background-border);
-                    border-radius: var(--component-switch-border-radius);
-                    cursor: pointer;
-                    height: var(--switch-height);
-                    font-size: var(--switch-font-size);
-                    box-sizing: border-box;
-                    padding: var(--switch-padding);
-                    width: var(--switch-width, max-content);
-                }
-
-                .track {
-                    display: flex;
-                    align-items: center;
-                    height: 100%;
-                    position: relative;
-                    z-index: 0;
-                }
-
-                .label-content {
-                    flex: 0 0 auto;
-                    align-items: center;
-                    justify-content: center;
-                    padding: 0 var(--spacing-small);
-                    white-space: nowrap;
-                    position: relative;
-                    z-index: 0;
-                    color: var(--base-content-light);
-                    display: var(--show-labels, flex);
-                }
-
-                .toggle {
-                    position: absolute;
-                    top: var(--switch-padding);
-                    bottom: var(--switch-padding);
-                    left: var(--switch-padding);
-                    height: calc(100% - (var(--switch-padding) + var(--switch-padding)));
-                    width: var(--toggle-width, auto);
-                    background: var(--toggle-bg, var(--base-content-light));
-                    color: var(--base-background-component);
-                    border-radius: var(--toggle-radius, var(--component-switch-border-radius));
-                    display: flex;
-                    align-items: center;
-                    justify-content: center;
-                    padding: var(--toggle-padding, 0 var(--spacing-small));
-                    font-weight: 500;
-                    z-index: 1;
-                    white-space: nowrap;
-                    transform: translateX(var(--toggle-x, 0));
-                    transition: var(--toggle-transition, transform 0.25s ease, background 0.25s ease);
-                }
-
-                .toggle .on,
-                .toggle .off {
-                    display: none;
-                }
-
-                :host([checked]) .toggle .on {
-                    display: var(--show-toggle-label, none);
-                }
-
-                :host(:not([checked])) .toggle .off {
-                    display: var(--show-toggle-label, none);
-                }
-
-
-                :host([animate="false"]) .toggle {
-                    transition: none !important;
-                }
-            </style>
-
-            ${this.labelTag("top")}
-
-            <div class="switch" part="switch" tabindex="0" role="switch" aria-checked="${this.checked}" aria-disabled="${this.disabled}">
-                <div class="track">
-                    <div class="label-content"><slot name="off-label">Off</slot></div>
-                    <div class="label-content"><slot name="on-label">On</slot></div>
-                </div>
-                <div class="toggle" part="toggle">
-                    <span class="off"></span>
-                    <span class="on"></span>
-                </div>
-            </div>
-
-            ${this.labelTag("bottom")}
-        `;
-
-        this.update();
     }
 }
 

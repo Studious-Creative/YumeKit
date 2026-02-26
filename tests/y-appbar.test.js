@@ -296,4 +296,39 @@ describe("YumeAppbar", () => {
         el.size = "small";
         expect(el.getAttribute("size")).to.equal("small");
     });
+
+    it("sets menu direction to 'right' on vertical menus by default", async () => {
+        const el = await fixture(html`
+            <y-appbar .items=${sampleItems}></y-appbar>
+        `);
+        const menu = el.shadowRoot.querySelector("y-menu");
+        expect(menu.getAttribute("direction")).to.equal("right");
+    });
+
+    it("sets menu direction to 'down' on horizontal menus by default", async () => {
+        const el = await fixture(html`
+            <y-appbar orientation="horizontal" .items=${sampleItems}></y-appbar>
+        `);
+        const menu = el.shadowRoot.querySelector("y-menu");
+        expect(menu.getAttribute("direction")).to.equal("down");
+    });
+
+    it("allows overriding menu-direction on vertical appbar", async () => {
+        const el = await fixture(html`
+            <y-appbar menu-direction="down" .items=${sampleItems}></y-appbar>
+        `);
+        const menu = el.shadowRoot.querySelector("y-menu");
+        expect(menu.getAttribute("direction")).to.equal("down");
+    });
+
+    it("defaults menuDirection to empty string", async () => {
+        const el = await fixture(html`<y-appbar></y-appbar>`);
+        expect(el.menuDirection).to.equal("");
+    });
+
+    it("sets menuDirection via property setter", async () => {
+        const el = await fixture(html`<y-appbar></y-appbar>`);
+        el.menuDirection = "down";
+        expect(el.getAttribute("menu-direction")).to.equal("down");
+    });
 });

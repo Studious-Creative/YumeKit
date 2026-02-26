@@ -25,6 +25,10 @@ export class YumeTable extends HTMLElement {
         this.render();
     }
 
+    /* ------------------------------------------------------------------ */
+    /*  Properties                                                         */
+    /* ------------------------------------------------------------------ */
+
     get columns() {
         return this.getAttribute("columns");
     }
@@ -63,6 +67,10 @@ export class YumeTable extends HTMLElement {
         this.setAttribute("size", val);
     }
 
+    /* ------------------------------------------------------------------ */
+    /*  Attribute parsing                                                   */
+    /* ------------------------------------------------------------------ */
+
     _parseAttributes() {
         try {
             this._parsedColumns = JSON.parse(this.columns || "[]");
@@ -76,8 +84,13 @@ export class YumeTable extends HTMLElement {
         }
     }
 
+    /* ------------------------------------------------------------------ */
+    /*  Sorting                                                            */
+    /* ------------------------------------------------------------------ */
+
     _onHeaderClick(field) {
         if (this._sortField === field) {
+            // Cycle: asc → desc → none
             this._sortDir =
                 this._sortDir === "asc"
                     ? "desc"
@@ -124,10 +137,15 @@ export class YumeTable extends HTMLElement {
         });
     }
 
+    /* ------------------------------------------------------------------ */
+    /*  Sort indicator SVG                                                 */
+    /* ------------------------------------------------------------------ */
+
     _sortIcon(field) {
         const active = this._sortField === field;
         const dir = active ? this._sortDir : "none";
 
+        // Dual-arrow icon: top arrow and bottom arrow, active one highlighted
         const topColor =
             dir === "asc"
                 ? "var(--base-content--, #333)"
@@ -140,6 +158,10 @@ export class YumeTable extends HTMLElement {
         return sortArrows(topColor, bottomColor);
     }
 
+    /* ------------------------------------------------------------------ */
+    /*  Render                                                             */
+    /* ------------------------------------------------------------------ */
+
     render() {
         const columns = this._parsedColumns;
         const rows = this._getSortedData();
@@ -150,6 +172,7 @@ export class YumeTable extends HTMLElement {
 
         this.shadowRoot.innerHTML = "";
 
+        /* ---- Styles ---- */
         const style = document.createElement("style");
         style.textContent = `
             :host {
@@ -168,6 +191,7 @@ export class YumeTable extends HTMLElement {
                 table-layout: auto;
             }
 
+            /* ---------- Header ---------- */
             thead th {
                 position: relative;
                 padding: ${paddingVar};
@@ -199,6 +223,7 @@ export class YumeTable extends HTMLElement {
                 vertical-align: middle;
             }
 
+            /* ---------- Body ---------- */
             tbody td {
                 padding: ${paddingVar};
                 font-size: var(--font-size-paragraph, 1em);
@@ -209,10 +234,12 @@ export class YumeTable extends HTMLElement {
                 border-bottom: none;
             }
 
+            /* Row header column */
             tbody td.row-header {
                 font-weight: 500;
             }
 
+            /* Striped rows */
             ${
                 striped
                     ? `tbody tr:nth-child(even) {
@@ -221,18 +248,21 @@ export class YumeTable extends HTMLElement {
                     : ""
             }
 
+            /* Hover */
             tbody tr:hover {
                 background: var(--base-background-active, #eee);
             }
         `;
         this.shadowRoot.appendChild(style);
 
+        /* ---- Table ---- */
         const wrapper = document.createElement("div");
         wrapper.className = "table-wrapper";
 
         const table = document.createElement("table");
         table.setAttribute("role", "grid");
 
+        // <thead>
         const thead = document.createElement("thead");
         const headerRow = document.createElement("tr");
 
@@ -275,6 +305,7 @@ export class YumeTable extends HTMLElement {
         thead.appendChild(headerRow);
         table.appendChild(thead);
 
+        // <tbody>
         const tbody = document.createElement("tbody");
 
         rows.forEach((row) => {

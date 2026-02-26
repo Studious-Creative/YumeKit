@@ -11,25 +11,6 @@ class YumeMenu extends HTMLElement {
         this._onScrollOrResize = this._onScrollOrResize.bind(this);
     }
 
-    connectedCallback() {
-        if (!this.hasAttribute("items")) this.items = [];
-        this._setupAnchor();
-        this.render();
-        document.addEventListener("click", this._onDocumentClick);
-        window.addEventListener("scroll", this._onScrollOrResize, true);
-        window.addEventListener("resize", this._onScrollOrResize);
-        this.style.position = "fixed";
-        this.style.zIndex = "1000";
-        this.style.display = "none";
-    }
-
-    disconnectedCallback() {
-        this._teardownAnchor();
-        document.removeEventListener("click", this._onDocumentClick);
-        window.removeEventListener("scroll", this._onScrollOrResize, true);
-        window.removeEventListener("resize", this._onScrollOrResize);
-    }
-
     attributeChangedCallback(name, oldVal, newVal) {
         if (oldVal === newVal) return;
         if (name === "items") this.render();
@@ -71,11 +52,31 @@ class YumeMenu extends HTMLElement {
         else this.removeAttribute("visible");
     }
 
+    /** Menu pop-out direction: "down" (default) or "right" */
     get direction() {
         return this.getAttribute("direction") || "down";
     }
     set direction(val) {
         this.setAttribute("direction", val);
+    }
+
+    connectedCallback() {
+        if (!this.hasAttribute("items")) this.items = [];
+        this._setupAnchor();
+        this.render();
+        document.addEventListener("click", this._onDocumentClick);
+        window.addEventListener("scroll", this._onScrollOrResize, true);
+        window.addEventListener("resize", this._onScrollOrResize);
+        this.style.position = "fixed";
+        this.style.zIndex = "1000";
+        this.style.display = "none";
+    }
+
+    disconnectedCallback() {
+        this._teardownAnchor();
+        document.removeEventListener("click", this._onDocumentClick);
+        window.removeEventListener("scroll", this._onScrollOrResize, true);
+        window.removeEventListener("resize", this._onScrollOrResize);
     }
 
     _createMenuList(items) {

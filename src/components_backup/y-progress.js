@@ -32,6 +32,8 @@ export class YumeProgress extends HTMLElement {
         }
     }
 
+    // --- Properties ---
+
     get value() {
         const val = parseFloat(this.getAttribute("value"));
         return Number.isNaN(val) ? null : val;
@@ -124,23 +126,7 @@ export class YumeProgress extends HTMLElement {
         else this.removeAttribute("disabled");
     }
 
-    /**
-     * Increment the progress value by the step amount (or 1 if no step).
-     */
-    increment() {
-        if (this.value === null) return;
-        const s = this.step || 1;
-        this.value = Math.min(this.value + s, this.max);
-    }
-
-    /**
-     * Decrement the progress value by the step amount (or 1 if no step).
-     */
-    decrement() {
-        if (this.value === null) return;
-        const s = this.step || 1;
-        this.value = Math.max(this.value - s, this.min);
-    }
+    // --- Computed helpers ---
 
     get percentage() {
         if (this.value === null) return 0;
@@ -190,6 +176,8 @@ export class YumeProgress extends HTMLElement {
                 return `${Math.round(this.percentage)}%`;
         }
     }
+
+    // --- Rendering ---
 
     render() {
         const isIndeterminate = this.indeterminate;
@@ -307,6 +295,24 @@ export class YumeProgress extends HTMLElement {
                 </div>
             </div>
         `;
+    }
+
+    /**
+     * Increment the progress value by the step amount (or 1 if no step).
+     */
+    increment() {
+        if (this.value === null) return;
+        const s = this.step || 1;
+        this.value = Math.min(this.value + s, this.max);
+    }
+
+    /**
+     * Decrement the progress value by the step amount (or 1 if no step).
+     */
+    decrement() {
+        if (this.value === null) return;
+        const s = this.step || 1;
+        this.value = Math.max(this.value - s, this.min);
     }
 }
 

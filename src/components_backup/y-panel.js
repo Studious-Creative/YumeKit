@@ -66,58 +66,6 @@ export class YumePanel extends HTMLElement {
         else this.removeAttribute("expanded");
     }
 
-    toggle() {
-        if (!this.hasChildren()) return;
-        if (!this._expanded) {
-            const parentBar = this.closest("y-panelbar");
-            if (parentBar && parentBar.hasAttribute("exclusive")) {
-                const siblingPanels = parentBar.querySelectorAll("y-panel");
-                siblingPanels.forEach((panel) => {
-                    if (panel !== this && panel.expanded) {
-                        panel.collapse();
-                    }
-                });
-            }
-            this.expand();
-        } else {
-            this.collapse();
-        }
-        this.dispatchEvent(
-            new CustomEvent("toggle", {
-                detail: { expanded: this._expanded },
-                bubbles: true,
-                composed: true,
-            }),
-        );
-    }
-
-    expand() {
-        if (!this.hasChildren()) return;
-        this.expanded = true;
-        this._expanded = true;
-        this.updateExpandedState();
-        this.dispatchEvent(
-            new CustomEvent("expand", {
-                detail: { expanded: true },
-                bubbles: true,
-                composed: true,
-            }),
-        );
-    }
-
-    collapse() {
-        this.expanded = false;
-        this._expanded = false;
-        this.updateExpandedState();
-        this.dispatchEvent(
-            new CustomEvent("collapse", {
-                detail: { expanded: false },
-                bubbles: true,
-                composed: true,
-            }),
-        );
-    }
-
     updateSelectedState() {
         this.classList.toggle("selected", this.selected);
     }
@@ -134,87 +82,6 @@ export class YumePanel extends HTMLElement {
             this.selected = true;
         } else {
             this.selected = false;
-        }
-    }
-
-    addHeaderListeners() {
-        const header = this.shadowRoot.querySelector(".header");
-        if (!header) return;
-
-        header.addEventListener("click", () => {
-            if (this.hasAttribute("href")) {
-                const href = this.getAttribute("href");
-                if (this.getAttribute("history") !== "false") {
-                    history.pushState({}, "", href);
-                    window.dispatchEvent(
-                        new PopStateEvent("popstate", { state: {} }),
-                    );
-                } else {
-                    window.location.href = href;
-                }
-                return;
-            }
-
-            if (this.hasChildren()) {
-                this.toggle();
-            } else {
-                this.dispatchEvent(
-                    new CustomEvent("select", {
-                        detail: { selected: true },
-                        bubbles: true,
-                        composed: true,
-                    }),
-                );
-            }
-        });
-
-        header.addEventListener("keydown", (e) => {
-            if (e.key === " " || e.key === "Enter") {
-                e.preventDefault();
-                header.click();
-            }
-        });
-
-        const childrenSlot = this.shadowRoot.querySelector(
-            'slot[name="children"]',
-        );
-        if (childrenSlot) {
-            childrenSlot.addEventListener("slotchange", () =>
-                this.checkForChildren(),
-            );
-        }
-    }
-
-    hasChildren() {
-        const childrenSlot = this.shadowRoot.querySelector(
-            'slot[name="children"]',
-        );
-        if (!childrenSlot) return false;
-        const nodes = childrenSlot.assignedNodes({ flatten: true });
-        return nodes.some((n) => {
-            if (n.nodeType === Node.TEXT_NODE) {
-                return n.textContent.trim() !== "";
-            }
-            return true;
-        });
-    }
-
-    checkForChildren() {
-        const hasChildren = this.hasChildren();
-        this.setAttribute("data-has-children", hasChildren ? "true" : "false");
-        if (!hasChildren && this.expanded) {
-            this.expanded = false;
-        }
-    }
-
-    updateExpandedState() {
-        const hasChildren = this.hasChildren();
-        const header = this.shadowRoot.querySelector(".header");
-        const isExpanded = this.expanded && hasChildren;
-        this._expanded = isExpanded;
-
-        if (header) {
-            header.setAttribute("aria-expanded", String(isExpanded));
         }
     }
 
@@ -330,6 +197,139 @@ export class YumePanel extends HTMLElement {
                 <slot name="children"></slot>
             </div>
         `;
+    }
+
+    addHeaderListeners() {
+        const header = this.shadowRoot.querySelector(".header");
+        if (!header) return;
+
+        header.addEventListener("click", () => {
+            if (this.hasAttribute("href")) {
+                const href = this.getAttribute("href");
+                if (this.getAttribute("history") !== "false") {
+                    history.pushState({}, "", href);
+                    window.dispatchEvent(
+                        new PopStateEvent("popstate", { state: {} }),
+                    );
+                } else {
+                    window.location.href = href;
+                }
+                return;
+            }
+
+            if (this.hasChildren()) {
+                this.toggle();
+            } else {
+                this.dispatchEvent(
+                    new CustomEvent("select", {
+                        detail: { selected: true },
+                        bubbles: true,
+                        composed: true,
+                    }),
+                );
+            }
+        });
+
+        header.addEventListener("keydown", (e) => {
+            if (e.key === " " || e.key === "Enter") {
+                e.preventDefault();
+                header.click();
+            }
+        });
+
+        const childrenSlot = this.shadowRoot.querySelector(
+            'slot[name="children"]',
+        );
+        if (childrenSlot) {
+            childrenSlot.addEventListener("slotchange", () =>
+                this.checkForChildren(),
+            );
+        }
+    }
+
+    hasChildren() {
+        const childrenSlot = this.shadowRoot.querySelector(
+            'slot[name="children"]',
+        );
+        if (!childrenSlot) return false;
+        const nodes = childrenSlot.assignedNodes({ flatten: true });
+        return nodes.some((n) => {
+            if (n.nodeType === Node.TEXT_NODE) {
+                return n.textContent.trim() !== "";
+            }
+            return true;
+        });
+    }
+
+    checkForChildren() {
+        const hasChildren = this.hasChildren();
+        this.setAttribute("data-has-children", hasChildren ? "true" : "false");
+        if (!hasChildren && this.expanded) {
+            this.expanded = false;
+        }
+    }
+
+    toggle() {
+        if (!this.hasChildren()) return;
+        if (!this._expanded) {
+            const parentBar = this.closest("y-panelbar");
+            if (parentBar && parentBar.hasAttribute("exclusive")) {
+                const siblingPanels = parentBar.querySelectorAll("y-panel");
+                siblingPanels.forEach((panel) => {
+                    if (panel !== this && panel.expanded) {
+                        panel.collapse();
+                    }
+                });
+            }
+            this.expand();
+        } else {
+            this.collapse();
+        }
+        this.dispatchEvent(
+            new CustomEvent("toggle", {
+                detail: { expanded: this._expanded },
+                bubbles: true,
+                composed: true,
+            }),
+        );
+    }
+
+    expand() {
+        if (!this.hasChildren()) return;
+        this.expanded = true;
+        this._expanded = true;
+        this.updateExpandedState();
+        this.dispatchEvent(
+            new CustomEvent("expand", {
+                detail: { expanded: true },
+                bubbles: true,
+                composed: true,
+            }),
+        );
+    }
+
+    collapse() {
+        this.expanded = false;
+        this._expanded = false;
+        this.updateExpandedState();
+        this.dispatchEvent(
+            new CustomEvent("collapse", {
+                detail: { expanded: false },
+                bubbles: true,
+                composed: true,
+            }),
+        );
+    }
+
+    updateExpandedState() {
+        const hasChildren = this.hasChildren();
+        const header = this.shadowRoot.querySelector(".header");
+        const isExpanded = this.expanded && hasChildren;
+        this._expanded = isExpanded;
+
+        if (header) {
+            header.setAttribute("aria-expanded", String(isExpanded));
+        }
     }
 }
 
