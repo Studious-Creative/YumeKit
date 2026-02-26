@@ -9,7 +9,14 @@ import {
 
 export class YumeAppbar extends HTMLElement {
     static get observedAttributes() {
-        return ["orientation", "collapsed", "items", "size", "menu-direction"];
+        return [
+            "orientation",
+            "collapsed",
+            "items",
+            "size",
+            "menu-direction",
+            "sticky",
+        ];
     }
 
     constructor() {
@@ -75,6 +82,15 @@ export class YumeAppbar extends HTMLElement {
         else this.removeAttribute("menu-direction");
     }
 
+    get sticky() {
+        const val = this.getAttribute("sticky");
+        return ["start", "end"].includes(val) ? val : false;
+    }
+    set sticky(val) {
+        if (val === "start" || val === "end") this.setAttribute("sticky", val);
+        else this.removeAttribute("sticky");
+    }
+
     toggle() {
         this.collapsed = !this.collapsed;
     }
@@ -85,6 +101,16 @@ export class YumeAppbar extends HTMLElement {
 
     _uid(prefix) {
         return `${prefix}-${this._idCounter++}`;
+    }
+
+    _isItemActive(item) {
+        if (item.selected) return true;
+        if (item.href) {
+            const loc = window.location;
+            const current = loc.pathname + loc.search + loc.hash;
+            return item.href === current || item.href === loc.href;
+        }
+        return false;
     }
 
     render() {
@@ -124,6 +150,52 @@ export class YumeAppbar extends HTMLElement {
                 display: block;
                 font-family: var(--font-family-body, sans-serif);
                 color: var(--base-content--, #fff);
+            }
+
+            :host([sticky]) {
+                position: sticky;
+                z-index: 100;
+            }
+            :host([orientation="vertical"][sticky="start"]),
+            :host(:not([orientation])[sticky="start"]) {
+                left: 0;
+                top: 0;
+                height: 100%;
+            }
+            :host([orientation="vertical"][sticky="end"]),
+            :host(:not([orientation])[sticky="end"]) {
+                right: 0;
+                top: 0;
+                height: 100%;
+            }
+            :host([orientation="horizontal"][sticky="start"]) {
+                top: 0;
+                left: 0;
+                width: 100%;
+            }
+            :host([orientation="horizontal"][sticky="end"]) {
+                bottom: 0;
+                left: 0;
+                width: 100%;
+            }
+
+            :host([sticky]) .appbar {
+                border-radius: 0;
+                border: none;
+            }
+            :host([orientation="vertical"][sticky="start"]) .appbar,
+            :host(:not([orientation])[sticky="start"]) .appbar {
+                border-right: var(--component-appbar-border-width, var(--component-sidebar-border-width, 2px)) solid var(--base-background-border, #333);
+            }
+            :host([orientation="vertical"][sticky="end"]) .appbar,
+            :host(:not([orientation])[sticky="end"]) .appbar {
+                border-left: var(--component-appbar-border-width, var(--component-sidebar-border-width, 2px)) solid var(--base-background-border, #333);
+            }
+            :host([orientation="horizontal"][sticky="start"]) .appbar {
+                border-bottom: var(--component-appbar-border-width, var(--component-sidebar-border-width, 2px)) solid var(--base-background-border, #333);
+            }
+            :host([orientation="horizontal"][sticky="end"]) .appbar {
+                border-top: var(--component-appbar-border-width, var(--component-sidebar-border-width, 2px)) solid var(--base-background-border, #333);
             }
 
             .appbar {
@@ -257,6 +329,10 @@ export class YumeAppbar extends HTMLElement {
                 flex-shrink: 0;
             }
 
+            .appbar.vertical .nav-item y-button::part(right-icon) {
+                margin-left: auto;
+            }
+
             .appbar.vertical.collapsed .nav-item y-button::part(button),
             .appbar.vertical.collapsed .appbar-footer y-button::part(button) {
                 min-width: 0;
@@ -350,7 +426,8 @@ export class YumeAppbar extends HTMLElement {
             const btn = document.createElement("y-button");
             const btnId = this._uid("appbar-btn");
             btn.id = btnId;
-            btn.setAttribute("color", "base");
+            const isActive = this._isItemActive(item);
+            btn.setAttribute("color", isActive ? "primary" : "base");
             btn.setAttribute("style-type", "flat");
             btn.setAttribute("size", cfg.buttonSize);
 

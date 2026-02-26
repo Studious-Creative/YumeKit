@@ -18,17 +18,19 @@
             <y-theme
                 id="app-theme"
                 theme-path="/styles/blue-light.css"
-                style="
-                    color: var(--base-content--);
-                    padding: var(--spacing-medium);
-                "
+                style="color: var(--base-content--)"
             >
                 <!-- ═══════════════════════════════════════════════════════ -->
                 <!--  LAYOUT: sidebar + content                             -->
                 <!-- ═══════════════════════════════════════════════════════ -->
                 <div style="display: flex; flex: 1; overflow: hidden">
                     <!-- Sidebar -->
-                    <y-appbar id="sidebar" orientation="vertical">
+                    <y-appbar
+                        id="sidebar"
+                        orientation="vertical"
+                        size="medium"
+                        sticky="start"
+                    >
                         <y-avatar slot="logo" alt="YK" size="small"></y-avatar>
                         <span slot="title">YumeKit</span>
                     </y-appbar>
@@ -144,7 +146,7 @@
                                 >
                             </y-card>
 
-                            <y-card>
+                            <y-card raised color="success">
                                 <h4 slot="header">Completed</h4>
                                 <div class="stat-card-body">
                                     <span class="stat-number">142</span>
@@ -229,7 +231,6 @@
                                         type="text"
                                         style="max-width: 260px"
                                     >
-                                        <span slot="label">Search tasks</span>
                                         <i
                                             class="fas fa-search"
                                             slot="left-icon"
@@ -271,11 +272,7 @@
                                     anchor="filter-menu-btn"
                                 ></y-menu>
 
-                                <y-table
-                                    id="task-table"
-                                    striped
-                                    size="medium"
-                                ></y-table>
+                                <y-table id="task-table" size="large"></y-table>
                             </div>
 
                             <!-- Tab 2 — Team -->
@@ -753,6 +750,7 @@
                     text: "Dashboard",
                     icon: '<i class="fas fa-house"></i>',
                     href: "#",
+                    selected: true,
                 },
                 {
                     text: "Tasks",
@@ -785,6 +783,7 @@
                     text: "Overview",
                     icon: '<i class="fas fa-chart-line"></i>',
                     href: "#",
+                    selected: true,
                 },
                 {
                     text: "Projects",
