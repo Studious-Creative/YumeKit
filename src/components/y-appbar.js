@@ -462,6 +462,7 @@ export class YumeAppbar extends HTMLElement {
                 const menu = document.createElement("y-menu");
                 menu.setAttribute("anchor", btnId);
                 menu.setAttribute("direction", menuDir);
+                menu.setAttribute("size", cfg.buttonSize);
                 menu.items = item.children;
                 wrapper.appendChild(menu);
             }

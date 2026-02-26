@@ -1,6 +1,6 @@
 class YumeMenu extends HTMLElement {
     static get observedAttributes() {
-        return ["items", "anchor", "visible", "direction"];
+        return ["items", "anchor", "visible", "direction", "size"];
     }
 
     constructor() {
@@ -32,7 +32,7 @@ class YumeMenu extends HTMLElement {
 
     attributeChangedCallback(name, oldVal, newVal) {
         if (oldVal === newVal) return;
-        if (name === "items") this.render();
+        if (name === "items" || name === "size") this.render();
         if (name === "anchor") {
             this._teardownAnchor();
             this._setupAnchor();
@@ -76,6 +76,16 @@ class YumeMenu extends HTMLElement {
     }
     set direction(val) {
         this.setAttribute("direction", val);
+    }
+
+    get size() {
+        const sz = this.getAttribute("size");
+        return ["small", "medium", "large"].includes(sz) ? sz : "medium";
+    }
+    set size(val) {
+        if (["small", "medium", "large"].includes(val))
+            this.setAttribute("size", val);
+        else this.setAttribute("size", "medium");
     }
 
     _createMenuList(items) {
@@ -188,20 +198,16 @@ class YumeMenu extends HTMLElement {
         let top, left;
 
         if (this.direction === "right") {
-            // Position to the right of the anchor
             top = anchorRect.top;
             left = anchorRect.right;
 
-            // If it overflows right, try left side
             if (left + menuRect.width > vw) {
                 left = anchorRect.left - menuRect.width;
             }
-            // If it overflows bottom, shift up
             if (top + menuRect.height > vh) {
                 top = vh - menuRect.height - 10;
             }
         } else {
-            // Default: position below the anchor
             top = anchorRect.bottom;
             left = anchorRect.left;
 
@@ -224,6 +230,8 @@ class YumeMenu extends HTMLElement {
     render() {
         this.shadowRoot.innerHTML = "";
 
+        const paddingVar = `var(--component-button-padding-${this.size}, 0.5rem)`;
+
         const style = document.createElement("style");
         style.textContent = `
             ul.menu,
@@ -242,13 +250,13 @@ class YumeMenu extends HTMLElement {
 
             li.menuitem {
                 cursor: pointer;
-                padding: var(--component-menu-padding-vertical, 0.5rem)
-                    var(--component-menu-padding-horizontal, 1rem);
+                padding: ${paddingVar};
                 display: flex;
                 align-items: center;
                 justify-content: space-between;
                 white-space: nowrap;
                 color: var(--base-content--, #000);
+                font-size: var(--font-size-button, 1em);
             }
 
             li.menuitem:hover {
