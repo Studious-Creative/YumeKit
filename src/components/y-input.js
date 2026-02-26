@@ -99,7 +99,7 @@ export class YumeInput extends HTMLElement {
             :host {
                 display: block;
                 font-family: var(--font-family-body);
-                color: var(--base-content--);
+                color: var(--component-input-color);
                 opacity: ${isDisabled ? "0.75" : "1"};
                 pointer-events: ${isDisabled ? "none" : "auto"};
             }
@@ -115,8 +115,8 @@ export class YumeInput extends HTMLElement {
                 display: flex;
                 align-items: center;
                 gap: var(--spacing-x-small);
-                background: ${isDisabled ? "var(--base-background-component)" : "var(--base-background-app)"};
-                border: var(--component-inputs-border-width) solid var(--base-background-border);
+                background: ${isDisabled ? "var(--component-input-background-disabled)" : "var(--component-input-background)"};
+                border: var(--component-inputs-border-width) solid var(--component-input-border-color);
                 border-radius: var(--component-inputs-border-radius-outer);
                 padding: var(${paddingVar});
                 box-sizing: border-box;
@@ -124,24 +124,24 @@ export class YumeInput extends HTMLElement {
             }
 
             .input-container.is-invalid {
-                border-color: var(--error-background-border);
-                background: var(--error-background-component);
+                border-color: var(--component-input-error-border-color);
+                background: var(--component-input-error-background);
             }
 
             .input-container.is-invalid input {
-                color: var(--error-content--);
+                color: var(--component-input-error-color);
             }
 
             .input-container.is-invalid:hover {
-                border-color: var(--error-content--);
+                border-color: var(--component-input-error-color);
             }
 
             .input-container.is-invalid:focus-within {
-                border-color: var(--error-content--);
+                border-color: var(--component-input-error-color);
             }
 
             .input-container.is-invalid:focus-within input {
-                color: var(--base-content--);
+                color: var(--component-input-color);
             }
 
             input {
@@ -155,22 +155,22 @@ export class YumeInput extends HTMLElement {
             }
 
             .input-container:hover {
-                border-color: var(--base-content--);
+                border-color: var(--component-input-color);
                 transition: border-color 0.2s ease-in-out;
             }
 
             .input-container:focus-within {
-                border-color: var(--primary-content--);
+                border-color: var(--component-input-accent);
             }
 
             .label-wrapper.is-invalid ::slotted([slot="label"]) {
-                color: var(--error-content--);
+                color: var(--component-input-error-color);
             }
 
             ::slotted([slot="label"]) {
                 font-weight: 500;
                 font-size: 0.875em;
-                color: var(--base-content-light);
+                color: var(--component-input-label-color);
             }
 
             ::slotted([slot="left-icon"]),
@@ -178,7 +178,7 @@ export class YumeInput extends HTMLElement {
                 display: flex;
                 align-items: center;
                 justify-content: center;
-                color: var(--base-content-lighter);
+                color: var(--component-input-icon-color);
             }
         `);
 

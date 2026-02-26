@@ -158,25 +158,25 @@ export class YumeCheckbox extends HTMLElement {
             .checkbox {
                 width: var(--component-checkbox-size, 20px);
                 height: var(--component-checkbox-size, 20px);
-                border: var(--component-inputs-border-width, 2px) solid var(--base-content--);
+                border: var(--component-inputs-border-width, 2px) solid var(--component-checkbox-border-color);
                 border-radius: var(--component-inputs-border-radius-outer, 4px);
                 display: flex;
                 align-items: center;
                 justify-content: center;
-                background: var(--base-background-component);
+                background: var(--component-checkbox-background);
                 box-sizing: border-box;
                 transition: border-color 0.2s ease;
                 line-height: 0;
             }
 
             .checkbox:hover {
-                border-color: var(--primary-content--);
+                border-color: var(--component-checkbox-accent);
             }
 
             .checkbox svg {
                 width: var(--component-checkbox-icon-size, 16px);
                 height: var(--component-checkbox-icon-size, 16px);
-                stroke: var(--primary-content--);
+                stroke: var(--component-checkbox-accent);
                 display: block;
             }
 
@@ -185,7 +185,7 @@ export class YumeCheckbox extends HTMLElement {
                 align-items: center;
                 font-size: 0.9em;
                 line-height: 1;
-                color: var(--base-content--);
+                color: var(--component-checkbox-color);
             }
 
             .icon {

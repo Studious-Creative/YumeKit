@@ -149,7 +149,7 @@ export class YumeAppbar extends HTMLElement {
             :host {
                 display: block;
                 font-family: var(--font-family-body, sans-serif);
-                color: var(--base-content--, #fff);
+                color: var(--component-appbar-color, #fff);
             }
 
             :host([sticky]) {
@@ -185,23 +185,23 @@ export class YumeAppbar extends HTMLElement {
             }
             :host([orientation="vertical"][sticky="start"]) .appbar,
             :host(:not([orientation])[sticky="start"]) .appbar {
-                border-right: var(--component-appbar-border-width, var(--component-sidebar-border-width, 2px)) solid var(--base-background-border, #333);
+                border-right: var(--component-appbar-border-width, var(--component-sidebar-border-width, 2px)) solid var(--component-appbar-border-color, #333);
             }
             :host([orientation="vertical"][sticky="end"]) .appbar,
             :host(:not([orientation])[sticky="end"]) .appbar {
-                border-left: var(--component-appbar-border-width, var(--component-sidebar-border-width, 2px)) solid var(--base-background-border, #333);
+                border-left: var(--component-appbar-border-width, var(--component-sidebar-border-width, 2px)) solid var(--component-appbar-border-color, #333);
             }
             :host([orientation="horizontal"][sticky="start"]) .appbar {
-                border-bottom: var(--component-appbar-border-width, var(--component-sidebar-border-width, 2px)) solid var(--base-background-border, #333);
+                border-bottom: var(--component-appbar-border-width, var(--component-sidebar-border-width, 2px)) solid var(--component-appbar-border-color, #333);
             }
             :host([orientation="horizontal"][sticky="end"]) .appbar {
-                border-top: var(--component-appbar-border-width, var(--component-sidebar-border-width, 2px)) solid var(--base-background-border, #333);
+                border-top: var(--component-appbar-border-width, var(--component-sidebar-border-width, 2px)) solid var(--component-appbar-border-color, #333);
             }
 
             .appbar {
                 display: flex;
-                background: var(--base-background-component, #111);
-                border: var(--component-appbar-border-width, var(--component-sidebar-border-width, 2px)) solid var(--base-background-border, #333);
+                background: var(--component-appbar-background, #111);
+                border: var(--component-appbar-border-width, var(--component-sidebar-border-width, 2px)) solid var(--component-appbar-border-color, #333);
                 border-radius: var(--component-appbar-border-radius, var(--component-sidebar-border-radius, 4px));
                 overflow: visible;
                 padding: var(--_appbar-padding);
@@ -250,23 +250,23 @@ export class YumeAppbar extends HTMLElement {
             }
 
             .appbar.vertical .appbar-header {
-                border-bottom: var(--component-appbar-inner-border-width, var(--component-sidebar-border-width, 2px)) solid var(--base-background-border, #333);
+                border-bottom: var(--component-appbar-inner-border-width, var(--component-sidebar-border-width, 2px)) solid var(--component-appbar-border-color, #333);
                 padding-bottom: var(--_appbar-padding);
                 margin-bottom: var(--_appbar-padding);
             }
             .appbar.vertical .appbar-footer {
-                border-top: var(--component-appbar-inner-border-width, var(--component-sidebar-border-width, 2px)) solid var(--base-background-border, #333);
+                border-top: var(--component-appbar-inner-border-width, var(--component-sidebar-border-width, 2px)) solid var(--component-appbar-border-color, #333);
                 padding-top: var(--_appbar-padding);
                 margin-top: var(--_appbar-padding);
             }
 
             .appbar.horizontal .appbar-header {
-                border-right: var(--component-appbar-inner-border-width, var(--component-sidebar-border-width, 2px)) solid var(--base-background-border, #333);
+                border-right: var(--component-appbar-inner-border-width, var(--component-sidebar-border-width, 2px)) solid var(--component-appbar-border-color, #333);
                 padding-right: var(--_appbar-padding);
                 margin-right: var(--_appbar-padding);
             }
             .appbar.horizontal .appbar-footer {
-                border-left: var(--component-appbar-inner-border-width, var(--component-sidebar-border-width, 2px)) solid var(--base-background-border, #333);
+                border-left: var(--component-appbar-inner-border-width, var(--component-sidebar-border-width, 2px)) solid var(--component-appbar-border-color, #333);
                 padding-left: var(--_appbar-padding);
                 margin-left: var(--_appbar-padding);
             }

@@ -108,8 +108,8 @@ class YumeDialog extends HTMLElement {
             }
             :host([visible]) { display: flex; }
             .dialog {
-                background: var(--base-background-component);
-                border: var(--component-dialog-border-width, 1px) solid var(--base-background-border);
+                background: var(--component-dialog-background);
+                border: var(--component-dialog-border-width, 1px) solid var(--component-dialog-border-color);
                 border-radius: var(--component-dialog-border-radius-outer, 4px);
                 max-width: 90%;
                 max-height: 90%;
@@ -120,7 +120,7 @@ class YumeDialog extends HTMLElement {
             .header {
                 padding: var(--component-dialog-padding, var(--spacing-medium));
                 font-weight: bold;
-                border-bottom: var(--component-dialog-inner-border-width, 1px) solid var(--base-background-border);
+                border-bottom: var(--component-dialog-inner-border-width, 1px) solid var(--component-dialog-border-color);
                 display: flex;
                 align-items: center;
                 justify-content: space-between;
@@ -134,7 +134,7 @@ class YumeDialog extends HTMLElement {
                 border: none;
                 cursor: pointer;
                 padding: var(--spacing-x-small, 4px);
-                color: var(--base-content--, #000);
+                color: var(--component-dialog-color, #000);
                 font-size: 1.25em;
                 line-height: 1;
                 border-radius: var(--component-button-border-radius-outer, 4px);
@@ -143,10 +143,10 @@ class YumeDialog extends HTMLElement {
                 justify-content: center;
             }
             .close-btn:hover {
-                background: var(--base-background-hover, #eee);
+                background: var(--component-dialog-hover-background, #eee);
             }
             .close-btn:focus-visible {
-                outline: 2px solid var(--primary-content--);
+                outline: 2px solid var(--component-dialog-accent);
                 outline-offset: -1px;
             }
             .body {
@@ -156,7 +156,7 @@ class YumeDialog extends HTMLElement {
             }
             .footer {
                 padding: var(--component-dialog-padding, var(--spacing-medium));
-                border-top: var(--component-dialog-inner-border-width, 1px) solid var(--base-background-border);
+                border-top: var(--component-dialog-inner-border-width, 1px) solid var(--component-dialog-border-color);
                 text-align: right;
             }
 

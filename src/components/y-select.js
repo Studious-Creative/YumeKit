@@ -314,7 +314,7 @@ export class YumeSelect extends HTMLElement {
             :host {
                 display: block;
                 font-family: var(--font-family-body);
-                color: var(--base-content--);
+                color: var(--component-select-color);
                 opacity: ${isDisabled ? "0.75" : "1"};
                 pointer-events: ${isDisabled ? "none" : "auto"};
             }
@@ -330,8 +330,8 @@ export class YumeSelect extends HTMLElement {
                 display: flex;
                 align-items: center;
                 gap: var(--spacing-x-small);
-                background: var(--base-background-app);
-                border: var(--component-inputs-border-width) solid var(--base-background-border);
+                background: var(--component-select-background);
+                border: var(--component-inputs-border-width) solid var(--component-select-border-color);
                 border-radius: var(--component-inputs-border-radius-outer);
                 padding: var(--component-inputs-padding-medium);
                 box-sizing: border-box;
@@ -340,43 +340,43 @@ export class YumeSelect extends HTMLElement {
             }
 
             .select-container:hover {
-                border-color: var(--base-content--);
+                border-color: var(--component-select-color);
             }
 
             .select-container:focus-within {
-                border-color: var(--primary-content--);
+                border-color: var(--component-select-accent);
             }
 
             .select-container.is-invalid {
-                border-color: var(--error-background-border);
-                background: var(--error-background-component);
+                border-color: var(--component-select-error-border-color);
+                background: var(--component-select-error-background);
             }
 
             .select-container.is-invalid:hover {
-                border-color: var(--error-content--);
+                border-color: var(--component-select-error-color);
             }
 
             .select-container.is-invalid:focus-within {
-                border-color: var(--error-content--);
+                border-color: var(--component-select-error-color);
             }
 
             .label-wrapper.is-invalid ::slotted([slot="label"]) {
-                color: var(--error-content--);
+                color: var(--component-select-error-color);
             }
 
             ::slotted([slot="label"]) {
                 font-weight: 500;
                 font-size: 0.875em;
-                color: var(--base-content-light);
+                color: var(--component-select-label-color);
             }
 
             .dropdown {
                 position: fixed;
                 z-index: 9999;
-                background: var(--base-background-app);
-                border: var(--component-inputs-border-width) solid var(--base-background-border);
+                background: var(--component-select-background);
+                border: var(--component-inputs-border-width) solid var(--component-select-border-color);
                 border-radius: var(--component-inputs-border-radius-outer);
-                box-shadow: var(--base-shadow, 0 2px 8px rgba(0,0,0,0.1));
+                box-shadow: var(--component-select-shadow, 0 2px 8px rgba(0,0,0,0.1));
                 max-height: 200px;
                 overflow-y: auto;
                 display: none;
@@ -392,12 +392,12 @@ export class YumeSelect extends HTMLElement {
             }
 
             .dropdown-item:hover {
-                background: var(--base-background-hover);
+                background: var(--component-select-hover-background);
             }
 
             .dropdown-item.selected {
-                background: var(--primary-content--);
-                color: var(--base-background-component);
+                background: var(--component-select-accent);
+                color: var(--component-select-accent-contrast);
             }
 
             .value-display {

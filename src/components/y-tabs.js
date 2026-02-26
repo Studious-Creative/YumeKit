@@ -146,9 +146,9 @@ export class YumeTabs extends HTMLElement {
             :host([position="right"])  .tablist button { border-left: none; }
 
             button {
-                background: var(--base-background-border);
-                color: var(--base-content--);
-                border: var(--component-tab-border-width) solid var(--base-background-border);
+                background: var(--component-tabs-border-color);
+                color: var(--component-tabs-color);
+                border: var(--component-tab-border-width) solid var(--component-tabs-border-color);
                 margin: 0;
                 padding: ${paddingVar};
                 cursor: pointer;
@@ -170,10 +170,10 @@ export class YumeTabs extends HTMLElement {
             :host([position="right"])  .tablist button:last-child   { border-bottom-right-radius: var(--component-tab-border-radius-outer); }
 
             button[aria-selected="true"] {
-                background: var(--base-background-component);
+                background: var(--component-tabs-background);
             }
             button:focus-visible {
-                outline: 2px solid var(--primary-content--);
+                outline: 2px solid var(--component-tabs-accent);
                 outline-offset: -1px;
             }
             button[disabled] {
@@ -188,10 +188,10 @@ export class YumeTabs extends HTMLElement {
             .tabpanel {
                 position: relative;
                 z-index: 0;
-                border: var(--component-tab-border-width) solid var(--base-background-border);
+                border: var(--component-tab-border-width) solid var(--component-tabs-border-color);
                 border-radius: var(--component-tab-border-radius-outer);
                 padding: var(--spacing-large);
-                background: var(--base-background-component);
+                background: var(--component-tabs-background);
             }
             :host([position="top"])    .tabpanel { border-top-left-radius: 0; }
             :host([position="bottom"]) .tabpanel { border-bottom-left-radius: 0; }

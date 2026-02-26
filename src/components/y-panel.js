@@ -224,30 +224,30 @@ export class YumePanel extends HTMLElement {
             :host {
                 display: block;
                 box-sizing: border-box;
-                background: var(--base-background-component);
-                color: var(--base-content--);
+                background: var(--component-panel-background);
+                color: var(--component-panel-color);
                 font-family: var(--font-family-body);
                 overflow: hidden;
             }
 
             :host([expanded]) {
-                background: var(--base-background-app);
+                background: var(--component-panel-expanded-background);
             }
 
             :host([selected]) {
-                color: var(--primary-content--);
+                color: var(--component-panel-accent);
             }
 
             :host([data-is-child="true"]) {
-                box-shadow: inset var(--component-panelbar-border-width, 2px) 0 0 0 var(--base-background-active);
+                box-shadow: inset var(--component-panelbar-border-width, 2px) 0 0 0 var(--component-panel-active-border);
             }
 
             :host([data-is-child="true"][selected]) {
-                box-shadow: inset var(--component-panelbar-border-width, 2px) 0 0 0 var(--primary-content--);
+                box-shadow: inset var(--component-panelbar-border-width, 2px) 0 0 0 var(--component-panel-accent);
             }
 
             :host([selected]) .header:hover {
-                background: var(--primary-background-active);
+                background: var(--component-panel-accent-hover-background);
             }
 
             :host([data-is-child="true"]) .header {
@@ -265,7 +265,7 @@ export class YumePanel extends HTMLElement {
             }
 
             .header:hover {
-                background: var(--base-background-hover);
+                background: var(--component-panel-hover-background);
             }
 
             :host([data-has-children="false"]) .header {

@@ -130,12 +130,12 @@ export class YumeTable extends HTMLElement {
 
         const topColor =
             dir === "asc"
-                ? "var(--base-content--, #333)"
-                : "var(--base-content-lightest, #bbb)";
+                ? "var(--component-table-color, #333)"
+                : "var(--component-table-color-light, #bbb)";
         const bottomColor =
             dir === "desc"
-                ? "var(--base-content--, #333)"
-                : "var(--base-content-lightest, #bbb)";
+                ? "var(--component-table-color, #333)"
+                : "var(--component-table-color-light, #bbb)";
 
         return sortArrows(topColor, bottomColor);
     }
@@ -155,7 +155,7 @@ export class YumeTable extends HTMLElement {
             :host {
                 display: block;
                 font-family: var(--font-family-body, sans-serif);
-                color: var(--base-content--, #000);
+                color: var(--component-table-color, #000);
             }
 
             .table-wrapper {
@@ -176,7 +176,7 @@ export class YumeTable extends HTMLElement {
                 font-size: var(--font-size-paragraph, 1em);
                 white-space: nowrap;
                 background: transparent;
-                border-bottom: var(--component-table-border-width-header, 2px) solid var(--base-background-border, #ccc);
+                border-bottom: var(--component-table-border-width-header, 2px) solid var(--component-table-border-color, #ccc);
                 user-select: none;
             }
 
@@ -185,7 +185,7 @@ export class YumeTable extends HTMLElement {
             }
 
             thead th.sortable:hover {
-                background: var(--base-background-hover, #f5f5f5);
+                background: var(--component-table-hover-background, #f5f5f5);
             }
 
             .th-content {
@@ -202,7 +202,7 @@ export class YumeTable extends HTMLElement {
             tbody td {
                 padding: ${paddingVar};
                 font-size: var(--font-size-paragraph, 1em);
-                border-bottom: var(--component-table-border-width, 2px) solid var(--base-background-border, #ccc);
+                border-bottom: var(--component-table-border-width, 2px) solid var(--component-table-border-color, #ccc);
             }
 
             tbody tr:last-child td {
@@ -216,13 +216,13 @@ export class YumeTable extends HTMLElement {
             ${
                 striped
                     ? `tbody tr:nth-child(even) {
-                    background: var(--base-background-hover, #f9f9f9);
+                    background: var(--component-table-hover-background, #f9f9f9);
                 }`
                     : ""
             }
 
             tbody tr:hover {
-                background: var(--base-background-active, #eee);
+                background: var(--component-table-active-background, #eee);
             }
         `;
         this.shadowRoot.appendChild(style);
