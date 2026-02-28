@@ -1,21 +1,45 @@
 {
-    "name": "@studious/yumekit",
+    "name": "@studious-creative/yumekit",
     "version": "0.1.0",
     "description": "Modern Web Component UI Kit",
     "type": "module",
-    "main": "script.js",
-    "module": "script.js",
+    "main": "dist/yumekit.min.js",
+    "module": "dist/index.js",
+    "exports": {
+        ".": {
+            "import": "./dist/index.js",
+            "default": "./dist/yumekit.min.js"
+        },
+        "./components/*": "./dist/components/*",
+        "./styles/*": "./dist/styles/*"
+    },
+    "files": [
+        "dist"
+    ],
+    "publishConfig": {
+        "access": "public"
+    },
     "scripts": {
+        "build": "rollup -c",
+        "prepublishOnly": "npm test && npm run build",
         "test": "npx web-test-runner --config web-test-runner.config.js --coverage"
     },
+    "repository": {
+        "type": "git",
+        "url": "https://github.com/Studious-Creative/YumeKit.git"
+    },
+    "license": "MIT",
+    "homepage": "https://www.yumekit.com",
     "devDependencies": {
         "@open-wc/testing": "^3.0.0-next.5",
+        "@rollup/plugin-terser": "^0.4.4",
         "@web/test-runner": "^0.20.0",
         "@web/test-runner-playwright": "^0.11.0",
         "eslint": "^10.0.1",
         "eslint-plugin-prettier": "^5.2.3",
         "playwright": "^1.51.1",
         "prettier": "^3.5.3",
+        "rollup": "^4.59.0",
         "sinon": "^21.0.1"
     }
 }
