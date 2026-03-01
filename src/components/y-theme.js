@@ -13,7 +13,7 @@ const THEMES = {
 
 export class YumeTheme extends HTMLElement {
     static get observedAttributes() {
-        return ["theme", "mode"];
+        return ["theme", "mode", "theme-path"];
     }
 
     constructor() {
@@ -31,10 +31,24 @@ export class YumeTheme extends HTMLElement {
         }
     }
 
-    _applyTheme() {
-        const theme = this.getAttribute("theme") || "blue";
-        const mode = this.getAttribute("mode") || "light";
-        const themeCSS = THEMES[`${theme}-${mode}`] || "";
+    async _applyTheme() {
+        const themePath = this.getAttribute("theme-path");
+        let themeCSS;
+
+        if (themePath) {
+            try {
+                const url = new URL(themePath, document.baseURI);
+                const response = await fetch(url.href);
+                themeCSS = await response.text();
+            } catch (e) {
+                console.error(`Failed to load theme from ${themePath}:`, e);
+                themeCSS = "";
+            }
+        } else {
+            const theme = this.getAttribute("theme") || "blue";
+            const mode = this.getAttribute("mode") || "light";
+            themeCSS = THEMES[`${theme}-${mode}`] || "";
+        }
 
         this.shadowRoot.innerHTML = `
             <style>${variablesCSS}</style>

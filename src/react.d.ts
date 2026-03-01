@@ -116,6 +116,7 @@ declare module 'react' {
         theme?: string;
         color?: string;
         mode?: string;
+        'theme-path'?: string;
       }>;
       'y-toast': El<{
         open?: boolean | string;
