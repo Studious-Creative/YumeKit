@@ -26,6 +26,12 @@ function copyAssets() {
             for (const f of readdirSync("src/modules")) {
                 copyFileSync(join("src/modules", f), join(modulesOut, f));
             }
+            // root-level .d.ts type declaration files (e.g. react.d.ts)
+            for (const f of readdirSync("src").filter((f) =>
+                f.endsWith(".d.ts"),
+            )) {
+                copyFileSync(join("src", f), join("dist", f));
+            }
         },
     };
 }
