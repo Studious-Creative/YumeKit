@@ -1,9 +1,19 @@
-export class YumeTheme extends HTMLElement {
-    static defaultVariablesLoaded = false;
-    static defaultVariablesCSS = "";
+import variablesCSS from "../../styles/variables.css";
+import blueLightCSS from "../../styles/blue-light.css";
+import blueDarkCSS from "../../styles/blue-dark.css";
+import orangeLightCSS from "../../styles/orange-light.css";
+import orangeDarkCSS from "../../styles/orange-dark.css";
 
+const THEMES = {
+    "blue-light": blueLightCSS,
+    "blue-dark": blueDarkCSS,
+    "orange-light": orangeLightCSS,
+    "orange-dark": orangeDarkCSS,
+};
+
+export class YumeTheme extends HTMLElement {
     static get observedAttributes() {
-        return ["theme-path"];
+        return ["theme", "mode"];
     }
 
     constructor() {
@@ -12,59 +22,27 @@ export class YumeTheme extends HTMLElement {
     }
 
     connectedCallback() {
-        this.loadDefaultVariables().then(() => {
-            const themePath = this.getAttribute("theme-path");
-            this.loadTheme(themePath);
-        });
+        this._applyTheme();
     }
 
     attributeChangedCallback(name, oldValue, newValue) {
-        if (name === "theme-path" && oldValue !== newValue) {
-            this.loadTheme(newValue);
+        if (oldValue !== newValue) {
+            this._applyTheme();
         }
     }
 
-    async loadDefaultVariables() {
-        if (!YumeTheme.defaultVariablesLoaded) {
-            try {
-                const variablesUrl = new URL(
-                    "styles/variables.css",
-                    document.baseURI,
-                );
-                const response = await fetch(variablesUrl.href);
-                YumeTheme.defaultVariablesCSS = await response.text();
-                YumeTheme.defaultVariablesLoaded = true;
-            } catch (e) {
-                console.error(
-                    "Failed to load default variables from styles/variables.css:",
-                    e,
-                );
-            }
-        }
-        return Promise.resolve();
-    }
+    _applyTheme() {
+        const theme = this.getAttribute("theme") || "blue";
+        const mode = this.getAttribute("mode") || "light";
+        const themeCSS = THEMES[`${theme}-${mode}`] || "";
 
-    async loadTheme(themePath) {
-        let themeCSS = "";
-        if (themePath) {
-            try {
-                const themeUrl = new URL(themePath, document.baseURI);
-                const response = await fetch(themeUrl.href);
-                themeCSS = await response.text();
-            } catch (e) {
-                console.error(`Failed to load theme from ${themePath}:`, e);
-            }
-        }
+        this.shadowRoot.innerHTML = `
+            <style>${variablesCSS}</style>
+            ${themeCSS ? `<style>${themeCSS}</style>` : ""}
+            <slot></slot>
+        `;
 
-        const combinedCSS = `
-        <style>
-          ${YumeTheme.defaultVariablesCSS}
-        </style>
-        ${themeCSS ? `<style>${themeCSS}</style>` : ""}
-      `;
-
-        this.shadowRoot.innerHTML = `${combinedCSS}<slot></slot>`;
-        this.applyVariablesToHost(YumeTheme.defaultVariablesCSS + themeCSS);
+        this.applyVariablesToHost(variablesCSS + themeCSS);
     }
 
     applyVariablesToHost(cssText) {

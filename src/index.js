@@ -1,3 +1,12 @@
+import variablesCSS from "../styles/variables.css";
+
+if (typeof document !== "undefined" && !document.querySelector("[data-yumekit-vars]")) {
+    const style = document.createElement("style");
+    style.setAttribute("data-yumekit-vars", "");
+    style.textContent = variablesCSS;
+    document.head.appendChild(style);
+}
+
 export * from "./components/y-appbar.js";
 export * from "./components/y-avatar.js";
 export * from "./components/y-badge.js";
