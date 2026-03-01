@@ -1,18 +1,20 @@
 {
     "name": "@studious-creative/yumekit",
-    "version": "0.1.1",
+    "version": "0.1.2",
     "description": "Modern Web Component UI Kit",
     "type": "module",
     "main": "dist/yumekit.min.js",
     "module": "dist/index.js",
     "exports": {
         ".": {
+            "module": "./dist/index.js",
             "import": "./dist/index.js",
             "default": "./dist/yumekit.min.js"
         },
         "./components/*": "./dist/components/*",
         "./styles/*": "./dist/styles/*"
     },
+    "sideEffects": true,
     "files": [
         "dist"
     ],
